@@ -5,7 +5,7 @@ Are the top 3 companies the right ones, in the right order?
 Most useful on well-scoped queries where ground truth is knowable.
 """
 from typing import Any
-import anthropic
+from openai import OpenAI
 import json
 import re
 
@@ -56,13 +56,13 @@ async def handler(
     metadata: dict[str, Any],
     trace: Any,
 ) -> float | dict[str, Any] | None:
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4.1",
         max_tokens=512,
         messages=[{"role": "user", "content": PROMPT.format(input=input, output=output)}]
     )
-    text = response.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
     text = re.sub(r'^```(?:json)?\n?', '', text)
     text = re.sub(r'\n?```$', '', text)
 
