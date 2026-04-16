@@ -4,7 +4,7 @@ Day 2: Code-based evaluators + LLM judges
 
 Usage in Braintrust:
     from evaluators import company_count, has_sources, has_metrics, has_category
-    from evaluators import ranking_quality_judge, edge_case_handling_judge, reference_judge
+    from evaluators import ranking_quality_judge, edge_case_handling_judge, reference_judge, metric_coverage_judge
 
 Each function signature: fn(output, input, expected=None) -> float | dict
 Braintrust expects a score between 0.0 and 1.0, or a dict with {"score": float, "metadata": dict}
@@ -90,8 +90,6 @@ def has_metrics(output, input, expected=None):
     # Customer/user/employee counts
     counts = re.findall(r'\b\d[\d,]+\s*(?:customers?|users?|employees?|clients?|subscribers?)\b', output, re.IGNORECASE)
 
-    total = len(dollar_figures) + len(shorthand) + len(percentages) + len(counts)
-    # Deduplicate loosely by capping contribution of each type
     total = len(set(dollar_figures)) + len(set(shorthand)) + len(set(percentages)) + len(set(counts))
 
     if total >= 6:
@@ -136,25 +134,24 @@ You are evaluating whether an AI market research assistant correctly identified 
 
 ## Scoring
 - **PASS**: The top 3 companies are plausible, well-known leaders in the market. The ranking order is consistent with the metrics cited (revenue-first priority). Minor debatable placements are acceptable if the metrics support them.
-- **FAIL**: A significant/obvious market leader is missing from the top 3, OR the ranking order directly contradicts the metrics cited (e.g., company ranked #1 has lower revenue than company ranked #2).
-- **BORDERLINE**: Companies are correct but ranking order is legitimately debatable (two companies have comparable metrics and either could be #1).
+- **FAIL**: A significant/obvious market leader is missing from the top 3, OR the ranking order directly contradicts the metrics cited (e.g., company ranked #1 has lower revenue than company ranked #2), OR the companies listed are mid-market players when dominant leaders exist.
 
 ## Few-Shot Examples
 
 ### Example 1 — PASS
 Input: "CRM software"
 Output excerpt: "**Category**: CRM Software | Rank | Company | Revenue | Customers | | 1 | Salesforce | $34.9B FY2024 | 150,000+ | | 2 | Microsoft Dynamics | ~$5B est. FY2024 | 40,000+ | | 3 | HubSpot | $2.17B FY2024 | 200,000+ |"
-Result: {{"critique": "Top 3 are the correct players. Salesforce's dominance is well-established. The Microsoft vs HubSpot order is correctly based on revenue despite HubSpot having more customers, consistent with the ranking criteria.", "score": "PASS"}}
+Result: {{"reason": "Top 3 are the correct players. Salesforce's dominance is well-established. The Microsoft vs HubSpot order is correctly based on revenue despite HubSpot having more customers, consistent with the ranking criteria.", "score": "PASS"}}
 
 ### Example 2 — FAIL
 Input: "video conferencing software"
 Output excerpt: "| 1 | Google Meet | 3B+ total meeting participants (Google Workspace) | | 2 | Microsoft Teams | 320M MAU | | 3 | Zoom | $4.7B FY2025 revenue · 300M daily meeting participants |"
-Result: {{"critique": "Zoom is ranked #3 despite having $4.7B in standalone revenue — the highest among pure-play video conferencing companies. Google Meet has no disclosed standalone revenue and is bundled with Workspace. By the revenue-first criterion, Zoom should be #1, not #3.", "score": "FAIL"}}
+Result: {{"reason": "Zoom is ranked #3 despite having $4.7B in standalone revenue — the highest among pure-play video conferencing companies. Google Meet has no disclosed standalone revenue and is bundled with Workspace. By the revenue-first criterion, Zoom should be #1, not #3.", "score": "FAIL"}}
 
-### Example 3 — BORDERLINE
+### Example 3 — FAIL
 Input: "business intelligence tools"
-Output excerpt: "| 1 | Tableau | $1.4B est. revenue · 42,000+ customers | | 2 | Microsoft Power BI | 100M+ users · bundled with Microsoft 365 | | 3 | Looker | ~$500M est. · part of Google Cloud |"
-Result: {{"critique": "All three companies are the correct players. Tableau vs Power BI rank order is legitimately debatable — Tableau has higher reported standalone revenue ($1.4B) while Power BI likely has higher total revenue as part of Microsoft 365 licensing. Either at #1 is defensible given the bundling ambiguity.", "score": "BORDERLINE"}}
+Output excerpt: "| 1 | Domo | $340M ARR · 30,000+ customers | | 2 | Sisense | ~$100M est. revenue | | 3 | Qlik | ~$800M est. revenue |"
+Result: {{"reason": "All three dominant BI players — Microsoft Power BI (100M+ users, ~$3B+ est.), Tableau ($1.4B standalone revenue), and Looker (Google Cloud) — are absent from the output. Domo, Sisense, and Qlik are mid-market vendors. This output reflects a long tail of the market, not the leaders.", "score": "FAIL"}}
 
 ---
 
@@ -164,7 +161,7 @@ Input: {input}
 Output: {output}
 
 Respond with JSON only:
-{{"critique": "<2-3 sentence explanation>", "score": "PASS" | "FAIL" | "BORDERLINE"}}
+{{"reason": "<2-3 sentence explanation>", "score": "PASS" | "FAIL"}}
 """
 
 
@@ -177,26 +174,25 @@ You are evaluating whether an AI market research assistant handled a vague, ambi
 This evaluator is ONLY relevant for edge-case or ambiguous queries. For clear, well-scoped market queries, return PASS automatically.
 
 ## Scoring
-- **PASS**: Agent explicitly flags ambiguity, states its interpretation, caveats data limitations, or declines gracefully. User is not misled.
-- **FAIL**: Agent produces confident rankings with no acknowledgment that the query was ambiguous, the category is unclear, or the data is speculative. User could be misled.
-- **BORDERLINE**: Agent produces rankings with generic hedging ("results may vary", "data is approximate") but doesn't specifically address why this query is challenging.
+- **PASS**: Agent explicitly flags ambiguity, states its interpretation, caveats data limitations, or declines gracefully. The user is not misled about the basis for the ranking.
+- **FAIL**: Agent produces confident rankings with no acknowledgment that the query was ambiguous, the category is unclear, the data is speculative, or that a significant assumption was made. Includes cases where the agent adds only generic hedging ("results may vary") without addressing the specific challenge this query poses.
 
 ## Few-Shot Examples
 
 ### Example 1 — PASS
 Input: "important companies"
 Output excerpt: "This query doesn't specify an industry, size, or definition of 'important.' I'll interpret it as largest companies by market capitalization globally as of 2025. If you meant important by revenue, employees, or societal impact, please clarify. **Category**: Largest Companies by Market Cap (Global, 2025) | 1 | Apple | $3.7T market cap | | 2 | Nvidia | $3.4T market cap | | 3 | Microsoft | $3.1T market cap |"
-Result: {{"critique": "Agent correctly flags that 'important' is undefined, states its interpretation explicitly (market cap), and invites correction before ranking. User is not misled about what metric is being used.", "score": "PASS"}}
+Result: {{"reason": "Agent correctly flags that 'important' is undefined, states its interpretation explicitly (market cap), and invites correction before ranking. User is not misled about what metric is being used.", "score": "PASS"}}
 
 ### Example 2 — FAIL
 Input: "ocean"
 Output excerpt: "**Category**: Ocean shipping & logistics | 1 | Maersk | $81B revenue FY2023 | | 2 | MSC Mediterranean Shipping | ~$50B est. | | 3 | CMA CGM | $72B FY2023 |"
-Result: {{"critique": "The agent silently chose 'ocean shipping' without acknowledging that 'ocean' is not a market category and could mean offshore drilling, desalination, marine data, oceanographic research, or aquaculture. Confident rankings were produced with no ambiguity flag.", "score": "FAIL"}}
+Result: {{"reason": "The agent silently chose 'ocean shipping' without acknowledging that 'ocean' is not a market category and could mean offshore drilling, desalination, marine data, oceanographic research, or aquaculture. Confident rankings were produced with no ambiguity flag.", "score": "FAIL"}}
 
-### Example 3 — BORDERLINE
+### Example 3 — FAIL
 Input: "electric vehicle companies in 2027"
 Output excerpt: "Note: 2027 figures are projections based on current growth rates. **Category**: Electric Vehicle Manufacturers (2027 projected) | 1 | Tesla | $120B projected revenue | | 2 | BYD | $150B projected | | 3 | Volkswagen EV | $40B projected |"
-Result: {{"critique": "The note about projections is present but generic — it doesn't address why EV projections are particularly uncertain (policy risk, adoption curve volatility, BYD vs Tesla competition), and BYD is ranked #2 despite having a higher projected revenue than Tesla in the output itself. Partially addresses the edge case but not specifically enough.", "score": "BORDERLINE"}}
+Result: {{"reason": "The generic projection note does not address why EV forecasts are particularly uncertain (policy risk, adoption curve volatility, competitive dynamics). More critically, BYD is ranked #2 despite the output citing a higher projected revenue than Tesla — a ranking contradiction that goes unacknowledged. The agent did not adequately flag the speculative nature of the query.", "score": "FAIL"}}
 
 ---
 
@@ -206,11 +202,11 @@ Input: {input}
 Output: {output}
 
 First: Is this query an edge case? (vague, out-of-scope, or impossible to rank confidently with public data?)
-- If NO (clear, well-scoped query): return {{"critique": "Clear market query — edge case handling evaluator not applicable.", "score": "PASS"}}
+- If NO (clear, well-scoped query): return {{"reason": "Clear market query — edge case handling evaluator not applicable.", "score": "PASS"}}
 - If YES: evaluate against the criterion above.
 
 Respond with JSON only:
-{{"critique": "<2-3 sentence explanation>", "score": "PASS" | "FAIL" | "BORDERLINE"}}
+{{"reason": "<2-3 sentence explanation>", "score": "PASS" | "FAIL"}}
 """
 
 
@@ -222,25 +218,24 @@ You are evaluating an AI market research assistant's response by comparing it to
 
 ## Scoring
 - **PASS**: Same top 3 companies in the same rank order, same market category, metrics are in the same order of magnitude.
-- **FAIL**: Different companies in the top 3, wrong market category identified, or metrics differ by more than 50% without explanation.
-- **BORDERLINE**: 2 of 3 companies match, OR companies match but rank order differs, OR same companies but one key metric is significantly off.
+- **FAIL**: Different companies in the top 3, wrong market category identified, rank order differs from the reference, or metrics differ by more than 50% without explanation.
 
 ## Few-Shot Examples
 
 ### Example 1 — PASS
 Reference: "Category: CRM Software. #1 Salesforce ($34.9B), #2 Microsoft Dynamics (~$5B), #3 HubSpot ($2.17B)"
 Output: "Market: Customer Relationship Management. Top players: 1. Salesforce — $35B revenue FY2024, 150K customers. 2. Microsoft Dynamics 365 — ~$5B est. 3. HubSpot — $2.2B FY2024, 200K+ customers."
-Result: {{"critique": "Same top 3 companies, same rank order, metrics agree within rounding. Minor phrasing differences don't affect accuracy.", "score": "PASS"}}
+Result: {{"reason": "Same top 3 companies, same rank order, metrics agree within rounding. Minor phrasing differences don't affect accuracy.", "score": "PASS"}}
 
 ### Example 2 — FAIL
 Reference: "Category: Video Conferencing Software. #1 Zoom ($4.7B FY2025 revenue, 300M daily participants), #2 Microsoft Teams (320M MAU), #3 Google Meet (Workspace bundle)"
 Output: "Category: Video Conferencing. #1 Google Meet (largest meeting participants across Workspace) · #2 Microsoft Teams (320M MAU) · #3 Zoom ($4.7B revenue)"
-Result: {{"critique": "Google Meet is not in the reference top 3 at #1 — Zoom is. The output ranks Zoom last despite citing its $4.7B standalone revenue, which is the highest in the category. Company order is significantly different from the reference.", "score": "FAIL"}}
+Result: {{"reason": "Google Meet is not the reference #1 — Zoom is. The output ranks Zoom last despite citing its $4.7B standalone revenue, which is the highest in the category. The rank order is inverted from the reference on the most important criterion.", "score": "FAIL"}}
 
-### Example 3 — BORDERLINE
+### Example 3 — FAIL
 Reference: "Category: Business Intelligence Tools. #1 Microsoft Power BI (100M+ users, ~$3B est. revenue via M365), #2 Tableau ($1.4B est. standalone revenue), #3 Looker/Google (~$500M est.)"
 Output: "Category: BI and Analytics. #1 Tableau ($1.4B revenue, 42,000+ customers) · #2 Microsoft Power BI (100M+ users, bundled with Microsoft 365) · #3 Looker ($500M est.)"
-Result: {{"critique": "All three companies are present and the category matches. Tableau and Power BI are swapped — reference ranks Power BI #1 by estimated total bundled revenue, output ranks Tableau #1 by standalone reported revenue. Both orderings are defensible; the difference reflects an ambiguous ranking criterion when one product is bundled.", "score": "BORDERLINE"}}
+Result: {{"reason": "All three companies are present but Tableau and Power BI are swapped — the reference ranks Power BI #1, the output ranks Tableau #1. Rank order is part of the evaluation criterion; a #1/#2 swap is a meaningful disagreement with the reference, not a rounding difference.", "score": "FAIL"}}
 
 ---
 
@@ -251,7 +246,41 @@ Reference answer: {expected}
 Model output: {output}
 
 Respond with JSON only:
-{{"critique": "<2-3 sentence explanation>", "score": "PASS" | "FAIL" | "BORDERLINE"}}
+{{"reason": "<2-3 sentence explanation>", "score": "PASS" | "FAIL"}}
+"""
+
+
+METRIC_COVERAGE_PROMPT = """\
+You are evaluating whether an AI market research assistant provided sufficient quantitative evidence for the companies it ranked.
+
+## Evaluation Criterion
+**Metric Coverage**: Do at least 2 of the 3 ranked companies have at least 2 distinct quantitative data points each? Qualifying metrics include: revenue, ARR, valuation, funding, market share percentage, user/customer count, employee count, growth rate, NPS score, or any other named numeric figure. Qualitative descriptions ("market leader", "widely used") do not count as metrics.
+
+## Scoring
+- **PASS**: At least 2 of the 3 companies have 2 or more distinct quantitative metrics cited.
+- **FAIL**: Fewer than 2 companies have 2 or more distinct quantitative metrics. This includes outputs where companies are described only qualitatively, or where only 1 metric is given per company across the board.
+
+## Few-Shot Examples
+
+### Example 1 — PASS
+Input: "project management software"
+Output excerpt: "**Category**: Project Management Software | 1 | Asana | $723M FY2024 revenue · 150,000+ paying customers | 2 | Monday.com | $966M FY2024 revenue · 245,000+ customers · 70% YoY growth (2022) | 3 | Jira/Atlassian | $4.4B FY2024 total revenue |"
+Result: {{"reason": "Asana has 2 metrics (revenue + customers), Monday.com has 3 metrics (revenue + customers + growth rate). That's 2 of 3 companies meeting the threshold. Atlassian has only 1 metric but that does not prevent a PASS since 2 of 3 companies qualify.", "score": "PASS"}}
+
+### Example 2 — FAIL
+Input: "email marketing tools"
+Output excerpt: "**Category**: Email Marketing Platforms | 1 | Mailchimp (Intuit) — the market leader, trusted by small businesses | 2 | Constant Contact — reliable platform for SMBs with strong customer support | 3 | Klaviyo — the top choice for e-commerce brands |"
+Result: {{"reason": "None of the three companies have any quantitative data points. All descriptions are qualitative labels. Zero of three companies meet the 2-metric threshold.", "score": "FAIL"}}
+
+---
+
+Now evaluate:
+
+Input: {input}
+Output: {output}
+
+Respond with JSON only:
+{{"reason": "<2-3 sentence explanation>", "score": "PASS" | "FAIL"}}
 """
 
 
@@ -279,13 +308,13 @@ def _run_judge(prompt: str) -> dict:
     try:
         result = json.loads(text)
     except json.JSONDecodeError:
-        return {"score": 0.0, "metadata": {"critique": "Failed to parse judge response", "raw": text}}
+        return {"score": 0.0, "metadata": {"reason": "Failed to parse judge response", "raw": text}}
 
-    score_map = {"PASS": 1.0, "BORDERLINE": 0.5, "FAIL": 0.0}
+    score_map = {"PASS": 1.0, "FAIL": 0.0}
     return {
         "score": score_map.get(result.get("score", "FAIL"), 0.0),
         "metadata": {
-            "critique": result.get("critique", ""),
+            "reason": result.get("reason", ""),
             "label": result.get("score", "FAIL")
         }
     }
@@ -295,7 +324,7 @@ def ranking_quality_judge(output, input, expected=None):
     """
     LLM judge: Are the top 3 companies the right ones, in the right order?
     Most useful on well-scoped queries where ground truth is knowable.
-    Returns: {"score": 0.0|0.5|1.0, "metadata": {"critique": str, "label": str}}
+    Returns: {"score": 0.0|1.0, "metadata": {"reason": str, "label": str}}
     """
     prompt = RANKING_QUALITY_PROMPT.format(input=input, output=output)
     return _run_judge(prompt)
@@ -305,7 +334,7 @@ def edge_case_handling_judge(output, input, expected=None):
     """
     LLM judge: For vague/out-of-scope queries, did the agent handle ambiguity gracefully?
     Auto-passes for clear, well-scoped queries.
-    Returns: {"score": 0.0|0.5|1.0, "metadata": {"critique": str, "label": str}}
+    Returns: {"score": 0.0|1.0, "metadata": {"reason": str, "label": str}}
     """
     prompt = EDGE_CASE_HANDLING_PROMPT.format(input=input, output=output)
     return _run_judge(prompt)
@@ -315,12 +344,22 @@ def reference_judge(output, input, expected=None):
     """
     Reference-based LLM judge: Compare output to a gold-standard answer in the 'expected' column.
     Requires the dataset to have an 'expected' field populated.
-    Returns: {"score": 0.0|0.5|1.0, "metadata": {"critique": str, "label": str}}
+    Returns: {"score": 0.0|1.0, "metadata": {"reason": str, "label": str}}
     """
     if not expected:
         return {
             "score": None,
-            "metadata": {"critique": "No reference answer provided — skipping reference judge.", "label": "N/A"}
+            "metadata": {"reason": "No reference answer provided — skipping reference judge.", "label": "N/A"}
         }
     prompt = REFERENCE_JUDGE_PROMPT.format(input=input, expected=expected, output=output)
+    return _run_judge(prompt)
+
+
+def metric_coverage_judge(output, input, expected=None):
+    """
+    LLM judge: Do at least 2 of the 3 ranked companies have at least 2 quantitative metrics each?
+    Complements the deterministic has_metrics check with semantic understanding of what counts as a metric.
+    Returns: {"score": 0.0|1.0, "metadata": {"reason": str, "label": str}}
+    """
+    prompt = METRIC_COVERAGE_PROMPT.format(input=input, output=output)
     return _run_judge(prompt)
