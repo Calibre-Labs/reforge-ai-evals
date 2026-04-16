@@ -284,6 +284,77 @@ Respond with JSON only:
 """
 
 
+COMPANY_MATCH_PROMPT = """\
+You are checking whether a market research response names the same top 3 companies as a reference answer, in the same rank order.
+
+## Criterion
+**Company Match**: Do the top 3 companies in the output match the top 3 companies in the reference, in the same order (#1 = #1, #2 = #2, #3 = #3)?
+
+Minor name variations are fine (e.g., "Microsoft Dynamics 365" vs "Microsoft Dynamics"). What matters is that the same three companies appear at the same rank positions.
+
+## Scoring
+- **PASS**: All 3 companies are present and in the same rank order as the reference.
+- **FAIL**: Any company differs, or the order is different (e.g., reference #1 appears as output #2).
+
+## Examples
+
+### Example 1 — PASS
+Reference: "#1 Salesforce, #2 Microsoft Dynamics, #3 HubSpot"
+Output: "1. Salesforce ($34.9B revenue) 2. Microsoft Dynamics 365 (~$5B est.) 3. HubSpot ($2.17B)"
+Result: {{"reason": "All three companies match in the correct order. 'Microsoft Dynamics 365' is the same company as 'Microsoft Dynamics'.", "score": "PASS"}}
+
+### Example 2 — FAIL
+Reference: "#1 Zoom, #2 Microsoft Teams, #3 Google Meet"
+Output: "1. Microsoft Teams (320M MAU) 2. Zoom ($4.7B revenue) 3. Google Meet"
+Result: {{"reason": "Zoom and Microsoft Teams are swapped — Zoom is #1 in the reference but appears as #2 in the output.", "score": "FAIL"}}
+
+---
+
+Reference: {expected}
+Output: {output}
+
+Respond with JSON only:
+{{"reason": "<1-2 sentence explanation>", "score": "PASS" | "FAIL"}}
+"""
+
+
+METRIC_SCOPE_PROMPT = """\
+You are evaluating whether a market research response uses appropriately scoped metrics for each company it ranks.
+
+## Criterion
+**Metric Scope**: When a ranked company's relevant product is a division or product line (not the whole company), do the cited metrics reflect that division — not the parent company's total revenue or valuation? If exact division revenue is unavailable, an estimate or analyst figure is expected. Stating that standalone revenue "isn't publicly disclosed" without providing an estimate is not sufficient.
+
+## Scoring
+- **PASS**: Metrics are scoped to the relevant product or division, OR the company's entire business is the product (no scoping needed).
+- **FAIL**: Metrics cited are the parent company's total figures when only one product line is relevant, OR the response acknowledges a division figure is unavailable but makes no attempt to estimate it.
+
+## Examples
+
+### Example 1 — PASS
+Input: "enterprise video conferencing software"
+Output excerpt: "1. Zoom — $4.7B FY2025 revenue · 300M daily participants. 2. Microsoft Teams — ~$10B est. annual revenue (analyst estimate, part of Microsoft 365). 3. Google Meet — ~$2B est. (bundled with Workspace; Google does not disclose standalone figures)."
+Result: {{"reason": "Zoom is a pure-play product — total revenue is correct. Teams and Google Meet are divisions, but the response provides analyst estimates scoped to those products rather than citing Microsoft's $245B or Alphabet's $350B totals.", "score": "PASS"}}
+
+### Example 2 — FAIL
+Input: "enterprise video conferencing software"
+Output excerpt: "1. Microsoft Teams — Microsoft total revenue $245B FY2024. 2. Zoom — $4.7B FY2025 revenue. 3. Google Meet — Alphabet total revenue $350B FY2024."
+Result: {{"reason": "Microsoft Teams and Google Meet are single product lines within much larger companies. Citing Microsoft's $245B and Alphabet's $350B total revenues as metrics for their video conferencing products is misleading — these figures include cloud, search, hardware, and dozens of other businesses.", "score": "FAIL"}}
+
+### Example 3 — FAIL
+Input: "project management software"
+Output excerpt: "1. Asana — $723M FY2024 revenue. 2. Monday.com — $966M FY2024 revenue. 3. Atlassian — $4.4B total revenue (Jira is one of several products; standalone Jira revenue not publicly disclosed)."
+Result: {{"reason": "Atlassian correctly notes Jira is one of several products, but then cites total company revenue and offers no estimate of Jira's standalone contribution. An analyst estimate or breakdown was available and expected.", "score": "FAIL"}}
+
+---
+
+Input: {input}
+Output: {output}
+
+Respond with JSON only:
+{{"reason": "<1-2 sentence explanation>", "score": "PASS" | "FAIL"}}
+"""
+
+
 # ─────────────────────────────────────────────
 # LLM JUDGE RUNNER
 # ─────────────────────────────────────────────
@@ -362,4 +433,30 @@ def metric_coverage_judge(output, input, expected=None):
     Returns: {"score": 0.0|1.0, "metadata": {"reason": str, "label": str}}
     """
     prompt = METRIC_COVERAGE_PROMPT.format(input=input, output=output)
+    return _run_judge(prompt)
+
+
+def company_match_judge(output, input, expected=None):
+    """
+    Reference-based LLM judge: Do the top 3 companies in the output match the reference in the same order?
+    Simpler than reference_judge — only checks company identity and rank, not metrics or category.
+    Requires the dataset to have an 'expected' field populated.
+    Returns: {"score": 0.0|1.0, "metadata": {"reason": str, "label": str}}
+    """
+    if not expected:
+        return {
+            "score": None,
+            "metadata": {"reason": "No reference answer provided — skipping company match judge.", "label": "N/A"}
+        }
+    prompt = COMPANY_MATCH_PROMPT.format(expected=expected, output=output)
+    return _run_judge(prompt)
+
+
+def metric_scope_judge(output, input, expected=None):
+    """
+    LLM judge: Are metrics scoped to the relevant product/division, not the parent company?
+    Catches the pattern where e.g. Microsoft's $245B total revenue is cited for a Teams query.
+    Returns: {"score": 0.0|1.0, "metadata": {"reason": str, "label": str}}
+    """
+    prompt = METRIC_SCOPE_PROMPT.format(input=input, output=output)
     return _run_judge(prompt)
