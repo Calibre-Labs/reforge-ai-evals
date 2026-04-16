@@ -1,0 +1,171 @@
+comments,created,expected,id,input,metadata,root_span_id,tags
+,2026-04-08T03:33:16.522Z,"**Market Category**: Publicly Traded AI Companies (2028 Projections)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | Nvidia | FY2025 revenue: $130.5B · Analyst 2028 projection: $250–300B · ~80% GPU market share in AI training |
+| 2 | Microsoft | FY2025 revenue: ~$279B · Azure AI growing ~30% YoY · Analyst 2028 projection: ~$380B+ |
+| 3 | Alphabet/Google | FY2024 revenue: $348B · Google Cloud AI segment accelerating · 2028 projection: ~$450B+ |
+
+**Rationale**: Ranked by projected 2028 revenue, using FY2025 actuals as the baseline. Nvidia leads as the dominant AI infrastructure provider — its data center segment alone grew 142% YoY in FY2025. Microsoft and Alphabet follow due to the scale of AI product integration across their businesses. All projections are speculative, based on analyst CAGR estimates applied to current actuals, and should be treated as directional rather than authoritative.
+
+**Also considered**: Meta (AI infrastructure investments, open-source models), Amazon (AWS AI services), pure-play AI companies (Anthropic, OpenAI — potentially public by 2028).
+
+**Sources**:
+1. Nvidia FY2025 Annual Report — investor.nvidia.com
+2. Microsoft FY2025 Annual Report — microsoft.com/investor
+3. Goldman Sachs AI Infrastructure Forecast, 2025
+4. Bernstein Research ""AI Revenue Projections 2028,"" 2025",032130e1-87eb-44d6-97fd-1655c38073ba,"""public ai companies in 2028""",,032130e1-87eb-44d6-97fd-1655c38073ba,
+,2026-04-08T03:33:16.523Z,"**Market Category**: Data Lakehouse / Cloud Analytics Platforms (Public Comparables for Databricks)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | Snowflake | FY2025 revenue: $3.63B · Market cap: ~$45B · Net revenue retention: 127% |
+| 2 | Palantir | FY2024 revenue: $2.87B · Market cap: ~$200B+ (mid-2025) · US commercial revenue growing 54% YoY |
+| 3 | Cloudera | Went private (KKR, 2021); last public revenue ~$794M FY2021 — closest historical comp |
+
+**Rationale**: Snowflake is the closest public comp — cloud-native data platform with overlapping enterprise data workloads and similar consumption-based go-to-market. Palantir competes for the same AI/data budget, though its architecture and sales motion differ. Cloudera was the most direct historical comp before going private. Databricks itself is private, with a $62B valuation from its December 2024 Series J and reported ARR of ~$3B+ as of early 2025.
+
+**Also considered**: Teradata (legacy data warehouse, ~$1.7B revenue, declining), Elastic (search/analytics, ~$1.5B FY2025), Confluent (data streaming, ~$1B FY2025 — adjacent but not a full comp).
+
+**Sources**:
+1. Snowflake FY2025 10-K — investors.snowflake.com
+2. Palantir FY2024 Annual Report — investors.palantir.com
+3. Databricks Series J announcement, December 2024 — databricks.com/blog
+4. Bloomberg Intelligence: Data Platform Sector, 2025",91ff2f71-f75f-4efd-8950-13caa0ae0097,"""databricks public comps""",,91ff2f71-f75f-4efd-8950-13caa0ae0097,
+,2026-04-08T03:33:16.524Z,"**Market Category**: Electronic Health Record (EHR) Systems (US, 2025)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | Epic Systems | Est. FY2025 revenue: ~$6.5B · ~38% of US hospital beds · 305M+ patient records |
+| 2 | Oracle Health (Cerner) | Est. FY2025 revenue: ~$2.2B (healthcare segment) · ~25% of US hospital beds · 6,500+ facilities |
+| 3 | Meditech | Est. FY2025 revenue: ~$500M · ~11% of US hospital beds · 2,300+ facilities |
+
+**Rationale**: Epic is the dominant US EHR player by hospital market share and estimated revenue. Oracle Health (acquired Cerner in 2022) is #2 with significant VA/government hospital presence. Meditech is #3 by hospital count, particularly strong in community hospitals. Epic and Meditech are both private; revenue figures are industry estimates.
+
+**Also considered**: Veradigm/Allscripts (ambulatory focus, ~$1.5B revenue), athenahealth (Veritas/Bain owned, physician practices), Netsmart (behavioral health/post-acute).
+
+**Sources**:
+1. KLAS Research: 2025 Best in KLAS report (EHR market share)
+2. Oracle FY2025 10-K (Cloud & License segment) — investor.oracle.com
+3. Meditech 2025 company overview — meditech.com
+4. Healthcare IT News: ""EHR Market Share Report 2025""",07b2b472-7e34-4e7b-8880-a267406b4457,"""healthcare EHR""",,07b2b472-7e34-4e7b-8880-a267406b4457,
+,2026-04-08T03:33:16.525Z,"**Market Category**: Most Trusted US Consumer Brands (Harris Poll EquiTrend, 2025)
+
+| Rank | Brand | Key Metrics |
+|------|-------|-------------|
+| 1 | Amazon | EquiTrend #1 (2025) · 76% US Prime membership penetration · J.D. Power: top retail customer satisfaction |
+| 2 | Google | EquiTrend top 5 (2025) · 92% US adult usage · Brand Finance brand value: $340B+ |
+| 3 | Apple | Interbrand #1 global brand value: $516B (2024) · 57% US smartphone market share |
+
+**Rationale**: Interpreted as cross-industry US consumer trust, using the 2025 Harris Poll EquiTrend as the primary ranking metric because it specifically measures trust (vs. brand awareness or revenue). Amazon, Google, and Apple consistently occupy the top 3–5 positions across multiple trust indices. Rankings would shift significantly if scoped to a specific industry (e.g., healthcare brands, financial brands) or a different geography.
+
+**Also considered**: Toyota (top trusted automotive brand), Johnson & Johnson (healthcare, trust impacted post-settlements), Costco (high loyalty and satisfaction scores).
+
+**Sources**:
+1. Harris Poll EquiTrend 2025 — harrispoll.com/equitrend
+2. Brand Finance Global 500, 2025 — brandirectory.com
+3. Interbrand Best Global Brands 2024 — interbrand.com
+4. J.D. Power 2025 US Customer Satisfaction Index",974cff06-03de-47b4-8d34-5ed5ee2f9442,"""brands people trust""",,974cff06-03de-47b4-8d34-5ed5ee2f9442,
+,2026-04-08T03:33:16.526Z,"**Market Category**: Team / Workplace Chat Software (2025)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | Microsoft Teams | 320M+ MAU (last reported 2023; no longer broken out separately) · Microsoft 365: 345M+ seats |
+| 2 | Slack (Salesforce) | ~$2B ARR (est. FY2025) · 750,000+ paying customers · Salesforce FY2026 reported strong growth |
+| 3 | Google Chat | Bundled with Google Workspace (10M+ paying orgs, 2025) · No standalone revenue reported |
+
+**Rationale**: Teams is the clear leader by active users, driven by Microsoft 365 bundling. Slack is #2 as the leading standalone team chat product by ARR and brand strength among product/engineering teams. Google Chat is #3 by organizational reach via Workspace adoption, though it lacks independent revenue metrics.
+
+**Also considered**: Discord (200M+ registered users, primarily consumer/gaming — not enterprise), Zoom Chat (part of $4.7B Zoom platform, secondary feature), Cisco Webex.
+
+**Sources**:
+1. Microsoft FY2025 Annual Report — microsoft.com/investor
+2. Salesforce FY2026 Annual Report (Slack segment) — investor.salesforce.com
+3. Google Workspace blog, 2025 — workspace.google.com/blog
+4. Okta Businesses @ Work 2025 (workplace app adoption data)",47d481f6-44cb-47bc-9ae8-09d9d450c33d,"""team chat""",,47d481f6-44cb-47bc-9ae8-09d9d450c33d,
+,2026-04-08T03:33:16.527Z,"**Market Category**: AI Security Startups Acquirable by Okta (2026 Timeframe)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | Abnormal Security | Valuation: ~$5.1B (2024, latest disclosed) · ARR: ~$200M+ · AI email security / phishing — adjacent to Okta's identity platform |
+| 2 | Vectra AI | Valuation: ~$1.2B · ARR: ~$100M est. · AI-powered network detection & response — complements Okta threat signals |
+| 3 | Cyera | Valuation: ~$1.4B (2024, latest disclosed) · ARR: ~$100M est. · Cloud data security & discovery — addresses the data layer below identity |
+
+**Rationale**: Okta held ~$2.3B in cash and investments as of FY2025 (January 2025). Candidates are filtered to (1) AI-native security focus, (2) valuations reachable at $500M–$2B with cash plus stock, and (3) strategic fit extending Okta's identity platform. Abnormal is the highest-profile target but may require a meaningful premium above its $5.1B valuation. Vectra and Cyera are financially more accessible and extend Okta into network and data security layers.
+
+**Also considered**: Island (enterprise browser, ~$3B valuation — likely too large for cash-only), Axonius (asset inventory, $2.6B valuation), Orca Security (cloud posture, ~$1.8B — possible with stock component).
+
+**Sources**:
+1. Okta FY2025 10-K (cash and investments) — investor.okta.com
+2. Abnormal Security Series D, 2024 — abnormalsecurity.com
+3. Vectra AI Series E funding — vectra.ai
+4. Cyera Series C, 2024 — cyera.io",fb19f896-e061-4096-81b1-34c4ac2616db,"""what AI security startups could Okta acquire in 2026 with its cash?""",,fb19f896-e061-4096-81b1-34c4ac2616db,
+,2026-04-08T03:33:16.528Z,"**Market Category**: Web Search Engines (2003)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | Google | 2003 revenue: $961.9M (per 2004 S-1) · ~35% US search queries (Nielsen NetRatings Q4 2003) · Private at time of ranking |
+| 2 | Yahoo! Search | ~30% US search queries (2003) · Yahoo! total 2003 revenue: $1.6B · Acquired Overture (paid search) in 2003 |
+| 3 | MSN Search | ~15% US search queries (2003) · Part of Microsoft (FY2003 revenue: $32.1B) · Relied on Inktomi index until 2005 |
+
+**Rationale**: All figures use 2003 market data. The search landscape looked significantly different from today — Google had not yet IPO'd (that came in 2004), and multiple portals competed for query volume. Google is ranked #1 despite being private at the time: its revenue and query share were the largest among pure-play search engines. Yahoo! had comparable query volume but its search revenue was bundled with broader portal revenue. MSN Search was a distant third by query share, with no independent revenue.
+
+**Also considered**: Ask Jeeves (~5% query share, natural language search), AltaVista (declining after Yahoo acquisition of its ad platform Overture), AOL Search (powered by Google under a licensing deal).
+
+**Sources**:
+1. Google S-1 Registration Statement, April 2004 (FY2003 revenue: $961.9M)
+2. Nielsen NetRatings Search Engine Ratings, Q4 2003 (cited by Search Engine Watch)
+3. Yahoo! 2003 Annual Report — archived via SEC EDGAR
+4. Search Engine Watch, ""Major Search Engines and Directories,"" December 2003",15ae9785-f3f9-4265-aaba-6646fb347c65,"""search in 2003""",,15ae9785-f3f9-4265-aaba-6646fb347c65,
+,2026-04-08T03:33:16.529Z,"**Market Category**: B2B Product & Growth Education Platforms (US, 2025)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | Maven | Est. ARR: $30M+ · 2,000+ instructors · Raised $20M Series A (2022) · Cohort-based courses for professionals |
+| 2 | Section (formerly Section4) | Est. ARR: ~$25M · Business/tech executive education · Founded by Scott Galloway · MBA-adjacent curriculum |
+| 3 | Lenny's Newsletter / Community | 1.5M+ newsletter subscribers · Paid community ~$150/yr · Product professional mindshare competitor |
+
+**Rationale**: Maven is the closest structural competitor — a marketplace for cohort-based courses from domain experts, directly overlapping with Reforge's format. Section competes on B2B executive education with a broader audience. Lenny's competes for the same product professional audience through community and content, though it is not a full course platform. Reforge and all competitors are private with no disclosed financials; ARR figures are industry estimates from funding announcements and press coverage.
+
+**Also considered**: LinkedIn Learning (massive scale but different format and positioning), Coursera for Business (enterprise L&D, different price point), Pragmatic Institute (product management certification, self-paced).
+
+**Sources**:
+1. Maven Series A announcement — maven.com/blog
+2. Section reported ARR (TechCrunch, 2022)
+3. Lenny's Newsletter subscriber count — lennysnewsletter.com
+4. EdTech Investor Report: Cohort-Based Learning Platforms, 2025",c573a82e-d58c-4362-b86a-cabb1b0670e4,"""reforge competitors""",,c573a82e-d58c-4362-b86a-cabb1b0670e4,
+,2026-04-08T03:33:16.530Z,"**Market Category**: Spacecraft Manufacturers (2024–2025, by space-segment revenue)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | SpaceX | Est. 2024 revenue: ~$13B · Falcon 9: ~80% commercial launch market share · Starlink: ~7M+ subscribers |
+| 2 | Northrop Grumman | FY2024 space revenue: ~$7.0B · Antares, Cygnus, GBSD contractor · James Webb Space Telescope primary contractor |
+| 3 | Boeing Defense, Space & Security | FY2024 space revenue: ~$6.5B · SLS contractor · Starliner program (crewed mission delayed 2024) |
+
+**Rationale**: Ranked as spacecraft manufacturers — companies designing and building launch vehicles, crew vehicles, and orbital systems — by space-segment revenue. SpaceX is the clear leader by commercial launch market share despite being private (revenue is estimated). Northrop Grumman edges Boeing for #2 in this ranking due to Boeing's write-downs and program delays in 2024, particularly the Starliner crewed mission issues. The category is interpreted broadly to include both launch vehicles and orbital platforms; a narrower scope (commercial launch only, or satellites only) would shift the ranking significantly.
+
+**Also considered**: Lockheed Martin Space (~$11B space revenue, primarily government/defense), United Launch Alliance (Boeing-Lockheed JV, losing market share to SpaceX), Rocket Lab ($436M FY2024 revenue, smaller launch vehicles).
+
+**Sources**:
+1. SpaceX revenue estimate — Bloomberg / WSJ, 2025 (private company)
+2. Northrop Grumman FY2024 Annual Report — northropgrumman.com/investors
+3. Boeing FY2024 10-K (Defense, Space & Security segment) — boeing.com/investors
+4. Euroconsult: World Space Industry Survey 2025",937ae7b2-beb1-41da-82d7-baef2be741bd,"""spacecraft""",,937ae7b2-beb1-41da-82d7-baef2be741bd,
+,2026-04-08T03:33:16.531Z,"**Market Category**: AI-Native Customer Support Startups (2025)
+
+| Rank | Company | Key Metrics |
+|------|---------|-------------|
+| 1 | Intercom | ARR: ~$400M+ (est. FY2025) · 25,000+ customers · Fin AI agent resolves 51% of support volume |
+| 2 | Sierra | Valuation: ~$4.5B+ (2025) · ARR: ~$100M+ est. · Founded by Bret Taylor & Clay Baird · Enterprise-focused conversational AI |
+| 3 | Forethought | ARR: ~$65M est. · Raised $65M Series C · AI triage and resolution for enterprise support teams |
+
+**Rationale**: Ranked by revenue and scale. Intercom is the most established AI-native customer support platform — it predates the current AI wave but rebuilt its product around AI (Fin agent). Sierra is the most prominent new entrant with strong enterprise positioning and high-profile founders. Forethought rounds out the top 3 as a pure-play AI support automation company with significant enterprise traction.
+
+**Also considered**: Tidio (SMB-focused, ~$25M ARR), Ada (chat automation, est. ~$50M ARR), Kustomer (acquired by Meta), Zendesk AI (established player with AI added — not a startup).
+
+**Sources**:
+1. Intercom FY2025 revenue announcement — intercom.com/blog
+2. Sierra AI funding and valuation — sierra.ai / press coverage 2025
+3. Forethought Series C announcement — forethought.ai
+4. Gartner: Emerging Technologies in Customer Service, 2025",7a2c6079-7a7c-4bde-b990-cdd9cfd3a57a,"""ai-native customer support startups""",,7a2c6079-7a7c-4bde-b990-cdd9cfd3a57a,
