@@ -6,7 +6,7 @@ Checks: same top 3 companies, same market category, comparable metrics.
 Requires the dataset to have an 'expected' field populated.
 """
 from typing import Any
-import anthropic
+from openai import OpenAI
 import json
 import re
 
@@ -61,13 +61,13 @@ async def handler(
     if not expected:
         return None
 
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4.1",
         max_tokens=512,
         messages=[{"role": "user", "content": PROMPT.format(input=input, expected=expected, output=output)}]
     )
-    text = response.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
     text = re.sub(r'^```(?:json)?\n?', '', text)
     text = re.sub(r'\n?```$', '', text)
 
