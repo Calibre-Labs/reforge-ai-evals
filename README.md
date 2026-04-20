@@ -81,6 +81,7 @@ Reference documents and reusable frameworks — not course exercises, but the me
 | `uig-skill.md` | How to build a UIG for any AI product — the general methodology |
 | `eval-code-skill.md` | How to write code-based evaluators: when to use them, how to find their failure modes, common patterns |
 | `eval-llm-judge-skill.md` | How to write LLM judge evaluators: the 4 required components, how to write few-shot examples, how to validate with TPR/TNR |
+| `llm-align-skill.md` | Claude Code skill for automated judge alignment analysis: discovers score fields, computes TPR/TNR, investigates disagreements, and suggests targeted scorer prompt fixes and few-shot examples |
 
 ---
 
@@ -156,3 +157,8 @@ The Week 1 dataset (10 rows) had **zero coverage** of the Financial domain and S
 **On the eval loop:**
 - Evals are only useful if they run on every prompt change. Wire them into your workflow, not just ad-hoc.
 - A score going up is only meaningful if you know *what changed* and *which eval category improved*.
+
+**On judge calibration (TPR/TNR):**
+- Before trusting an LLM judge in production, validate it against human labels using TPR (does it catch true positives?) and TNR (does it reject true negatives?).
+- False negatives (judge too strict) and false positives (judge too lenient) have different root causes and need different fixes. Investigate the scorer's reasoning for each disagreement before changing the prompt.
+- Use the `llm-align-skill.md` Claude Code skill to automate this workflow end-to-end for any Braintrust experiment.
