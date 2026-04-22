@@ -38,7 +38,7 @@ cat <<EOF
      "mcpServers": {
        "braintrust-write": {
          "command": "python",
-         "args": ["$MCP_DIR/server.py"],
+         "args": ["$MCP_DIR/braintrust_write.py"],
          "env": {
            "BRAINTRUST_API_KEY": "\${BRAINTRUST_API_KEY}"
          }
