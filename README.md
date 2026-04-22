@@ -33,8 +33,8 @@ It is a single-turn prompt with no tools or retrieval — all knowledge is in th
 | File | Rows | Description |
 |------|------|-------------|
 | `week1-dataset.csv` | 10 | Original dataset from Session 1. Now includes an `expected` column with gold-standard reference responses for use with the reference judge. |
-| `week2-dataset-curated-30.csv` | 30 | Curated subset chosen for maximum diversity across all 4 UIG dimensions. Recommended starting point for Sessions 2–3. |
-| `week2-dataset.csv` | 53 | Full expanded dataset with all query types and edge cases. Each row is tagged with metadata: `query_type`, `domain`, `style`, `temporal`, `edge_case`. |
+| `week2-dataset-30.csv` | 30 | Subset chosen for maximum diversity across all 4 UIG dimensions. Recommended starting point for Sessions 2–3. |
+| `week3-dataset-60.csv` | 54 | Full expanded dataset with all query types and edge cases. Each row is tagged with metadata: `query_type`, `domain`, `style`, `temporal`, `edge_case`. |
 | `week3-geography.csv` | 20 | Regional queries — SE Asia, India, Europe, Africa, China. Tests whether geographic constraints are applied correctly. |
 | `week3-historical.csv` | 20 | Historical snapshot queries across domains. Tests whether the agent uses period-accurate data instead of defaulting to 2025. |
 | `week3-impossible.csv` | 15 | Logically self-contradicting queries. Tests whether the agent refuses gracefully rather than confidently hallucinating. |
@@ -99,8 +99,8 @@ Reference documents and reusable frameworks — not course exercises, but the me
 | Session | Topic | Key Files |
 |---------|-------|-----------|
 | 1 | Traces in Braintrust playground | `week1-dataset.csv`, `market-map-prompt.md` |
-| 2 | Code-based and LLM judge evaluators | `evaluators.py`, `week2-dataset-curated-30.csv` |
-| 3 | Dataset management and prompt iteration | `week2-dataset.csv`, `uig-market-map.md` |
+| 2 | Code-based and LLM judge evaluators | `evaluators.py`, `week2-dataset-30.csv` |
+| 3 | Dataset management and prompt iteration | `week3-dataset-60.csv`, `uig-market-map.md` |
 | 4 | Online monitoring and custom trace analysis viewer | TBD |
 
 ---
@@ -134,7 +134,7 @@ pip install -r mcp/requirements.txt
 
 **Session 2 setup:**
 
-1. Import `week2-dataset-curated-30.csv` into Braintrust as a new dataset
+1. Import `week2-dataset-30.csv` into Braintrust as a new dataset
 2. Copy `market-map-prompt.md` into the Braintrust playground as your system prompt
 3. Run an experiment against the dataset
 4. Add `evaluators.py` as scorer functions in your experiment config
