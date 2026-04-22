@@ -33,19 +33,22 @@ Check `$ARGUMENTS` for a dataset target hint:
 
 ### Braintrust path
 
-1. Ask the user for the Braintrust project name if not already in `$ARGUMENTS`.
-2. List available datasets in that project:
+1. First, check if `names.json` exists at the repo root. If it does, call `list_names()`
+   to show the available short aliases. This is faster than listing from the API and
+   gives canonical names the team has agreed on.
+
+2. If `names.json` is missing or the project isn't set, ask the user for the Braintrust
+   project name and list datasets from the API:
    ```
    list_recent_objects(object_type="dataset", project_name="<project>", limit=20)
    ```
-3. Present the dataset list and ask the user to pick:
-   - **regression target** (the dataset that tracks real failures — equivalent to `regression-dataset.csv`)
-   - **coverage target** (the dataset to add generalized coverage rows to — equivalent to `week2-dataset.csv`)
-4. Resolve both to their dataset IDs:
-   ```
-   resolve_object(object_type="dataset", project_name="<project>", object_name="<name>")
-   ```
-5. Optionally infer schema of the coverage target to confirm field names match what you'll generate.
+
+3. Ask the user to confirm or pick:
+   - **regression target** — the dataset tracking real failures (alias: `regression`)
+   - **coverage target** — the dataset for generalized coverage rows (alias: `week2`)
+
+4. Store both as short aliases if names.json is present, or full names otherwise.
+   When appending in Phase 5, pass the alias directly — `insert_dataset_row` resolves it.
 
 Store: `regression_target` and `coverage_target` as either `{type: "braintrust", id: "<id>", name: "<name>", project: "<project>"}` or `{type: "local", path: "<path>"}`.
 
@@ -180,24 +183,26 @@ Ask: "Should I append both, just one, or neither?"
 
 ### Appending to Braintrust
 
-The Braintrust MCP has no write tool. Use the Python SDK:
+Use the `braintrust-write` MCP tool directly — no Bash or SDK needed:
 
-```python
-import braintrust
-
-dataset = braintrust.init_dataset(project="<project>", name="<dataset name>")
-dataset.insert({
-    "input": "<query>",
-    "expected": "",
-    "metadata": <metadata dict>,
-    "tags": <tags list>
-})
-dataset.flush()
-print("Done")
+```
+insert_dataset_row(
+    dataset_name="<alias or full name>",   # e.g. "week2" or "regression"
+    input="<query>",
+    expected="",
+    metadata='{"query_type": "...", ...}',
+    tags='[]'
+)
 ```
 
-Run via Bash. Requires `BRAINTRUST_API_KEY` in the environment — check with
-`echo $BRAINTRUST_API_KEY` first and prompt the user if it's missing.
+If the `braintrust-write` MCP server is not connected, fall back to Bash + SDK:
+```python
+import braintrust
+dataset = braintrust.init_dataset(project="<project>", name="<dataset name>")
+dataset.insert(input="...", expected=None, metadata={...}, tags=[])
+dataset.flush()
+```
+Check `echo $BRAINTRUST_API_KEY` first and prompt the user if it's missing.
 
 ### Appending to local CSV
 
