@@ -2,8 +2,8 @@
   "project": "Market_Map",
   "datasets": {
     "week1": "Week1 Dataset",
-    "week2": "Week2 Dataset 53",
-    "week2_curated": "Week2 Dataset 30",
+    "week3": "Week2 Dataset 53",
+    "week2": "Week2 Dataset 30",
     "week2_10": "Week2 Dataset 10",
     "regression": "regression-dataset"
   },
