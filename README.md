@@ -90,6 +90,7 @@ Reference documents and reusable frameworks — not course exercises, but the me
 | `eval-code-skill.md` | How to write code-based evaluators: when to use them, how to find their failure modes, common patterns |
 | `eval-llm-judge-skill.md` | How to write LLM judge evaluators: the 4 required components, how to write few-shot examples, how to validate with TPR/TNR |
 | `llm-align-skill.md` | Claude Code skill for automated judge alignment analysis: discovers score fields, computes TPR/TNR, investigates disagreements, and suggests targeted scorer prompt fixes and few-shot examples |
+| `ticket-to-eval-skill.md` | Claude Code skill for converting support tickets or Braintrust traces into eval dataset rows: strips PII, classifies failure mode, maps to UIG dimensions, appends to regression and coverage datasets via Braintrust MCP or local CSV |
 
 ---
 
