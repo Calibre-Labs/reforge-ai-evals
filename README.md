@@ -35,6 +35,14 @@ It is a single-turn prompt with no tools or retrieval — all knowledge is in th
 | `week1-dataset.csv` | 10 | Original dataset from Session 1. Now includes an `expected` column with gold-standard reference responses for use with the reference judge. |
 | `week2-dataset-curated-30.csv` | 30 | Curated subset chosen for maximum diversity across all 4 UIG dimensions. Recommended starting point for Sessions 2–3. |
 | `week2-dataset.csv` | 53 | Full expanded dataset with all query types and edge cases. Each row is tagged with metadata: `query_type`, `domain`, `style`, `temporal`, `edge_case`. |
+| `week3-geography.csv` | 20 | Regional queries — SE Asia, India, Europe, Africa, China. Tests whether geographic constraints are applied correctly. |
+| `week3-historical.csv` | 20 | Historical snapshot queries across domains. Tests whether the agent uses period-accurate data instead of defaulting to 2025. |
+| `week3-impossible.csv` | 15 | Logically self-contradicting queries. Tests whether the agent refuses gracefully rather than confidently hallucinating. |
+| `week3-jargon.csv` | 20 | VC/tech jargon queries (PLG, bootstrapped, ai-native, etc.). Tests whether jargon terms are applied as real filters. |
+| `week3-metric-ranking.csv` | 20 | Queries requesting non-standard ranking criteria (NPS, uptime, GitHub stars). Tests whether the agent applies the requested metric or defaults to revenue. |
+| `week3-gap-analysis.md` | — | Gap analysis doc: which UIG dimensions are still under-covered and recommended queries to fill them. |
+| `support-tickets.csv` | 10 | Synthetic customer support tickets with PII. Source material for the `ticket-to-eval` skill. Not a Braintrust dataset — use the skill to convert rows into eval rows. |
+| `regression-dataset.csv` | 10 | PII-stripped queries derived from real support tickets. Tagged with `failure_mode` and `source_ticket` in addition to standard UIG tags. Import into Braintrust and run on every prompt change to catch regressions. |
 
 All datasets are in [Braintrust](https://braintrust.dev) CSV format and can be imported directly.
 
