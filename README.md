@@ -112,6 +112,26 @@ Reference documents and reusable frameworks — not course exercises, but the me
 - An [Anthropic API key](https://console.anthropic.com) (for the LLM judge evaluators)
 - Python 3.10+ with `anthropic` installed: `pip install anthropic`
 
+**Install Claude Code skills (one-time):**
+
+```bash
+bash install-skills.sh
+```
+
+This copies all skills from `skills/` into `~/.claude/commands/` so they're available
+as slash commands in any Claude Code session: `/uig`, `/eval-code`, `/eval-llm-judge`,
+`/llm-align`, `/ticket-to-eval`.
+
+**Optional: braintrust-write MCP server**
+
+Enables native dataset row inserts from Claude (used by `/ticket-to-eval`).
+The install script prints the exact config snippet to add to `~/.claude/settings.json`.
+
+```bash
+pip install -r mcp/requirements.txt
+# then follow the config instructions printed by install-skills.sh
+```
+
 **Session 2 setup:**
 
 1. Import `week2-dataset-curated-30.csv` into Braintrust as a new dataset
