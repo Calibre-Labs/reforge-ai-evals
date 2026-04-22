@@ -66,12 +66,10 @@ def insert_dataset_row(
 
     dataset = braintrust.init_dataset(project=project_name, name=dataset_name)
     row_id = dataset.insert(
-        {
-            "input": input,
-            "expected": expected if expected else None,
-            "metadata": meta,
-            "tags": tag_list,
-        }
+        input=input,
+        expected=expected if expected else None,
+        metadata=meta,
+        tags=tag_list,
     )
     dataset.flush()
 
@@ -115,12 +113,10 @@ def insert_dataset_rows(
     ids = []
     for row in row_list:
         row_id = dataset.insert(
-            {
-                "input": row.get("input", ""),
-                "expected": row.get("expected") or None,
-                "metadata": row.get("metadata", {}),
-                "tags": row.get("tags", []),
-            }
+            input=row.get("input", ""),
+            expected=row.get("expected") or None,
+            metadata=row.get("metadata", {}),
+            tags=row.get("tags", []),
         )
         ids.append(row_id)
 
