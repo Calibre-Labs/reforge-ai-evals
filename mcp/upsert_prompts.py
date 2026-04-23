@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-One-shot script: push the v3a / v3b / v3c market-map prompts to Braintrust.
+Push the market-map prompt variants to Braintrust, mirroring v1's
+model/params/user-message so changes vs. v1 are isolated to the system prompt.
 
 Usage:
   export BRAINTRUST_API_KEY=...
-  uv run --with 'braintrust-api' python mcp/upsert_v3_prompts.py
+  uv run --with 'braintrust-api' python mcp/upsert_prompts.py
 """
 import os
 import re
@@ -22,34 +23,22 @@ PARAMS = {
     "use_cache": True,
 }
 
+# v1 (slug: marketmapv1-cc46) is the baseline and is NOT re-uploaded by this
+# script. It lives as the untouched original in Braintrust.
 VARIANTS = [
     {
         "name": "Market Map v2",
         "slug": "market-map-v2",
         "alias": "market_map_v2",
         "file": "prompts/market-map-prompt-v2.md",
-        "description": "v2: v1 system text + 2 new examples (historical query, ambiguous query).",
+        "description": "v2: v1 + metric-scoping rule + 2 new examples (historical, ambiguous).",
     },
     {
-        "name": "Market Map v3a (example only)",
-        "slug": "market-map-v3a-example-only",
-        "alias": "market_map_v3a",
-        "file": "prompts/market-map-prompt-v3a-example-only.md",
-        "description": "v3a: v2 + new Example 4 (division scoping). No rule changes.",
-    },
-    {
-        "name": "Market Map v3b (rule only)",
-        "slug": "market-map-v3b-rule-only",
-        "alias": "market_map_v3b",
-        "file": "prompts/market-map-prompt-v3b-rule-only.md",
-        "description": "v3b: v2 + explicit metric-scoping rule bullet. No new example.",
-    },
-    {
-        "name": "Market Map v3c (both)",
-        "slug": "market-map-v3c-both",
-        "alias": "market_map_v3c",
-        "file": "prompts/market-map-prompt-v3c-both.md",
-        "description": "v3c: v2 + both metric-scoping rule and new Example 4.",
+        "name": "Market Map v3",
+        "slug": "market-map-v3",
+        "alias": "market_map_v3",
+        "file": "prompts/market-map-prompt-v3.md",
+        "description": "v3: v2 + division/product-line ranking example (workplace messaging).",
     },
 ]
 
@@ -93,7 +82,7 @@ def main() -> None:
         print(f"  ✓ {v['name']}  →  slug={result.slug}  id={result.id}  ({len(system_prompt)} chars)")
         slug_lines.append(f'    "{v["alias"]}": "{result.slug}",')
 
-    print("\nAdd these lines under names.json → prompts:")
+    print("\nnames.json → prompts:")
     print("\n".join(slug_lines))
 
 

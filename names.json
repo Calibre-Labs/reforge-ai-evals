@@ -10,9 +10,7 @@
   "prompts": {
     "market_map_v1": "marketmapv1-cc46",
     "market_map_v2": "market-map-v2",
-    "market_map_v3a": "market-map-v3a-example-only",
-    "market_map_v3b": "market-map-v3b-rule-only",
-    "market_map_v3c": "market-map-v3c-both",
+    "market_map_v3": "market-map-v3",
     "has_metrics": "has-metrics-8ca8",
     "metric_scope": "metric-scope-2ab6",
     "reference": "reference-based-ec28"
