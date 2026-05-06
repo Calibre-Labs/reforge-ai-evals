@@ -2,7 +2,7 @@
 name: eval-code
 description: >
   Write deterministic, code-based evaluator functions for an AI product. Use this skill whenever
-  Sandhya needs to write evaluators that check structural properties of AI outputs (format, count,
+  you need to write evaluators that check structural properties of AI outputs (format, count,
   presence, schema compliance) without calling another LLM. Also use when auditing existing
   code-based evaluators for brittleness, coverage gaps, or false positives.
 ---
@@ -43,9 +43,9 @@ Start from the product's output requirements, not from what seems easy to check.
 For each property, write one sentence: **"A valid output must [verb] [object]."**
 
 Examples:
-- A valid output must contain exactly 3 ranked companies.
+- A valid output must contain exactly N ranked results.
 - A valid output must include at least 3 source citations.
-- A valid output must identify a market category before ranking companies.
+- A valid output must include a summary section before the detailed breakdown.
 - A valid output must be parseable as valid JSON matching the schema.
 
 If the sentence requires words like "correctly" or "appropriate" or "relevant", stop —
@@ -53,7 +53,8 @@ that property needs an LLM judge, not a code check.
 
 ### Step 2 — Write the function signature
 
-For Braintrust, the signature is:
+The standard signature works across most eval platforms (Braintrust, LangSmith, custom runners):
+
 ```python
 def evaluator_name(output: str, input: str, expected: str = None) -> float | dict:
     ...
@@ -109,15 +110,15 @@ Write evaluators as a Python file with one function per evaluator. Each function
 - Is independently testable (no global state, no side effects)
 
 ```python
-def company_count(output: str, input: str, expected: str = None) -> dict:
+def result_count(output: str, input: str, expected: str = None) -> dict:
     """
-    Checks that exactly 3 ranked companies appear in the output.
-    
-    Pass: output contains exactly 3 numbered/ranked company entries
-    Fail: output contains 0, 1, 2, or 4+ ranked entries
-    Partial (0.5): output contains 2 entries (close but not compliant)
-    
-    Does NOT check whether the companies are the right ones — use ranking_quality_judge for that.
+    Checks that exactly N items appear in the output.
+
+    Pass: output contains exactly N numbered/ranked entries
+    Fail: output contains 0 to N-1 or N+ entries
+    Partial (0.5): output contains N-1 entries (close but not compliant)
+
+    Does NOT check whether the items are correct — use an LLM judge for content correctness.
     """
     ...
 ```
@@ -130,23 +131,31 @@ def company_count(output: str, input: str, expected: str = None) -> dict:
 ```python
 import re
 
-def company_count(output, input, expected=None):
-    matches = re.findall(r'(?:^|\n)\s*[123][\.\)]\s+\S', output, re.MULTILINE)
-    if len(matches) == 3:
+def result_count(output, input, expected=None):
+    """
+    Checks that exactly N ranked/numbered items appear in the output.
+    Adapt the regex and expected count to your product's output format.
+    """
+    matches = re.findall(r'(?:^|\n)\s*\d+[\.\)]\s+\S', output, re.MULTILINE)
+    expected_n = 3  # set to whatever your product should return
+    if len(matches) == expected_n:
         return 1.0
-    if len(matches) == 2:
-        return {"score": 0.5, "metadata": {"found": len(matches), "expected": 3}}
-    return {"score": 0.0, "metadata": {"found": len(matches), "expected": 3}}
+    if len(matches) == expected_n - 1:
+        return {"score": 0.5, "metadata": {"found": len(matches), "expected": expected_n}}
+    return {"score": 0.0, "metadata": {"found": len(matches), "expected": expected_n}}
 ```
 
 ### Presence check with multiple fallback patterns
 ```python
-def has_category(output, input, expected=None):
-    # Try most specific pattern first, fall back to looser ones
+def has_disclaimer(output, input, expected=None):
+    """
+    Checks that a required disclaimer or section header is present.
+    Use multiple patterns to handle different formatting styles the model may produce.
+    """
     patterns = [
-        r'\*{0,2}(?:market\s+)?category\*{0,2}\s*:',          # "**Category**:"
-        r'^#{1,3}\s+.*(?:market|category|industry)',             # "## Market Category"
-        r'(?:identified as|categorized as|the market for)',      # prose identification
+        r'\*{0,2}disclaimer\*{0,2}\s*:',          # "**Disclaimer**:"
+        r'^#{1,3}\s+.*disclaimer',                  # "## Disclaimer"
+        r'(?:this is not|should not be construed)', # prose disclaimer
     ]
     for p in patterns:
         if re.search(p, output, re.IGNORECASE | re.MULTILINE):
@@ -159,12 +168,13 @@ def has_category(output, input, expected=None):
 import json
 from jsonschema import validate, ValidationError
 
+# Replace with the schema your product's output should conform to
 SCHEMA = {
     "type": "object",
-    "required": ["category", "companies", "sources"],
+    "required": ["summary", "items", "sources"],
     "properties": {
-        "companies": {"type": "array", "minItems": 3, "maxItems": 3},
-        "sources": {"type": "array", "minItems": 3}
+        "items": {"type": "array", "minItems": 1},
+        "sources": {"type": "array", "minItems": 1}
     }
 }
 
