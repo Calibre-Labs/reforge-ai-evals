@@ -40,6 +40,7 @@ It is a single-turn prompt with no tools or retrieval — all knowledge is in th
 | `week3-impossible.csv` | 15 | Logically self-contradicting queries. Tests whether the agent refuses gracefully rather than confidently hallucinating. |
 | `week3-jargon.csv` | 20 | VC/tech jargon queries (PLG, bootstrapped, ai-native, etc.). Tests whether jargon terms are applied as real filters. |
 | `week3-metric-ranking.csv` | 20 | Queries requesting non-standard ranking criteria (NPS, uptime, GitHub stars). Tests whether the agent applies the requested metric or defaults to revenue. |
+| `week3-currency.csv` | 20 | Dedicated currency mismatch dataset. All rows have `edge_case: true` and `failure_mode: currency_mismatch`. Covers 8 currencies (EUR, GBP, JPY, KRW, CHF, DKK, SEK, INR) across all 5 domains and 4 query types — including global categories where non-USD companies appear alongside USD ones. Derived from support ticket TKT-007. |
 | `week3-gap-analysis.md` | — | Gap analysis doc: which UIG dimensions are still under-covered and recommended queries to fill them. |
 | `support-tickets.csv` | 10 | Synthetic customer support tickets with PII. Source material for the `ticket-to-eval` skill. Not a Braintrust dataset — use the skill to convert rows into eval rows. |
 | `regression-dataset.csv` | 10 | PII-stripped queries derived from real support tickets. Tagged with `failure_mode` and `source_ticket` in addition to standard UIG tags. Import into Braintrust and run on every prompt change to catch regressions. |

@@ -13,3 +13,4 @@ venv/
 
 # OS
 .DS_Store
+.mcp.json

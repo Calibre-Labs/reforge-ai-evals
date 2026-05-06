@@ -5,7 +5,8 @@
     "week3": "Week3 Dataset Test 60",
     "week2": "Week2 Dataset Dev 30",
     "week2_10": "Week2 Dataset 10 Golden",
-    "regression": "regression-dataset"
+    "regression": "regression-dataset",
+    "currency": "week3-currency"
   },
   "prompts": {
     "market_map_v1": "marketmapv1-cc46",
