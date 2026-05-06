@@ -1,9 +1,9 @@
 ---
 name: eval-llm-judge
 description: >
-  Write LLM-as-judge evaluator prompts for AI products. Use this skill whenever Sandhya needs
-  to evaluate semantic properties of AI outputs that cannot be checked programmatically —
-  ranking quality, tone, factual accuracy, edge case handling, reference alignment. Also use
+  Write LLM-as-judge evaluator prompts for AI products. Use this skill whenever you need to
+  evaluate semantic properties of AI outputs that cannot be checked programmatically —
+  output quality, tone, factual accuracy, edge case handling, reference alignment. Also use
   when auditing existing judge prompts for bias, vagueness, or compound criteria. Output is a
   judge prompt string and a Python runner function, saved to the project's evaluators file.
 ---
@@ -21,10 +21,10 @@ covered the structural requirements.
 ## When to use this skill
 
 Write an LLM judge when the property requires reasoning that a human reviewer would apply:
-- **Ranking correctness**: are the top 3 companies the right ones in the right order?
+- **Output correctness**: are the results correct and in a defensible order or format?
 - **Edge case handling**: did the agent appropriately flag ambiguity or decline gracefully?
 - **Reference alignment**: does the output agree with a gold-standard expected response?
-- **Tone and framing**: is the hedging appropriate for a speculative claim?
+- **Tone and framing**: is the hedging appropriate for a speculative or high-stakes claim?
 - **Faithfulness**: does the output stay within what the cited sources actually say?
 
 Do NOT write an LLM judge for:
@@ -82,8 +82,9 @@ Rules for good examples:
    not just *what* score to assign. The judge should be able to derive the score from the critique.
 4. **Don't use inputs from your eval dataset.** Example inputs and outputs should be entirely
    distinct from the queries in your test set, to avoid contaminating judge behavior.
-5. **Match the domain.** If you're evaluating a market map agent, use market map examples.
-   Don't use generic QA examples — the judge will pattern-match to the wrong signals.
+5. **Match the domain.** Use examples from your actual product — same output format, same hedging
+   patterns, same vocabulary. Don't use generic QA examples; the judge will pattern-match to the
+   wrong signals.
 
 ### Step 4 — Require structured output
 
@@ -221,9 +222,8 @@ def my_judge(output: str, input: str, expected: str = None) -> dict:
   definition more specific and add a clear FAIL example.
 
 - **Model choice matters for judge quality.** Use the strongest model you can afford for judges.
-  A weaker judge model introduces noise that looks like model variation. For market map evals,
-  claude-sonnet-4-6 is the minimum; claude-opus-4-6 is preferable for nuanced ranking quality
-  judgments.
+  A weaker judge model introduces noise that looks like model variation. claude-sonnet-4-6 is
+  the minimum; claude-opus-4-6 is preferable for nuanced semantic judgments.
 
 - **Re-validate judges when the prompt changes.** If you update the system prompt (e.g., adding
   few-shot examples), re-run your human-labeled validation set. Prompt changes shift output
