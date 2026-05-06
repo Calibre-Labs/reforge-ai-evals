@@ -1,20 +1,23 @@
-# Reforge AI Evaluation Course — Market Map Agent
+# Reforge AI Evaluation Course
 
-This repository contains everything built during the live demo sessions of the [Reforge AI Evaluation course](https://www.reforge.com). We use a **Market Map agent** as a shared project across all four sessions — a single-turn AI that takes a market research query and returns a ranked list of the top 3 players in that market, with supporting metrics and citations.
+This repository contains everything built during the live demo sessions of the [Reforge AI Evaluation course](https://www.reforge.com). It is a general-purpose framework for building a repeatable, measurable eval loop for any AI feature or agent — from a single-turn prompt to a multi-step pipeline.
 
-The goal is to go from "I have a prompt that works" to "I have a repeatable, measurable eval loop" — and eventually to online monitoring of the agent in production.
+The goal is to go from "I have a prompt that works" to "I have an eval loop I trust" — and eventually to online monitoring of the agent in production.
+
+We use a **Market Map agent** as the shared demo project across all four sessions. It is a concrete example you can follow along with, but the frameworks, skills, and methodology apply to any AI product.
 
 ---
 
-## The Agent
+## Example Agent: Market Map
 
-The Market Map agent takes queries like:
+The Market Map agent takes a market research query and returns a ranked list of the top 3 players in that market, with supporting metrics and citations.
 
+Example queries:
 - *"team chat"* → ranks Microsoft Teams, Slack, Google Chat
 - *"what AI security startups could Okta acquire in 2026 with its cash?"* → scoped acquisition target analysis
 - *"search in 2003"* → period-accurate historical market map
 
-It is a single-turn prompt with no tools or retrieval — all knowledge is in the model's weights, which makes it a great target for evals: the failure modes are predictable and the output format is fixed.
+It is a single-turn prompt with no tools or retrieval — all knowledge is in the model's weights, which makes it a great eval target: the failure modes are predictable and the output format is fixed.
 
 **Prompt:** [`prompts/market-map-prompt.md`](prompts/market-map-prompt.md)
 
@@ -30,9 +33,11 @@ It is a single-turn prompt with no tools or retrieval — all knowledge is in th
 
 ### `datasets/`
 
+These datasets are specific to the Market Map agent and serve as examples of how to build and expand an eval dataset.
+
 | File | Rows | Description |
 |------|------|-------------|
-| `week1-dataset.csv` | 10 | Original dataset from Session 1. Now includes an `expected` column with gold-standard reference responses for use with the reference judge. |
+| `week1-dataset.csv` | 10 | Original dataset from Session 1. Includes an `expected` column with gold-standard reference responses for use with the reference judge. |
 | `week2-dataset-30.csv` | 30 | Subset chosen for maximum diversity across all 4 UIG dimensions. Recommended starting point for Sessions 2–3. |
 | `week3-dataset-60.csv` | 54 | Full expanded dataset with all query types and edge cases. Each row is tagged with metadata: `query_type`, `domain`, `style`, `temporal`, `edge_case`. |
 | `week3-geography.csv` | 20 | Regional queries — SE Asia, India, Europe, Africa, China. Tests whether geographic constraints are applied correctly. |
@@ -40,10 +45,10 @@ It is a single-turn prompt with no tools or retrieval — all knowledge is in th
 | `week3-impossible.csv` | 15 | Logically self-contradicting queries. Tests whether the agent refuses gracefully rather than confidently hallucinating. |
 | `week3-jargon.csv` | 20 | VC/tech jargon queries (PLG, bootstrapped, ai-native, etc.). Tests whether jargon terms are applied as real filters. |
 | `week3-metric-ranking.csv` | 20 | Queries requesting non-standard ranking criteria (NPS, uptime, GitHub stars). Tests whether the agent applies the requested metric or defaults to revenue. |
-| `week3-currency.csv` | 20 | Dedicated currency mismatch dataset. All rows have `edge_case: true` and `failure_mode: currency_mismatch`. Covers 8 currencies (EUR, GBP, JPY, KRW, CHF, DKK, SEK, INR) across all 5 domains and 4 query types — including global categories where non-USD companies appear alongside USD ones. Derived from support ticket TKT-007. |
+| `week3-currency.csv` | 20 | Dedicated currency mismatch dataset. All rows have `edge_case: true` and `failure_mode: currency_mismatch`. Covers 8 currencies (EUR, GBP, JPY, KRW, CHF, DKK, SEK, INR) across all 5 domains and 4 query types. Derived from support ticket TKT-007. |
 | `week3-gap-analysis.md` | — | Gap analysis doc: which UIG dimensions are still under-covered and recommended queries to fill them. |
-| `support-tickets.csv` | 10 | Synthetic customer support tickets with PII. Source material for the `ticket-to-eval` skill. Not a Braintrust dataset — use the skill to convert rows into eval rows. |
-| `regression-dataset.csv` | 10 | PII-stripped queries derived from real support tickets. Tagged with `failure_mode` and `source_ticket` in addition to standard UIG tags. Import into Braintrust and run on every prompt change to catch regressions. |
+| `support-tickets.csv` | 10 | Synthetic customer support tickets with PII. Source material for the `ticket-to-eval` skill. |
+| `regression-dataset.csv` | 10 | PII-stripped queries derived from real support tickets. Tagged with `failure_mode` and `source_ticket` in addition to standard UIG tags. |
 
 All datasets are in [Braintrust](https://braintrust.dev) CSV format and can be imported directly.
 
@@ -82,11 +87,11 @@ Each judge prompt includes 3 few-shot examples (clear PASS, clear FAIL, BORDERLI
 
 ### `skills/`
 
-Reference documents and reusable frameworks — not course exercises, but the methodology behind the work.
+Reusable frameworks and methodology — not Market Map-specific. These apply to any AI product eval project.
 
 | File | Description |
 |------|-------------|
-| `uig-market-map.md` | The User Input Grid for this specific agent: 4 dimensions, coverage audit of Week 1 dataset, gap analysis, and recommended queries to fill each gap |
+| `uig-market-map.md` | The User Input Grid for the Market Map agent: 4 dimensions, coverage audit of Week 1 dataset, gap analysis, and recommended queries to fill each gap |
 | `uig-skill.md` | How to build a UIG for any AI product — the general methodology |
 | `eval-code-skill.md` | How to write code-based evaluators: when to use them, how to find their failure modes, common patterns |
 | `eval-llm-judge-skill.md` | How to write LLM judge evaluators: the 4 required components, how to write few-shot examples, how to validate with TPR/TNR |
@@ -148,7 +153,7 @@ from evaluators import company_count, has_sources, ranking_quality_judge
 output = "your model output here"
 input_query = "team chat"
 
-print(company_count(output, input_query))       # 0.0, 0.5, or 1.0
+print(company_count(output, input_query))          # 0.0, 0.5, or 1.0
 print(ranking_quality_judge(output, input_query))  # {"score": 1.0, "metadata": {...}}
 ```
 
@@ -156,9 +161,11 @@ print(ranking_quality_judge(output, input_query))  # {"score": 1.0, "metadata": 
 
 ## The User Input Grid
 
-The **User Input Grid (UIG)** is the framework we use to ensure our eval dataset covers the real diversity of queries the agent will face in production. See [`skills/uig-market-map.md`](skills/uig-market-map.md) for the full analysis.
+The **User Input Grid (UIG)** is the framework we use to ensure an eval dataset covers the real diversity of inputs an agent will face in production. It applies to any AI product — the Market Map UIG below is one example.
 
-**4 dimensions, 5 values each on average:**
+See [`skills/uig-skill.md`](skills/uig-skill.md) for the general methodology, or [`skills/uig-market-map.md`](skills/uig-market-map.md) for the Market Map-specific analysis.
+
+**Market Map UIG — 4 dimensions:**
 
 | Dimension | Values |
 |-----------|--------|
