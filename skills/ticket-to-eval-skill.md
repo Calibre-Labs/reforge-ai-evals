@@ -1,96 +1,75 @@
 ---
 name: ticket-to-eval
 description: >
-  Strip PII from a customer support ticket or Braintrust trace and convert it into
-  eval dataset rows. Produces two outputs: a regression dataset row (close to the
-  original query, tagged with failure_mode) and a generalized dataset row (abstracted
-  for broader coverage). Supports Braintrust MCP for dataset discovery and local CSV
-  fallback. Use this skill whenever someone shares a support ticket, user complaint,
-  or raw trace and wants to turn it into eval data. Trigger on: "add this ticket to
-  the dataset", "convert this trace to an eval", "strip PII from this complaint",
-  "turn this into a test case".
-
-  Usage:
-    /ticket-to-eval                  — auto-detect datasets (local CSV or Braintrust)
-    /ticket-to-eval braintrust       — use Braintrust MCP for dataset discovery
-    /ticket-to-eval local            — use local CSV files only
+  Strip PII from a customer support ticket or eval trace and convert it into eval dataset rows.
+  Produces two outputs: a regression dataset row (close to the original input, tagged with
+  failure_mode) and a generalized dataset row (abstracted for broader coverage). Works with
+  local CSV files or any eval platform. Use this skill whenever someone shares a support ticket,
+  user complaint, or raw trace and wants to turn it into eval data. Trigger on: "add this ticket
+  to the dataset", "convert this trace to an eval", "strip PII from this complaint", "turn this
+  into a test case".
 ---
 
 # Ticket → Eval Conversion
 
-You are converting a customer support ticket or Braintrust trace into two eval dataset
-rows: a regression row (exact query, tagged with failure_mode) and a generalized row
-(abstracted for broader coverage). Work through the five phases below.
+You are converting a customer support ticket or eval trace into two eval dataset rows: a
+regression row (exact input, tagged with failure_mode) and a generalized row (abstracted for
+broader coverage). Work through the phases below.
 
 ---
 
 ## Phase 0: Dataset Discovery
 
-Check `$ARGUMENTS` for a dataset target hint:
-- `braintrust` or a Braintrust project name → use Braintrust MCP (see Braintrust path below)
-- `local` or blank → glob for local CSVs (see Local path below)
-- If unclear, ask: "Should I look for datasets in Braintrust or local CSV files?"
+Ask the user where their eval datasets live:
+- **Local CSV** — glob for CSV files whose first line contains `input,metadata`
+- **Eval platform** (Braintrust, LangSmith, etc.) — ask for the project name and list available datasets
+- If unclear, ask: "Should I look for datasets in a local CSV or an eval platform?"
 
-### Braintrust path
+Identify two targets:
+- **Regression target** — the dataset tracking real failures (look for "regression" in the name)
+- **Coverage target** — the dataset for generalized coverage rows (the broader dev/test set)
 
-1. First, check if `names.json` exists at the repo root. If it does, call `list_names()`
-   to show the available short aliases. This is faster than listing from the API and
-   gives canonical names the team has agreed on.
+Ask the user to confirm both before proceeding.
 
-2. If `names.json` is missing or the project isn't set, ask the user for the Braintrust
-   project name and list datasets from the API:
-   ```
-   list_recent_objects(object_type="dataset", project_name="<project>", limit=20)
-   ```
-
-3. Ask the user to confirm or pick:
-   - **regression target** — the dataset tracking real failures (alias: `regression`)
-   - **coverage target** — the dataset for generalized coverage rows (alias: `week2`)
-
-4. Store both as short aliases if names.json is present, or full names otherwise.
-   When appending in Phase 5, pass the alias directly — `insert_dataset_row` resolves it.
-
-Store: `regression_target` and `coverage_target` as either `{type: "braintrust", id: "<id>", name: "<name>", project: "<project>"}` or `{type: "local", path: "<path>"}`.
-
-### Local path
-
-1. Glob for CSV files in the project that look like Braintrust datasets:
-   ```
-   Glob("**/*.csv") → filter to files whose first line contains "input,metadata"
-   ```
-2. Identify which file is the regression dataset (look for "regression" in the filename or a `regression` column in the metadata).
-3. Present the list and ask the user to confirm regression target and coverage target.
-
-Store as `{type: "local", path: "<relative path>"}`.
+Store: `regression_target` and `coverage_target` as either `{type: "local", path: "<path>"}` or
+`{type: "platform", name: "<dataset name>", project: "<project>"}`.
 
 ---
 
 ## Phase 1: Extract & Identify
 
-Parse the input — it may be a CSV row, free-form complaint text, or Braintrust trace JSON.
+Parse the input — it may be a CSV row, free-form complaint text, or trace JSON.
 
 Extract:
-- **original_query**: the exact text the user submitted to the agent
+- **original_input**: the exact text or structured input the user sent to the AI
 - **complaint_summary**: what went wrong (1 sentence)
-- **failure_mode**: classify as one of:
-  - `jargon_misparse` — agent ignored or misread a jargon term (PLG, bootstrapped, ai-native, etc.)
-  - `stale_entity` — agent ranked a company that is bankrupt, acquired, or defunct
-  - `temporal_override` — historical/future query answered with current data
-  - `geography_ignored` — geographic constraint ignored; wrong regional market returned
-  - `currency_mismatch` — metrics returned in wrong or mixed currency with no disclosure
-  - `hallucinated_citation` — source URL 404s or the publication doesn't exist
-  - `implausible_metric` — a numeric figure is off by >5x from any credible estimate
-  - `refused_valid_query` — agent declined to answer a query it should be able to handle
-  - `latency` — response time complaint (not a content failure; flag separately)
-  - `format_violation` — wrong number of companies, broken table, incomplete output
-  - `other` — describe in a note field
+- **failure_mode**: classify using the taxonomy below
+
+### Failure Mode Taxonomy
+
+These are common AI failure modes. The list below uses a Market Map agent as a concrete example
+of each — adapt the labels to your product's failure patterns:
+
+| Failure mode | What it means | Market Map example |
+|---|---|---|
+| `intent_misparse` | Agent misread or ignored a key term in the input | Jargon term (PLG, bootstrapped) treated as freeform text |
+| `stale_data` | Agent used outdated information | Ranked a company that is bankrupt or acquired |
+| `temporal_override` | Historical/future input answered with current data | "Market in 2008" answered with today's data |
+| `scope_ignored` | A constraint in the input was ignored | Geographic or segment constraint silently dropped |
+| `unit_mismatch` | Metrics returned in wrong units or mixed without disclosure | Revenue in EUR mixed with USD with no conversion note |
+| `hallucinated_citation` | Source does not exist or doesn't support the claim | URL 404s or publication doesn't mention the claim |
+| `implausible_metric` | A numeric figure is off by >5x from any credible estimate | ARR figure that's 10x the company's actual size |
+| `refused_valid_input` | Agent declined to handle something it should be able to | Refused a well-formed request within its stated scope |
+| `latency` | Response time complaint (not a content failure; flag separately) | — |
+| `format_violation` | Wrong count, broken structure, incomplete output | Wrong number of results, broken table |
+| `other` | Describe in a note field | — |
 
 ---
 
 ## Phase 2: Strip PII
 
-Scan the original query AND any surrounding context for PII. Replace in-place with
-typed placeholders. Do NOT alter words that are not PII.
+Scan the original input AND any surrounding context for PII. Replace in-place with typed
+placeholders. Do NOT alter words that are not PII.
 
 | PII type | Placeholder |
 |---|---|
@@ -100,22 +79,23 @@ typed placeholders. Do NOT alter words that are not PII.
 | Session / trace ID | `[SESSION_ID]` |
 | Internal dollar figure | `[INTERNAL_FIGURE]` |
 
-**Rule**: market queries are rarely PII — preserve them exactly unless they contain
-a person's name or the user's own company name submitted in a private context.
+**Rule**: domain-specific content (product names, market terms, company names the user is
+*asking about*) is rarely PII — preserve it exactly unless it contains the user's own name
+or employer submitted in a private context.
 
-Show the cleaned query and ask the user to confirm before proceeding.
+Show the cleaned input and ask the user to confirm before proceeding.
 
 ---
 
 ## Phase 3: Map to Dimensions
 
-Tag the cleaned query. Use the schema you inferred from the coverage target in Phase 0,
-or fall back to these standard UIG fields if none were found:
+Tag the cleaned input using the UIG dimensions from the project's eval dataset. If none are
+defined, fall back to these generic fields:
 
 ```json
 {
-  "query_type": "<direct_category | competitive_comps | acquisition_targets | historical_snapshot | future_speculative | segment_specific | validation | trend_evolution | edge_out_of_scope>",
-  "domain": "<tech_saas | healthcare | financial | consumer_brand | industrial_other>",
+  "input_type": "<action_instruction | information_request | aggregation | multi_step | clarification | edge_out_of_scope>",
+  "domain": "<adapt to your product's domain dimension>",
   "style": "<well_specified | under_specified | multi_constraint | jargon_heavy | edge_out_of_scope>",
   "temporal": "<current | historical | future>",
   "edge_case": true | false
@@ -137,7 +117,7 @@ Regression-specific additions (Row A only):
 
 ### Row A — Regression Row
 
-- **input**: PII-stripped query (exact)
+- **input**: PII-stripped input (exact)
 - **metadata**: full dimension tags + regression fields
 - **expected**: blank unless user provides a reference response
 - **tags**: `["regression"]`
@@ -146,19 +126,16 @@ Regression-specific additions (Row A only):
 
 ### Row B — Generalized Row
 
-Rewrite the query to remove specifics that make it a regression test, keeping the
+Rewrite the input to remove specifics that make it a regression test, keeping the
 failure-relevant pattern. Goal: organic-looking coverage diversity.
 
 Generalisation examples:
-- `"UPI payment apps in India"` (geography_ignored) → different geography + category not already in the dataset
-- `"PLG-first B2B devtools under $500M ARR"` (jargon_misparse) → same jargon pattern, different market
+- `"UPI payment apps in India"` (scope_ignored) → different geography + category not already in the dataset
+- `"PLG-first B2B devtools under $500M ARR"` (intent_misparse) → same jargon pattern, different market
 - `"social networking in 2008"` (temporal_override) → only add if the domain isn't already covered
 
-Before finalising Row B, check what's already in the coverage target:
-- **Braintrust**: `sql_query(select="input, metadata", object_type="dataset", object_ids=["<coverage_id>"], limit=100)` then scan for similar queries
-- **Local**: read the last 20 rows of the CSV
-
-If a similar row already exists, pick a different generalisation.
+Before finalising Row B, check what's already in the coverage target. If a similar row already
+exists, pick a different generalisation.
 
 - **metadata**: dimension tags only (no `failure_mode`, `regression`, `source_ticket`)
 - **tags**: `[]`
@@ -181,32 +158,23 @@ ROW B → <coverage target name>:
 
 Ask: "Should I append both, just one, or neither?"
 
-### Appending to Braintrust
-
-Use the `braintrust-write` MCP tool directly — no Bash or SDK needed:
-
-```
-insert_dataset_row(
-    dataset_name="<alias or full name>",   # e.g. "week2" or "regression"
-    input="<query>",
-    expected="",
-    metadata='{"query_type": "...", ...}',
-    tags='[]'
-)
-```
-
-If the `braintrust-write` MCP server is not connected, fall back to Bash + SDK:
-```python
-import braintrust
-dataset = braintrust.init_dataset(project="<project>", name="<dataset name>")
-dataset.insert(input="...", expected=None, metadata={...}, tags=[])
-dataset.flush()
-```
-Check `echo $BRAINTRUST_API_KEY` first and prompt the user if it's missing.
-
 ### Appending to local CSV
 
 Use the Edit tool to append the new line after the last row. Do not rewrite the file.
+
+### Appending to an eval platform
+
+Use the platform's SDK or MCP tool to insert the row. Generic pattern:
+
+```python
+# Adapt to your platform's SDK
+dataset.insert(
+    input="<cleaned input>",
+    expected=None,
+    metadata={"input_type": "...", "failure_mode": "...", ...},
+    tags=["regression"]
+)
+```
 
 ---
 
@@ -216,12 +184,12 @@ Latency complaints can't be tested with a content eval:
 
 1. Still generate Row A for the regression dataset (useful for load testing).
 2. For Row B, skip the content dataset. Instead check if `perf-test-queries.txt` exists
-   in the datasets directory; if not, create it. Append the PII-stripped query.
+   in the datasets directory; if not, create it. Append the PII-stripped input.
 3. Tell the user: "This failure mode needs a latency monitor, not an LLM judge."
 
 ---
 
 ## Batch Mode
 
-If the user passes multiple tickets, process all through Phases 1–4 first, then
-present all rows grouped by target file before asking for a single confirmation.
+If the user passes multiple tickets, process all through Phases 1–4 first, then present all
+rows grouped by target file before asking for a single confirmation.
