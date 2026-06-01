@@ -49,17 +49,12 @@ Bad: "A good output is accurate, well-cited, and appropriately hedged." (three c
 
 If you're tempted to write a compound criterion, split it into two judges.
 
-### Step 2 — Write binary or ternary pass/fail definitions
+### Step 2 — Write binary pass/fail definitions
 
-**Binary (PASS/FAIL)** is the default. It forces the judge to commit and produces clean metrics.
+**Binary (PASS/FAIL)** forces the judge to commit and produces clean metrics.
 
-**Ternary (PASS/BORDERLINE/FAIL)** is useful when there is a genuinely meaningful middle ground —
-not "I'm not sure", but "the output is partially correct in a specific way." Use BORDERLINE when:
-- The criterion has a legitimate gray zone (e.g., ranking order is debatable because two companies
-  have comparable metrics)
-- You want to distinguish "clearly wrong" from "wrong but understandable"
-
-Do not use a 1–5 Likert scale. It collapses to 3s and 4s and tells you nothing.
+Do not use a 1–5 Likert scale. It collapses to 3s and 4s and tells you nothing. Do not add a
+BORDERLINE tier — it becomes a crutch and makes TPR/TNR harder to interpret.
 
 Write definitions for each level that are:
 - **Specific**: reference the criterion, not generic quality
@@ -71,11 +66,10 @@ Write definitions for each level that are:
 The examples are the most important part of the prompt. They calibrate the judge's interpretation
 of the criterion and tell it what evidence to look for.
 
-Required: **one clear PASS, one clear FAIL, one BORDERLINE**.
+Required: **one clear PASS, two clear FAILs** covering different failure modes.
 
 Rules for good examples:
-1. **The borderline example is the most valuable.** It shows the judge what the gray zone looks like
-   and prevents it from defaulting to binary extremes. Spend the most time on this one.
+1. **Use two distinct FAIL examples.** Different failure modes teach the judge where the line is better than a single example. Spend more time on these than on the PASS.
 2. **Use real-looking outputs**, not toy ones. The output in the example should look like what your
    model actually produces — same formatting, similar length, same hedging patterns.
 3. **Write the critique before the score.** The critique teaches the judge *why* to assign a score,
@@ -125,7 +119,6 @@ You are evaluating [AI product description].
 ## Scoring
 - **PASS**: [Specific description of what qualifies as a pass, grounded in the criterion.]
 - **FAIL**: [Specific description of what qualifies as a fail.]
-- **BORDERLINE**: [Specific description of the gray zone, if applicable. Remove if binary.]
 
 ## Few-Shot Examples
 
@@ -139,10 +132,10 @@ Input: "[example input]"
 Output excerpt: "[example output]"
 Result: {{"critique": "[why this fails]", "score": "FAIL"}}
 
-### Example 3 — BORDERLINE
+### Example 3 — FAIL
 Input: "[example input]"
-Output excerpt: "[example output]"
-Result: {{"critique": "[why this is on the line]", "score": "BORDERLINE"}}
+Output excerpt: "[example output showing a different failure mode]"
+Result: {{"critique": "[why this fails]", "score": "FAIL"}}
 
 ---
 
@@ -152,7 +145,7 @@ Input: {input}
 Output: {output}
 
 Respond with JSON only:
-{{"critique": "<2-3 sentence explanation>", "score": "PASS" | "FAIL" | "BORDERLINE"}}
+{{"critique": "<2-3 sentence explanation>", "score": "PASS" | "FAIL"}}
 """
 ```
 
@@ -187,7 +180,7 @@ def my_judge(output: str, input: str, expected: str = None) -> dict:
     except json.JSONDecodeError:
         return {"score": 0.0, "metadata": {"critique": "Failed to parse response", "raw": text}}
 
-    score_map = {"PASS": 1.0, "BORDERLINE": 0.5, "FAIL": 0.0}
+    score_map = {"PASS": 1.0, "FAIL": 0.0}
     return {
         "score": score_map.get(result.get("score", "FAIL"), 0.0),
         "metadata": {
@@ -205,9 +198,9 @@ def my_judge(output: str, input: str, expected: str = None) -> dict:
   two things at once cannot be improved — you don't know which criterion is failing. Split compound
   criteria before anything else.
 
-- **The borderline example is more valuable than the pass example.** Most judges default to PASS
-  on ambiguous cases unless trained otherwise. The borderline example shows what "trying but not
-  quite" looks like, which is often the most common failure mode in production.
+- **The FAIL examples are more valuable than the PASS example.** Most judges default to PASS
+  on ambiguous cases unless trained otherwise. Use two distinct FAIL examples covering different
+  failure modes to teach the judge where the line is.
 
 - **Don't use your eval dataset inputs as judge examples.** This is data leakage — the judge has
   effectively been pre-told the answer for those inputs. Use different examples that illustrate
