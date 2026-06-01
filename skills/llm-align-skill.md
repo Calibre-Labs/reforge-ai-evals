@@ -173,7 +173,7 @@ Good few-shot examples have these properties:
 
 - **One "too strict" FN**: A case the LLM failed that the human passed — include human reasoning as the correct label
 - **One "too lenient" FP**: A case the LLM passed that the human failed
-- **One borderline case** (if it exists): Something genuinely hard that shows the nuance you want
+- **A second FAIL case** covering a different failure mode than the first — shows the nuance you want
 
 ### Output format
 
