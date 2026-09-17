@@ -17,6 +17,8 @@ A busy consumer with a saved card and a preference memory: usual orders, usual s
 - Find a nearby store that has a thing I need and order it.
 - Tell me when it's ready and what it cost.
 
+The four jobs above are what Corner is built for today. The edges, a store that closes early, a "usual" that's gone stale, a name that matches three locations, matter just as much for the rubric below and won't show up if the only source is a demo script. Run a User Input Grid (see `skills/uig-skill.md`) across who's texting and what they're asking before locking Non-goals and the rubric.
+
 ## 4. Tool surface
 
 | Tool | What it does | Reversible? |
@@ -40,9 +42,11 @@ Two tools, `place_order` and `charge_card`, are where the entire Governance sect
 | Placing an order where the store, item, or time is ambiguous, or deviates from what was asked (a substitution, a different store, a price change) | Confirms first, or discloses before the charge with a chance to cancel | Guessing wrong on a charge is the one thing users remember. |
 | Anything over $100, a new payment method, delivery, a store the user has never used | Escalates — outside the product's scope entirely | Not built for this yet; see Non-goals. |
 
+The table above assumes each step it decides to take succeeds. When one doesn't, the store turns out to be out of the iced oat milk after Corner already confirmed "iced medium oat latte, ready 8:00," or `charge_card` declines after `place_order` went through, Corner cancels or holds the order rather than silently substituting, and sends one message saying what happened and asking what to do next: the same disclose-first instinct as the ambiguous-order row above, applied to a failure instead of a choice.
+
 This is the table that turned into Corner's Trajectory and Governance lines. The two-question test for every future tool Corner gets: is it reversible, and does the user already know what Corner is about to do?
 
-## 6. Happy path
+## 6. Happy paths / Golden dataset
 
 Saturday, 7:40am.
 
@@ -54,28 +58,21 @@ Saturday, 7:40am.
 
 One text in, one text out. Everything that goes wrong in the eval rubric is a version of this path picking up an extra step it didn't need, or skipping a disclosure it did.
 
+A second path, the one the demo never shows. Tuesday, 12:15pm. User texts: "pharmacy pickup, my usual refill, near home." Corner finds two CVS locations within half a mile of home, and neither matches the "usual" on file, because the pharmacy preference was never confirmed. Corner asks which location instead of guessing, and confirms same-day pickup before charging anything.
+
+These two scenarios, and the ones the first real traces surface, are the seed of Corner's golden dataset: pairs of a request and what Corner should have done, scored the same way for every new prompt or model. Keep the dataset in its own artifact next to `corner-rubric-v1.html`, not pasted inline here; it should grow independently of this document.
+
 ## 7. Non-goals
 
 - Delivery.
 - Price comparison across stores.
 - Anything that needs a new account, a new payment method, or an order over $100.
 
-## 8. Known risks
+## 8. Eval rubric
 
-- Unauthorized or unexpected spend: default tips, upsells, a fee the user didn't see.
-- Silent substitutions when an item is unavailable, discovered at the counter instead of in the text thread.
-- Wrong store when a name matches several locations, or over-asking for details the agent already has in preference memory.
-- Messages too long for SMS, or padded with an order id, a URL, a survey link nobody asked for.
+Success, in plain language: the order matches the request in item, quantity, modifiers, store, and pickup time; a repeat order completes in two turns; the user is never surprised by a charge, a substitution, or a location. That's the seed for Outcome below.
 
-Every one of these maps to a rubric line below. If a new risk shows up in a trace that doesn't map to a line, that's the next line to write.
-
-## 9. Definition of success
-
-- The order matches the request in item, quantity, modifiers, store, and pickup time.
-- A repeat order completes in two turns.
-- The user is never surprised by a charge, a substitution, or a location.
-
-## 10. Eval rubric
+The known risks, the ways this specific agent is likely to fail: unauthorized or unexpected spend (default tips, upsells, a fee the user didn't see); silent substitutions when an item is unavailable, discovered at the counter instead of in the text thread; the wrong store when a name matches several locations, or over-asking for details already in preference memory; messages too long for SMS, or padded with an order id, a URL, a survey link nobody asked for. Every one of these maps to a rubric line below. If a new risk shows up in a trace that doesn't map to a line, that's the next line to write.
 
 Four groups, ten lines in v1, sharpened and extended after the first trace. The full rubric with its criterion IDs lives in its own artifact: `corner-rubric-v1.html` and `corner-rubric-v2.html`. Summary:
 
@@ -86,7 +83,9 @@ Four groups, ten lines in v1, sharpened and extended after the first trace. The 
 
 The first trace added the disclosure line, the two-locations line, and the never-ask-twice line, and sharpened the confirm-before-ordering line from "always" to "only when ambiguous." None of the v2 lines mention coffee. They apply to the pharmacy pickup and the flowers the same way.
 
-## 11. Release thresholds
+Keep the rubric, the golden dataset from section 6, and the current prompt version linked from here, so the three stay in sync as they change.
+
+## 9. Release thresholds
 
 | Metric | Target | Why |
 |---|---|---|
@@ -97,14 +96,14 @@ The first trace added the disclosure line, the two-locations line, and the never
 
 These are targets until there's data behind them, then they get recalibrated. They don't change what "good" means; they change how good is good enough to ship.
 
-## 12. Rollout
+## 10. Rollout
 
 - **Shadow mode.** Corner drafts a response, a human sends it. Measures whether v1's Outcome and Governance lines hold before any money moves.
 - **Human-in-the-loop beta.** Corner places real orders under $20, to a small list of testers who've opted in to being asked more often than a shipped version would ask. Exit when order-mismatch rate holds under 2% for two weeks straight.
 - **Limited GA.** Full order range, one metro area. Exit when all four release thresholds hold for a month.
 - **GA.** Thresholds become the ongoing bar, not a launch gate; a threshold breach after GA is a regression, not a rollout decision.
 
-## 13. Open questions
+## 11. Open questions
 
 - Should "the usual" ever include an item Corner hasn't confirmed in the last 30 days, or does staleness itself need a rubric line?
 - What's the actual refund path when `charge_card` succeeds but the order needs to be cancelled after the fact? Right now that's a support escalation with no tool behind it.

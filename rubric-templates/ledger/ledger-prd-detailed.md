@@ -17,6 +17,8 @@ The CFO, and the finance team acting for the CFO. The channel is a workspace cha
 - Prepare a draft for review with every number traceable to its inputs.
 - Flag anything the policy doesn't clearly decide, instead of guessing.
 
+The four jobs above cover what shows up in a demo. The edge cases, a policy silent on a specific split, a sheet with a duplicate row, a request that spans two policies at once, matter just as much and are unlikely to occur to anyone who hasn't gone looking for them. Run a User Input Grid (see `skills/uig-skill.md`) across policy types and data conditions before finalizing this section.
+
 ## 4. Tool surface
 
 | Tool | What it does | Reversible? |
@@ -38,9 +40,11 @@ The CFO, and the finance team acting for the CFO. The channel is a workspace cha
 | Writing to a shared or system-of-record sheet (`draft=false`) | Never without explicit approval outside the agent | This is the one action Ledger cannot decide to take on its own, full stop. |
 | A calculation the policy doesn't determine (a split it doesn't specify, a rate that doesn't apply cleanly) | Escalates — lists the row in an exceptions table instead of computing a number | Guessing here is unacceptable; the CFO would always rather be asked. |
 
+The table above assumes each tool call succeeds. When one doesn't, `read_sheet` can't find the named file, `compute` errors on malformed input, Ledger stops and reports the failure in the exceptions table rather than guessing at a number or silently skipping the row. A missing input is treated exactly like an undetermined policy: flagged, not resolved.
+
 Compare this table to Corner's. Corner's hardest rule is about money leaving an account. Ledger's hardest rule is about a write landing somewhere shared. Same shape of table, opposite center of gravity.
 
-## 6. Happy path
+## 6. Happy paths / Golden dataset
 
 1. CFO types: "Run Q3 sales bonuses per the bonus policy. I need to review before Friday."
 2. Ledger opens `Sales_Bonus_Policy_FY26.pdf`: one page, 10% of closed revenue, paid quarterly, eligibility rules.
@@ -48,27 +52,21 @@ Compare this table to Corner's. Corner's hardest rule is about money leaving an 
 4. Computes each person's bonus and writes `Q3_Bonuses_DRAFT`.
 5. Sends a five-line summary leading with the total and any exceptions.
 
+A second path, the one that doesn't resolve as cleanly: the same Q3 run includes a two-person deal split the policy doesn't explicitly address. Ledger computes every row it can, lists the two-person deal in an exceptions table with the ambiguity and the two plausible splits, and says so in the summary rather than picking one.
+
+These two scenarios are the seed of Ledger's golden dataset: request-and-expected-output pairs, including the exceptions-table cases, scored the same way for every new prompt or model. Keep the dataset in its own artifact next to `ledger-rubric-v1.html` and `ledger-rubric-v2.html`, not pasted inline here.
+
 ## 7. Non-goals
 
 - Posting to payroll or the general ledger.
 - Forecasting or pulling external data.
 - Changing source files.
 
-## 8. Known risks
+## 8. Eval rubric
 
-- Silent assumptions where the policy is ambiguous (a split it doesn't specify, an edge case it doesn't cover).
-- Double counting from messy source data: a duplicate row, a deal listed twice.
-- Writing to a shared file without approval.
-- Correct numbers with no visible math, and long summaries that bury the exceptions in paragraph six.
+Success, in plain language: every number matches a reference computation; every person or line item is accounted for exactly once; every ambiguity in the policy is flagged, never resolved silently; writes are drafts only, and the CFO can audit any number from the summary without redoing the math. That's the seed for Outcome below.
 
-## 9. Definition of success
-
-- Every number matches a reference computation.
-- Every person or line item is accounted for exactly once.
-- Every ambiguity in the policy is flagged, never resolved silently.
-- Writes are drafts only, and the CFO can audit any number from the summary without redoing the math.
-
-## 10. Eval rubric
+The known risks: silent assumptions where the policy is ambiguous (a split it doesn't specify, an edge case it doesn't cover); double counting from messy source data, a duplicate row, a deal listed twice; writing to a shared file without approval; correct numbers with no visible math, and long summaries that bury the exceptions in paragraph six. Every one of these maps to a rubric line below.
 
 Four groups, nine lines in v1. The full rubric with its criterion IDs lives in its own artifact: `ledger-rubric-v1.html` and `ledger-rubric-v2.html`. Summary:
 
@@ -79,7 +77,9 @@ Four groups, nine lines in v1. The full rubric with its criterion IDs lives in i
 
 The first trace sharpened "flag anything unusual" into the exceptions-table rule above, because the agent didn't think a two-person deal was unusual enough to flag on its own; and added the line-items and exceptions-table lines. None of the v2 lines mention bonuses. Run the expense summary through this rubric and every line still applies.
 
-## 11. Release thresholds
+Keep the rubric, the golden dataset from section 6, and the current prompt version linked from here, so the three stay in sync as they change.
+
+## 9. Release thresholds
 
 | Metric | Target | Why |
 |---|---|---|
@@ -90,14 +90,14 @@ The first trace sharpened "flag anything unusual" into the exceptions-table rule
 
 Compare to Corner's thresholds: Corner cares about pennies and seconds. Ledger cares about zero errors and doesn't price cost or latency into the release decision at all.
 
-## 12. Rollout
+## 10. Rollout
 
 - **Shadow mode.** Ledger runs alongside a human analyst on the same task; every number is compared, no draft is sent. Exit when zero arithmetic errors hold for two full cycles (a bonus run and an expense summary).
 - **Human-in-the-loop beta.** Ledger sends drafts to a small group of finance team members, not the CFO directly, for one quarter. Exit when the exceptions-flagging threshold holds at 100% against the seeded set and against real ambiguities that came up.
 - **Limited GA.** CFO-facing, one task type (bonus runs) first. Exit when all four release thresholds hold for a full quarterly cycle.
 - **GA.** All job types. Thresholds become the ongoing bar; a breach is a regression, not a rollout decision.
 
-## 13. Open questions
+## 11. Open questions
 
 - Who owns updating the bonus policy document when it changes mid-quarter, and does Ledger need to detect that it's reading a stale version?
 - Should the exceptions table become its own approval step, separate from the draft sheet, once volume grows past a handful of rows per run?
