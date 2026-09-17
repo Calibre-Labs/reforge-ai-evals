@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corner: AI PRD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@400;500;600&family=Righteous&display=swap" rel="stylesheet">
+<style>
+    :root{
+      --navy:#172a49;
+      --brass:#d4af37;
+      --grey:#f5f6fa;
+      --white:#ffffff;
+      --charcoal:#464e50;
+      --steel:#b2bec3;
+      --midnavy:#5a7ba3;
+      --lightblue:#9abcda;
+      --ink:#101114;
+      --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      background:var(--grey);
+      font-family:Lexend,"Helvetica Neue",Arial,sans-serif;
+      font-weight:400;
+      font-size:17px;
+      line-height:1.55;
+      color:var(--charcoal);
+    }
+    .page{
+      max-width:960px;
+      margin:0 auto;
+      padding:56px 32px 40px;
+    }
+    h1,h2,h3{
+      font-family:Poppins,"Segoe UI",sans-serif;
+      font-weight:600;
+      color:var(--navy);
+      margin:0;
+    }
+    .header{margin-bottom:40px;}
+    .eyebrow{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:500;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      color:var(--midnavy);
+      margin:0 0 16px;
+    }
+    .eyebrow::before{
+      content:"";
+      width:6px;height:6px;
+      background:var(--brass);
+      border-radius:1px;
+      flex-shrink:0;
+    }
+    .product-name{font-size:42px;margin-bottom:10px;}
+    .descriptor{font-size:19px;font-weight:300;color:var(--charcoal);margin:0 0 18px;}
+    .meta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+    .pill-type{
+      display:inline-block;
+      background:var(--brass);
+      color:var(--navy);
+      font-family:var(--mono);
+      font-weight:600;
+      font-size:11px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      padding:7px 14px;
+      border-radius:999px;
+    }
+    .meta-date{color:var(--steel);font-size:12.5px;font-weight:500;font-family:var(--mono);letter-spacing:0.03em;}
+
+    .card{
+      background:var(--white);
+      border-radius:14px;
+      padding:32px 36px;
+      margin-bottom:28px;
+      box-shadow:0 1px 3px rgba(23,42,73,0.07);
+    }
+    .card h2{font-size:22px;margin-bottom:6px;}
+    .section-desc{
+      color:var(--steel);
+      font-size:15px;
+      font-weight:300;
+      margin:0 0 22px;
+    }
+    p{margin:0 0 14px;}
+    p:last-child{margin-bottom:0;}
+
+    ul.plain{list-style:none;padding:0;margin:0;}
+    ul.plain li{position:relative;padding-left:22px;margin-bottom:11px;font-size:16px;}
+    ul.plain li:last-child{margin-bottom:0;}
+    ul.plain li::before{
+      content:"";
+      position:absolute;
+      left:0;top:10px;
+      width:6px;height:6px;
+      border-radius:50%;
+      background:var(--brass);
+    }
+
+    .tool-list{margin:0;}
+    .tool-item{
+      display:grid;
+      grid-template-columns:250px 1fr;
+      gap:18px;
+      padding:11px 0;
+      border-bottom:1px solid var(--grey);
+      align-items:baseline;
+    }
+    .tool-item:last-child{border-bottom:none;}
+    .tool-name{
+      font-family:var(--mono);
+      color:var(--navy);
+      font-weight:600;
+      font-size:13.5px;
+      letter-spacing:-0.01em;
+    }
+    .tool-desc{font-size:15.5px;}
+
+    ol.steps{list-style:none;counter-reset:step;padding:0;margin:0;}
+    ol.steps li{
+      counter-increment:step;
+      display:grid;
+      grid-template-columns:32px 1fr;
+      gap:18px;
+      padding:11px 0;
+      border-bottom:1px solid var(--grey);
+      align-items:start;
+    }
+    ol.steps li:last-child{border-bottom:none;}
+    ol.steps li::before{
+      content:counter(step);
+      background:var(--navy);
+      color:var(--white);
+      width:28px;height:28px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:Poppins,"Segoe UI",sans-serif;
+      font-weight:600;
+      font-size:13px;
+      margin-top:2px;
+    }
+
+    .criterion-row{
+      display:grid;
+      grid-template-columns:60px 1fr 118px;
+      gap:18px;
+      align-items:start;
+      padding:16px 0;
+      border-bottom:1px solid var(--grey);
+    }
+    .criterion-row:last-child{border-bottom:none;}
+    .chip-id{
+      font-family:var(--mono);
+      letter-spacing:0.02em;
+      background:var(--navy);
+      color:var(--white);
+      font-size:12.5px;
+      font-weight:600;
+      padding:5px 0;
+      border-radius:6px;
+      text-align:center;
+      height:fit-content;
+    }
+    .criterion-body{font-size:16px;}
+    .criterion-text{margin:0;}
+    .checked-by{
+      text-align:right;
+      color:var(--midnavy);
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:500;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+      white-space:nowrap;
+      padding-top:2px;
+    }
+    .tags{display:inline-flex;gap:8px;margin-bottom:6px;}
+    .tag{
+      display:inline-block;
+      font-family:var(--mono);
+      font-size:10px;
+      font-weight:600;
+      letter-spacing:0.08em;
+      padding:3px 10px;
+      border-radius:999px;
+      text-transform:uppercase;
+    }
+    .tag-new{background:var(--brass);color:var(--navy);}
+    .tag-sharpened{background:var(--midnavy);color:var(--white);}
+    .was-text{
+      display:block;
+      color:var(--steel);
+      font-size:14px;
+      text-decoration:line-through;
+      margin-top:8px;
+    }
+    .motivated{
+      display:block;
+      color:var(--steel);
+      font-size:13px;
+      font-style:italic;
+      margin-top:6px;
+    }
+
+    .trace-box{
+      background:var(--white);
+      border-left:4px solid var(--brass);
+      border-radius:0 12px 12px 0;
+      padding:24px 30px;
+      margin-bottom:32px;
+      box-shadow:0 1px 3px rgba(23,42,73,0.07);
+    }
+    .trace-box h2{font-size:18px;margin-bottom:10px;}
+    .trace-box p{font-size:15.5px;color:var(--charcoal);}
+
+    table.thresholds{width:100%;border-collapse:collapse;table-layout:fixed;}
+    table.thresholds col.col-metric{width:34%;}
+    table.thresholds col.col-target{width:20%;}
+    table.thresholds col.col-why{width:46%;}
+    table.thresholds th{
+      text-align:left;
+      color:var(--steel);
+      font-weight:600;
+      font-family:var(--mono);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.07em;
+      padding:0 20px 12px 0;
+      border-bottom:2px solid var(--grey);
+    }
+    table.thresholds td{
+      padding:14px 20px 14px 0;
+      border-bottom:1px solid var(--grey);
+      font-size:15.5px;
+      vertical-align:top;
+    }
+    table.thresholds th:last-child,
+    table.thresholds td:last-child{padding-right:0;}
+    table.thresholds td:first-child{font-weight:600;color:var(--navy);}
+    table.thresholds td:nth-child(2){color:var(--midnavy);font-weight:600;font-family:var(--mono);font-size:14px;}
+    table.thresholds tr:last-child td{border-bottom:none;}
+
+    .threshold-pointer{
+      border:1px dashed rgba(90,123,163,0.4);
+      border-radius:12px;
+      padding:18px 22px;
+      margin-bottom:28px;
+      background:rgba(90,123,163,0.04);
+    }
+    .threshold-pointer .tp-label{
+      display:block;
+      font-family:var(--mono);
+      font-size:10.5px;
+      font-weight:600;
+      letter-spacing:0.1em;
+      text-transform:uppercase;
+      color:var(--midnavy);
+      margin-bottom:6px;
+    }
+    .threshold-pointer p{font-size:14.5px;color:var(--charcoal);margin:0;}
+
+    a{color:var(--midnavy);font-weight:600;text-decoration:none;border-bottom:1px solid var(--midnavy);}
+    a:hover{color:var(--navy);border-bottom-color:var(--navy);}
+
+    .footer{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+      margin-top:36px;
+      padding-top:18px;
+      border-top:1px solid rgba(178,190,195,0.35);
+    }
+    .footer .mark{width:13px;height:13px;flex-shrink:0;}
+    .footer .wordmark-text{
+      font-family:'Righteous',cursive;
+      font-size:14.5px;
+      color:var(--ink);
+      display:inline-flex;
+      align-items:baseline;
+      line-height:1;
+    }
+    .footer .cursor{
+      display:inline-block;
+      width:0.42em;height:0.78em;
+      background:var(--brass);
+      margin-left:0.12em;
+      transform:translateY(0.12em);
+    }
+
+    @media print{
+      body{background:var(--white);}
+      .card,.trace-box,.threshold-pointer{box-shadow:none;border:1px solid #e2e5ea;}
+      .chip-id,.pill-type,.tag-new,.tag-sharpened,.footer .cursor{
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+      }
+    }
+    @media (max-width:640px){
+      .page{padding:32px 18px 28px;}
+      .product-name{font-size:32px;}
+      .tool-item{grid-template-columns:1fr;gap:4px;}
+      .criterion-row{grid-template-columns:52px 1fr;}
+      .checked-by{text-align:left;grid-column:2;}
+    }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <p class="eyebrow">Calibre Labs &middot; AI Evals 201</p>
+    <h1 class="product-name">Corner</h1>
+    <p class="descriptor">A local shopping assistant over SMS.</p>
+    <div class="meta-row">
+      <span class="pill-type">AI PRD</span>
+      <span class="meta-date">September 2026</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Product</h2>
+    <p>Corner is a local shopping assistant over SMS. You text it, it buys the thing from a store near you, and it texts you back when the order is placed. Everyday purchases only: coffee, a pharmacy pickup, flowers, a grocery top-up.</p>
+  </div>
+
+  <div class="card">
+    <h2>User and channel</h2>
+    <p>A busy consumer with a saved card and a preference memory (usual orders, usual stores, home and office locations). Channel is SMS, so every message competes with a text from a friend. Success is measured in seconds and in the absence of friction.</p>
+  </div>
+
+  <div class="card">
+    <h2>Jobs to be done</h2>
+    <ul class="plain">
+      <li>Reorder "the usual" from a known store with as little back-and-forth as possible</li>
+      <li>Order a specific item for pickup from a nearby store, at a time I choose</li>
+      <li>Find a nearby store that has a thing I need and order it</li>
+      <li>Tell me when it's ready and what it cost</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Tool surface</h2>
+    <div class="tool-list">
+      <div class="tool-item"><span class="tool-name">get_preferences()</span><span class="tool-desc">Returns usual orders, usual stores, saved locations.</span></div>
+      <div class="tool-item"><span class="tool-name">find_stores(query, near)</span><span class="tool-desc">Returns candidate stores with distance.</span></div>
+      <div class="tool-item"><span class="tool-name">get_store_hours(store)</span><span class="tool-desc">Returns today's hours.</span></div>
+      <div class="tool-item"><span class="tool-name">get_menu(store)</span><span class="tool-desc">Returns items, options, prices, availability.</span></div>
+      <div class="tool-item"><span class="tool-name">place_order(store, items, pickup_time)</span><span class="tool-desc">Places a pickup order, returns order id and ready time.</span></div>
+      <div class="tool-item"><span class="tool-name">charge_card(amount)</span><span class="tool-desc">Charges the saved card.</span></div>
+      <div class="tool-item"><span class="tool-name">send_sms(text)</span><span class="tool-desc">Replies to the user.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Happy path</h2>
+    <p class="section-desc">Saturday, 7:40am.</p>
+    <ol class="steps">
+      <li>User texts: "my usual but iced, blue bottle near the office, picking up in 20."</li>
+      <li>Corner reads preferences: medium oat latte, office location.</li>
+      <li>Finds the Blue Bottle nearest the office, checks it is open, and confirms the iced medium oat latte is available.</li>
+      <li>Places the order for 8:00 and charges $9.75.</li>
+      <li>Replies: "Iced medium oat latte at Blue Bottle Broadway, ready 8:00. $9.75."</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Non-goals</h2>
+    <ul class="plain">
+      <li>Delivery.</li>
+      <li>Price comparison across stores.</li>
+      <li>Anything that needs a new account or a new payment method, or purchases over $100.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Definition of success</h2>
+    <ul class="plain">
+      <li>The order matches the request in item, quantity, modifiers, store, and pickup time.</li>
+      <li>A repeat order completes in two turns.</li>
+      <li>The user is never surprised by a charge, a substitution, or a location.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Known risks</h2>
+    <ul class="plain">
+      <li>Unauthorized or unexpected spend (tips, upsells, wrong item).</li>
+      <li>Silent substitutions when an item is unavailable.</li>
+      <li>Wrong store when a name matches several locations, or over-asking for details the agent already knows.</li>
+      <li>Messages too long for SMS.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Eval rubric</h2>
+    <p>The eval rubric is a section of this PRD: the pass or fail criteria that define whether Corner is working, grouped into outcome, trajectory, governance, and experience. The numbers it must hold across sessions are their own section below, <a href="#release-thresholds">release thresholds</a>. See <a href="corner-rubric-v1.html">corner-rubric-v1.html</a> for the full rubric.</p>
+  </div>
+
+  <div class="card" id="release-thresholds">
+    <h2>Release thresholds</h2>
+    <table class="thresholds">
+      <colgroup><col class="col-metric"><col class="col-target"><col class="col-why"></colgroup>
+      <tr><th>Metric</th><th>Target</th><th>Why</th></tr>
+      <tr><td>Cost per order</td><td>Under $0.05</td><td>Consumer margins.</td></tr>
+      <tr><td>First response</td><td>Under 5 seconds</td><td>SMS expectations.</td></tr>
+      <tr><td>Order-mismatch rate at GA</td><td>Under 2%</td><td>A wrong order is the one thing users remember.</td></tr>
+      <tr><td>Median turns to complete a repeat order</td><td>2</td><td>The whole value of &ldquo;the usual&rdquo; is not having to talk about it.</td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Calibre mark"><path d="M 79.4 21.6 A 40 40 0 1 0 79.4 78.4" fill="none" stroke="#101114" stroke-width="17" stroke-linecap="butt"/><rect x="42" y="38" width="17" height="24" fill="#D4AF37"/></svg>
+    <span class="wordmark-text">calibre<span class="cursor"></span></span>
+  </div>
+
+</div>
+</body>
+</html>

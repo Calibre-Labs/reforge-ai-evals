@@ -98,6 +98,28 @@ Reusable frameworks and methodology — not Market Map-specific. These apply to 
 | `llm-align-skill.md` | Claude Code skill for automated judge alignment analysis: discovers score fields, computes TPR/TNR, investigates disagreements, and suggests targeted scorer prompt fixes and few-shot examples |
 | `ticket-to-eval-skill.md` | Claude Code skill for converting support tickets or Braintrust traces into eval dataset rows: strips PII, classifies failure mode, maps to UIG dimensions, appends to regression and coverage datasets via Braintrust MCP or local CSV |
 
+### `rubric-templates/`
+
+Two worked examples of the AI PRD's rubric section, built live during the Eval Rubrics webinar: a consumer shopping agent and an enterprise finance agent, each taken from v1 rubric through a real trace to v2.
+
+| File | Description |
+|------|-------------|
+| `ai-prd-template.md` | The generic AI PRD template, release-thresholds section included, that both worked examples start from |
+| `corner/corner-prd-detailed.md` | Corner's full PRD — a local shopping assistant that buys everyday purchases by text |
+| `corner/corner-prd.html` | Rendered HTML version of Corner's PRD |
+| `corner/corner-rubric-v1.html` | Corner's v1 rubric, written from the PRD in under an hour, before a single trace |
+| `corner/corner-rubric-v2.html` | Corner's v2 rubric, sharpened after reading traces from a real session |
+| `corner/corner-simulation.html` | A simulated Corner session — a text order end to end |
+| `corner/corner-trace.html` | The raw trace behind that simulation, annotated against the v1 rubric |
+| `ledger/ledger-prd-detailed.md` | Ledger's full PRD — a finance agent that runs bonus calculations and reports for a CFO |
+| `ledger/ledger-prd.html` | Rendered HTML version of Ledger's PRD |
+| `ledger/ledger-rubric-v1.html` | Ledger's v1 rubric, written from the PRD before a single trace |
+| `ledger/ledger-rubric-v2.html` | Ledger's v2 rubric, sharpened after reading traces from a real session |
+| `ledger/ledger-simulation.html` | A simulated Ledger session — a bonus run end to end |
+| `ledger/ledger-trace.html` | The raw trace behind that simulation, annotated against the v1 rubric |
+
+Corner and Ledger sit on opposite ends of the same framework: a consumer product where asking the user is expensive and mistakes are small and recoverable, and an enterprise product where asking is free and a mistake compounds. See the [webinar recording and slides](https://luma.com/ayok3w9i) for the full walkthrough.
+
 ---
 
 ## Session Overview

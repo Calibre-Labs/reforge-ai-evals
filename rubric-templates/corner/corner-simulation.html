@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corner: simulated session</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@400;500;600&family=Righteous&display=swap" rel="stylesheet">
+<style>
+    :root{
+      --navy:#172a49;
+      --brass:#d4af37;
+      --grey:#f5f6fa;
+      --white:#ffffff;
+      --charcoal:#464e50;
+      --steel:#b2bec3;
+      --midnavy:#5a7ba3;
+      --lightblue:#9abcda;
+      --ink:#101114;
+      --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+    }
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      background:var(--grey);
+      font-family:Lexend,"Helvetica Neue",Arial,sans-serif;
+      font-weight:400;
+      color:var(--charcoal);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:20px 16px;
+    }
+
+    .caption{
+      text-align:center;
+      margin-bottom:14px;
+      color:var(--steel);
+      font-family:var(--mono);
+      font-size:12px;
+      font-weight:500;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+    }
+    .caption strong{
+      color:var(--navy);
+      font-family:Poppins,"Segoe UI",sans-serif;
+      font-weight:600;
+      text-transform:none;
+      letter-spacing:0;
+      font-size:16px;
+    }
+    .caption .sep{margin:0 8px;color:var(--steel);}
+
+    /* Phone frame */
+    .phone{
+      width:390px;
+      height:720px;
+      background:var(--navy);
+      border-radius:44px;
+      padding:14px;
+      box-shadow:0 18px 40px rgba(23,42,73,0.25);
+      cursor:pointer;
+      user-select:none;
+      flex-shrink:0;
+    }
+    .screen{
+      width:100%;
+      height:100%;
+      background:var(--white);
+      border-radius:30px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .sms-header{
+      flex:0 0 auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:16px 18px 12px;
+      border-bottom:1px solid var(--grey);
+    }
+    .avatar{
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:var(--lightblue);
+      flex-shrink:0;
+    }
+    .sms-header .name{
+      font-family:Poppins,"Segoe UI",sans-serif;
+      font-weight:600;
+      font-size:17px;
+      color:var(--navy);
+    }
+    .thread-wrap{
+      position:relative;
+      flex:1 1 auto;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+    }
+    .thread-fade{
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:14px;
+      background:linear-gradient(to bottom, var(--white), rgba(255,255,255,0));
+      pointer-events:none;
+      z-index:1;
+    }
+    .thread{
+      flex:1 1 auto;
+      min-height:0;
+      overflow-y:auto;
+      padding:16px 16px 24px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .date-sep{
+      align-self:center;
+      color:var(--steel);
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:0.03em;
+      margin-bottom:6px;
+    }
+    .bubble-row{
+      display:flex;
+      flex-direction:column;
+      max-width:78%;
+    }
+    .bubble-row.from-user{align-self:flex-end;align-items:flex-end;}
+    .bubble-row.from-corner{align-self:flex-start;align-items:flex-start;}
+    .bubble{
+      font-size:17px;
+      line-height:1.4;
+      padding:10px 14px;
+      border-radius:18px;
+    }
+    .from-user .bubble{
+      background:var(--midnavy);
+      color:var(--white);
+      border-bottom-right-radius:4px;
+    }
+    .from-corner .bubble{
+      background:#e9edf3;
+      color:var(--charcoal);
+      border-bottom-left-radius:4px;
+    }
+    .bubble-time{
+      font-size:11px;
+      color:var(--steel);
+      margin-top:4px;
+      padding:0 4px;
+    }
+    .end-marker{font-family:var(--mono);
+      align-self:center;
+      color:var(--steel);
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+      margin-top:8px;
+    }
+
+    /* Controls */
+    .controls{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-shrink:0;
+    }
+    .btn{
+      font-family:Lexend,"Helvetica Neue",Arial,sans-serif;
+      font-weight:600;
+      font-size:14px;
+      padding:10px 20px;
+      border-radius:999px;
+      border:1px solid var(--steel);
+      background:var(--white);
+      color:var(--navy);
+      cursor:pointer;
+    }
+    .btn:hover{border-color:var(--navy);}
+    .btn:disabled{opacity:0.4;cursor:default;}
+    .btn:disabled:hover{border-color:var(--steel);}
+    .btn.primary{
+      background:var(--navy);
+      color:var(--white);
+      border-color:var(--navy);
+    }
+    .btn.primary:hover{background:#0f1d33;}
+    .btn.primary:disabled:hover{background:var(--navy);}
+    .counter{
+      font-family:var(--mono);
+      font-size:12.5px;
+      color:var(--steel);
+      font-weight:500;
+      min-width:56px;
+      text-align:center;
+    }
+
+    @media (max-width:440px){
+      .phone{width:100%;max-width:390px;height:640px;}
+    }
+
+    .footer{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      margin-top:18px;
+    }
+    .footer .mark{width:13px;height:13px;flex-shrink:0;}
+    .footer .wordmark-text{
+      font-family:'Righteous',cursive;
+      font-size:14.5px;
+      color:var(--ink);
+      display:inline-flex;
+      align-items:baseline;
+      line-height:1;
+    }
+    .footer .cursor{
+      display:inline-block;
+      width:0.42em;height:0.78em;
+      background:var(--brass);
+      margin-left:0.12em;
+      transform:translateY(0.12em);
+    }
+</style>
+</head>
+<body>
+
+  <div class="caption"><strong>Corner</strong><span class="sep">&middot;</span>Simulated session<span class="sep">&middot;</span>Saturday, 7:40 AM</div>
+
+  <div class="phone" id="phone" tabindex="0" aria-label="Click to advance the simulation">
+    <div class="screen">
+      <div class="sms-header">
+        <div class="avatar"></div>
+        <div class="name">Corner</div>
+      </div>
+      <div class="thread-wrap">
+        <div class="thread-fade"></div>
+        <div class="thread" id="thread">
+          <div class="date-sep">Saturday 7:40 AM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="restartBtn">Restart</button>
+    <button class="btn" id="backBtn">Back</button>
+    <button class="btn primary" id="nextBtn">Next</button>
+    <span class="counter" id="counter">0 / 11</span>
+  </div>
+
+
+  <div class="footer">
+    <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Calibre mark"><path d="M 79.4 21.6 A 40 40 0 1 0 79.4 78.4" fill="none" stroke="#101114" stroke-width="17" stroke-linecap="butt"/><rect x="42" y="38" width="17" height="24" fill="#D4AF37"/></svg>
+    <span class="wordmark-text">calibre<span class="cursor"></span></span>
+  </div>
+
+<script>
+(function(){
+  var messages = [
+    {who:'user',   text:"my usual but iced, blue bottle near the office, picking up in 20", time:"7:40 AM"},
+    {who:'corner', text:"Sure! What size would you like?", time:"7:40 AM"},
+    {who:'user',   text:"medium", time:"7:40 AM"},
+    {who:'corner', text:"Which milk?", time:"7:41 AM"},
+    {who:'user',   text:"oat, like always", time:"7:41 AM"},
+    {who:'corner', text:"Hot or iced?", time:"7:41 AM"},
+    {who:'user',   text:"iced. i said iced", time:"7:41 AM"},
+    {who:'corner', text:"Got it. What time would you like to pick it up?", time:"7:42 AM"},
+    {who:'user',   text:"in 20 min", time:"7:42 AM"},
+    {who:'corner', text:"Order placed! Ready at 8:05 at Blue Bottle Broadway. $11.70 charged.", time:"7:42 AM"}
+  ];
+  var totalSteps = messages.length + 1; // + end of session marker
+  var step = 0;
+
+  var thread = document.getElementById('thread');
+  var counter = document.getElementById('counter');
+  var nextBtn = document.getElementById('nextBtn');
+  var backBtn = document.getElementById('backBtn');
+  var restartBtn = document.getElementById('restartBtn');
+  var phone = document.getElementById('phone');
+
+  function render(){
+    // clear thread except date separator
+    thread.innerHTML = '<div class="date-sep">Saturday 7:40 AM</div>';
+    var shown = Math.min(step, messages.length);
+    for (var i = 0; i < shown; i++){
+      var m = messages[i];
+      var row = document.createElement('div');
+      row.className = 'bubble-row from-' + m.who;
+      var bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = m.text;
+      row.appendChild(bubble);
+      if (m.who === 'corner'){
+        var t = document.createElement('div');
+        t.className = 'bubble-time';
+        t.textContent = m.time;
+        row.appendChild(t);
+      }
+      thread.appendChild(row);
+    }
+    if (step >= totalSteps - 1 && step > 0){
+      var end = document.createElement('div');
+      end.className = 'end-marker';
+      end.textContent = 'End of session';
+      thread.appendChild(end);
+    }
+    thread.scrollTop = thread.scrollHeight;
+    counter.textContent = step + ' / ' + (totalSteps - 1);
+    nextBtn.disabled = step >= totalSteps - 1;
+    backBtn.disabled = step <= 0;
+  }
+
+  function next(){
+    if (step < totalSteps - 1){ step++; render(); }
+  }
+  function back(){
+    if (step > 0){ step--; render(); }
+  }
+  function restart(){
+    step = 0; render();
+  }
+
+  nextBtn.addEventListener('click', next);
+  backBtn.addEventListener('click', back);
+  restartBtn.addEventListener('click', restart);
+  phone.addEventListener('click', next);
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight'){ next(); }
+    else if (e.key === 'ArrowLeft'){ back(); }
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
