@@ -100,7 +100,7 @@ Reusable frameworks and methodology — not Market Map-specific. These apply to 
 
 ### `rubric-templates/`
 
-Two worked examples of the AI PRD's rubric section, built live during the Eval Rubrics webinar: a consumer shopping agent and an enterprise finance agent, each taken from v1 rubric through a real trace to v2.
+Worked examples of the AI PRD's rubric section. Corner and Ledger were built live during the Eval Rubrics webinar — a consumer shopping agent and an enterprise finance agent, each taken from v1 rubric through a real trace to v2. Support Triage is a lighter-weight sample PRD for a support-ticket classification agent, useful as a quick reference alongside the full worked examples.
 
 | File | Description |
 |------|-------------|
@@ -117,6 +117,7 @@ Two worked examples of the AI PRD's rubric section, built live during the Eval R
 | `ledger/ledger-rubric-v2.html` | Ledger's v2 rubric, sharpened after reading traces from a real session |
 | `ledger/ledger-simulation.html` | A simulated Ledger session — a bonus run end to end |
 | `ledger/ledger-trace.html` | The raw trace behind that simulation, annotated against the v1 rubric |
+| `support-triage/support-triage-prd.md` | Sample PRD for a support-ticket triage agent — categorizes tickets by intent, sentiment, and urgency |
 
 Corner and Ledger sit on opposite ends of the same framework: a consumer product where asking the user is expensive and mistakes are small and recoverable, and an enterprise product where asking is free and a mistake compounds. See the [webinar recording and slides](https://luma.com/ayok3w9i) for the full walkthrough.
 
