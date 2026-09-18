@@ -17,7 +17,7 @@ The CFO, and the finance team acting for the CFO. The channel is a workspace cha
 - Prepare a draft for review with every number traceable to its inputs.
 - Flag anything the policy doesn't clearly decide, instead of guessing.
 
-The four jobs above cover what shows up in a demo. The edge cases, a policy silent on a specific split, a sheet with a duplicate row, a request that spans two policies at once, matter just as much and are unlikely to occur to anyone who hasn't gone looking for them. Run a User Input Grid (see `skills/uig-skill.md`) across policy types and data conditions before finalizing this section.
+The four jobs above cover what shows up in a demo. The edge cases, a policy silent on a specific split, a sheet with a duplicate row, a request that spans two policies at once, matter just as much and are unlikely to occur to anyone who hasn't gone looking for them. Run a User Input Grid (see `../../skills/uig-skill.md`) across policy types and data conditions before finalizing this section.
 
 ## 4. Tool surface
 

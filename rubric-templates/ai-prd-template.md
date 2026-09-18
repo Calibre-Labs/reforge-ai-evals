@@ -18,7 +18,7 @@ Who is on the other end, and where they meet the agent: SMS, a workspace chat, a
 
 The requests a real user actually makes, in their words, not your feature list. Four or five is usually enough. If you can't state the job in one sentence, the agent can't be evaluated against it.
 
-The jobs above are the center of the distribution. The edges, the phrasing you didn't anticipate, the request that's almost a job but not quite, matter just as much and won't show up if you only interview yourself. Run a User Input Grid (see `skills/uig-skill.md`) before you finalize this section: it forces a systematic sweep across who's asking and what they're asking for, instead of just the examples that happen to come to mind first.
+The jobs above are the center of the distribution. The edges, the phrasing you didn't anticipate, the request that's almost a job but not quite, matter just as much and won't show up if you only interview yourself. Run a User Input Grid (see `../skills/uig-skill.md`) before you finalize this section: it forces a systematic sweep across who's asking and what they're asking for, instead of just the examples that happen to come to mind first.
 
 ## 4. Tool surface
 

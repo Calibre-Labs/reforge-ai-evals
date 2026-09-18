@@ -17,7 +17,7 @@ A busy consumer with a saved card and a preference memory: usual orders, usual s
 - Find a nearby store that has a thing I need and order it.
 - Tell me when it's ready and what it cost.
 
-The four jobs above are what Corner is built for today. The edges, a store that closes early, a "usual" that's gone stale, a name that matches three locations, matter just as much for the rubric below and won't show up if the only source is a demo script. Run a User Input Grid (see `skills/uig-skill.md`) across who's texting and what they're asking before locking Non-goals and the rubric.
+The four jobs above are what Corner is built for today. The edges, a store that closes early, a "usual" that's gone stale, a name that matches three locations, matter just as much for the rubric below and won't show up if the only source is a demo script. Run a User Input Grid (see `../../skills/uig-skill.md`) across who's texting and what they're asking before locking Non-goals and the rubric.
 
 ## 4. Tool surface
 
