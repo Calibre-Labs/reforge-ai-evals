@@ -183,7 +183,7 @@ For each suggested example, draft the text to add to the scorer prompt:
 ### Example N — [PASS/FAIL]
 Input: "[input]"
 Output excerpt: "[relevant part of the AI output]"
-{"reason": "[why this is PASS/FAIL — in the voice of the scorer]", "score": "[PASS/FAIL]"}
+{"critique": "[why this is PASS/FAIL — in the voice of the scorer]", "score": "[PASS/FAIL]"}
 ```
 
 Explain why you chose each example and what failure mode it targets.

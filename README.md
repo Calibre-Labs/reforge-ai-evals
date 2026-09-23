@@ -151,6 +151,10 @@ This copies all skills from `skills/` into `~/.claude/commands/` so they're avai
 as slash commands in any Claude Code session: `/uig`, `/eval-code`, `/eval-llm-judge`,
 `/llm-align`, `/ticket-to-eval`.
 
+If you only want them while working in this repo, skip the install script: the repo's
+`.claude/commands/` links to `skills/`, so Claude Code picks them up whenever you run it from
+the repo root, without adding them to every session.
+
 **Optional: braintrust-write MCP server**
 
 Enables native dataset row inserts from Claude (used by `/ticket-to-eval`).
