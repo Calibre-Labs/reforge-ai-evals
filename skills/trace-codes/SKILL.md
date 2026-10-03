@@ -20,7 +20,7 @@ answer yes or no for a single trace. Codes become the vocabulary for the rubric,
 the automated evals.
 
 Do not write the notes yourself. If the user has traces and no notes, tell them to read and
-annotate at least ten first. The human read is the point: it is where product judgment enters.
+annotate at least ten first. Reading is where product judgment comes in, so a person does it.
 You may help them read faster (summarize a long trace, point at the tool calls) but the
 observations must be theirs.
 
@@ -135,5 +135,5 @@ way: a new tool, a new prompt, a new model.
 - Paraphrase examples. Strip names, emails and other personal data from anything quoted.
 - A code that only one reviewer can apply is not finished. Rewrite the definition until a second
   person would give the same answer.
-- Counts from ten traces are a ranking, not a rate. Do not report them as percentages of
-  production traffic.
+- Counts from ten traces tell you the order of the codes. They are too few to report as
+  percentages of production traffic.

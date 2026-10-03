@@ -14,9 +14,9 @@ PRDs often have it as a section of its own, or under goals. Use it wherever it i
 ## Tool surface
 
 Every action the agent can take, as a table: the tool, what it does, and whether it is
-reversible. Reversibility is the column most PRDs skip, and governance depends on it. A tool that
-reads is free to call. A tool that charges a card, sends a message or writes to a shared file is
-not.
+reversible. Most PRDs skip the reversibility column, and governance depends on it. An agent can
+call a read-only tool freely. A tool that charges a card, sends a message or writes to a shared
+file needs a rule.
 
 | Tool | What it does | Reversible? |
 |---|---|---|
@@ -53,8 +53,8 @@ balance between asking and guessing.
 ## Release thresholds
 
 The numbers checked across many sessions: maximum cost per task, latency, and the failure-rate
-ceiling the team will tolerate at launch. These gate a release. A rubric line does not: one trace
-failing an outcome line tells you about that trace, not whether to ship.
+ceiling the team will tolerate at launch. These gate a release. A rubric line judges one trace,
+so one failure tells you about that trace and nothing about whether to ship.
 
 | Metric | Target | Why |
 |---|---|---|

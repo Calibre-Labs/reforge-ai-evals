@@ -2,7 +2,7 @@
 
 A plugin of skills for building an eval loop for an AI product, from the rubric in your PRD to judges you can trust. It is the working repo for the [Reforge AI Evals course](https://www.reforge.com) taught by [Calibre Labs](https://blog.calibrelabs.ai), and it works for any agent or AI feature.
 
-The idea is simple. Your coding agent can do most of the eval process if it has the right instructions. Two steps stay with you: reading traces and calibrating judges. The skills here cover the rest.
+Your coding agent can do most of the eval process if it has the right instructions. Two steps stay with you: reading traces and calibrating judges. The skills here cover the rest.
 
 We add skills as the course moves through its sessions, so this repo grows over the five weeks.
 
@@ -194,7 +194,7 @@ The Week 1 dataset (10 rows) had **zero coverage** of the Financial domain and S
 
 ---
 
-## Key Ideas from the Course
+## Key ideas from the course
 
 **On evaluator design:**
 - Code-based evaluators check *structure*. LLM judges check *semantics*. Use both.

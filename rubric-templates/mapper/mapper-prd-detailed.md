@@ -8,7 +8,7 @@ Mapper is a market research agent. You name a technology category or a company, 
 
 ## 2. User and channel
 
-A product manager, founder or investor getting ready for a meeting. The channel is a web chat, so a wait of twenty or thirty seconds is fine and a wall of text is not. What this user will not forgive is a number they repeat in the meeting that turns out to be wrong, stale or unsourced. Success is measured in figures you can defend.
+A product manager, founder or investor getting ready for a meeting. The channel is a web chat, so this user will wait 20 or 30 seconds and wants a short answer. They will not forgive a number they repeat in the meeting that turns out to be wrong, stale or unsourced. Success is measured in figures you can defend.
 
 ## 3. Jobs to be done
 
@@ -17,7 +17,7 @@ A product manager, founder or investor getting ready for a meeting. The channel 
 - Rank by the metric I care about, and always show the columns I always want.
 - Give me something I can share with my team.
 
-These four are the center of the distribution. The edges matter as much for the rubric: a category that existed in 2003, a company that is a product line inside a bigger company, a request for a market that isn't technology at all. Run a User Input Grid (see `../../skills/uig/SKILL.md`) before locking Non-goals and the rubric.
+These four are the common requests. The unusual ones matter as much for the rubric: a category that existed in 2003, a company that is a product line inside a bigger company, a request for a market that isn't technology at all. Run a User Input Grid (see `../../skills/uig/SKILL.md`) before locking Non-goals and the rubric.
 
 ## 4. Tool surface
 
@@ -44,7 +44,7 @@ This table is where Mapper's Trajectory and Governance lines come from.
 
 ## 6. Happy paths / Golden dataset
 
-Friday, 6:40pm, the night before a board meeting.
+Thursday, 6:40pm, the evening before a board meeting.
 
 1. The user types: "top AI customer support startups".
 2. Mapper reads the saved preferences: rank by revenue, always include customer count.
@@ -52,9 +52,9 @@ Friday, 6:40pm, the night before a board meeting.
 4. It searches, reads two or three pages, and builds a map of three companies with revenue, customer count and three sources.
 5. It adds one or two sentences on what stands out.
 
-A second path, the one the demo never shows. The user types "Reforge competitors". The category isn't named, the companies are private, and most of the numbers are estimates. Mapper states how it read the request, marks every estimate, and says which figures it could not find instead of filling the cell.
+A second path, which is harder. The user types "Reforge competitors". The category isn't named, the companies are private, and most of the numbers are estimates. Mapper states how it read the request, marks every estimate, and says which figures it could not find instead of filling the cell.
 
-These two scenarios, and the ones the first real traces surface, are the seed of Mapper's golden dataset. Keep it in its own file next to the rubric.
+These two scenarios, plus the ones the first real traces turn up, are the start of Mapper's golden dataset. Keep it in its own file next to the rubric.
 
 ## 7. Non-goals
 
@@ -67,9 +67,9 @@ These two scenarios, and the ones the first real traces surface, are the seed of
 
 Success, in plain language: the map covers the companies, the metrics and the count the user asked for. Every figure has a time period and a source that supports it. Estimates are marked as estimates. A reader can check any number in under a minute by opening its source.
 
-The known risks, for this agent with these tools: a stale figure shown as current. An estimate shown as a reported number. A source that doesn't exist or doesn't say what the map says. A share link published when nobody asked for one. A request outside technology answered anyway.
+The known risks for this agent with these tools: a stale figure shown as current, an estimate shown as a reported number, a source that doesn't exist or doesn't say what the map says, a share link published when nobody asked for one, and a request outside technology answered anyway.
 
-Four groups, nine lines in v1. The full rubric lives in its own artifact: `mapper-rubric-v1.html`. Summary:
+v1 has nine lines in four groups. The full rubric is its own page, `mapper-rubric-v1.html`. In summary:
 
 - **Outcome.** The map covers what the user confirmed. Every figure has a time period and a supporting source.
 - **Trajectory.** Confirms scope before building. Searches before stating a figure.
@@ -83,7 +83,7 @@ Trajectory and Experience are short on purpose. The odd paths aren't knowable un
 | Metric | Target | Why |
 |---|---|---|
 | Cost per session | Under $0.10 | It has to be cheap enough to use before every meeting. |
-| Time to first map, median | Under 30 seconds | A web chat user will wait that long for research, not longer. |
+| Time to first map, median | Under 30 seconds | A web chat user will wait that long for research. |
 | Sessions failing any Governance line | Under 1% at launch | One published link or one invented source is what people remember. |
 
 These are targets until there is data behind them.

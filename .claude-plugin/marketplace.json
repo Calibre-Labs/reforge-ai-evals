@@ -10,7 +10,7 @@
     {
       "name": "calibre-evals",
       "source": "./",
-      "description": "Skills for building an eval loop for an AI product, from the rubric in the PRD to calibrated judges."
+      "description": "Skills for evaluating an AI product, from the eval rubric in the PRD to judges checked against your labels."
     }
   ]
 }
