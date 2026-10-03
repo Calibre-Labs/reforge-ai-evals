@@ -64,6 +64,8 @@ The skills read and write plain files (markdown, CSV, JSON, HTML). You do not ne
 
 Worked examples of the AI PRD's rubric section. Corner and Ledger were built live during the Eval Rubrics webinar: a consumer shopping agent and an enterprise finance agent, each taken from v1 rubric through a real trace to v2. Support Triage is a lighter-weight sample PRD for a support-ticket classification agent, useful as a quick reference alongside the full worked examples.
 
+Mapper is the course project for the fall 2026 cohort of AI Evals: a market research agent with five tools. Its session was recorded from a real run on Oct 2, 2026, and its trace page tags every step with a layer (context, retrieval, harness, systems). Its v2 rubric gets written in Week 1 of the course.
+
 | File | Description |
 |------|-------------|
 | `ai-prd-template.md` | The generic AI PRD template, release-thresholds section included, that both worked examples start from |
@@ -79,6 +81,11 @@ Worked examples of the AI PRD's rubric section. Corner and Ledger were built liv
 | `ledger/ledger-rubric-v2.html` | Ledger's v2 rubric, sharpened after reading traces from a real session |
 | `ledger/ledger-simulation.html` | A simulated Ledger session: a bonus run end to end |
 | `ledger/ledger-trace.html` | The raw trace behind that simulation, annotated against the v1 rubric |
+| `mapper/mapper-prd-detailed.md` | Mapper's full PRD: a market research agent that returns a ranked, sourced market map |
+| `mapper/mapper-prd.html` | Rendered HTML version of Mapper's PRD |
+| `mapper/mapper-rubric-v1.html` | Mapper's v1 rubric: nine lines, written from the PRD before a single trace |
+| `mapper/mapper-simulation.html` | A recorded Mapper session, click through what the user saw |
+| `mapper/mapper-trace.html` | The trace behind that session, tagged by layer, with a reviewer view (press R) |
 | `support-triage/support-triage-prd.md` | Sample PRD for a support-ticket triage agent that categorizes tickets by intent, sentiment, and urgency |
 
 Corner and Ledger sit on opposite ends of the same framework: a consumer product where asking the user is expensive and mistakes are small and recoverable, and an enterprise product where asking is free and a mistake compounds. See the [webinar recording and slides](https://luma.com/ayok3w9i) for the full walkthrough.

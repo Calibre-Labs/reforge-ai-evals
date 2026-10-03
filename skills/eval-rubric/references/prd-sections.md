@@ -8,6 +8,9 @@ rubric depends on. If a PRD is missing one, draft it and confirm it before writi
 Three or four sentences a person could check against a transcript without reading your mind.
 This is the plain-language version of the outcome lines. The rubric is its enforceable version.
 
+In the template this sits at the top of section 8 (Eval rubric), next to the known risks. Older
+PRDs often have it as a section of its own, or under goals. Use it wherever it is.
+
 ## Tool surface
 
 Every action the agent can take, as a table: the tool, what it does, and whether it is

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapper: session trace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lexend:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Righteous&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#172a49;--brass:#d4af37;--midnavy:#5a7ba3;--lightblue:#9abcda;--steel:#b2bec3;
+  --ground:#f5f6fa;--surface:#ffffff;--body:#464e50;--muted:#67707a;--hair:#dfe3ea;--tint:#e8ecf2;
+  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ground);color:var(--body);font-family:Lexend,"Helvetica Neue",Arial,sans-serif;
+  font-weight:300;font-size:16px;line-height:1.55;}
+.page{max-width:980px;margin:0 auto;padding:48px 32px 56px;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+h1{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:36px;line-height:1.12;letter-spacing:-.01em;color:var(--navy);}
+h2{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:20px;color:var(--navy);}
+.standfirst{font-size:18px;margin-top:10px;max-width:680px;}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+a{color:var(--navy);}
+.foot{margin-top:48px;padding-top:16px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:24px;align-items:flex-start;}
+.foot .note{font-size:13px;color:var(--muted);max-width:720px;}
+.word{font-family:Righteous,Poppins,sans-serif;font-size:20px;color:var(--navy);white-space:nowrap;}
+.word i{display:inline-block;width:9px;height:17px;background:var(--brass);margin-left:3px;vertical-align:-2px;}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);
+  background:var(--surface);border:1px solid var(--steel);padding:9px 14px;cursor:pointer;border-radius:0;}
+button:hover{border-color:var(--navy);}
+button.primary{background:var(--navy);color:var(--ground);border-color:var(--navy);}
+button:disabled{opacity:.4;cursor:default;}
+table{width:100%;border-collapse:collapse;}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400;text-align:left;padding:10px 14px 10px 0;border-top:1px solid var(--navy);}
+td{padding:11px 14px 11px 0;border-top:1px solid var(--hair);vertical-align:top;}
+td:first-child{color:var(--navy);font-weight:400;}
+code{font-family:var(--mono);font-size:13px;color:var(--navy);}
+
+.map{background:var(--surface);border:1px solid var(--hair);padding:22px 24px;}
+.map h2{margin-top:6px;}
+.mapdesc{margin:6px 0 14px;color:var(--muted);font-size:14.5px;}
+.rationale{margin-top:14px;font-size:14.5px;}
+.sources{margin-top:16px;padding-top:12px;border-top:1px solid var(--hair);}
+.sources ol{margin:8px 0 0 18px;font-size:14px;}
+.sources li{margin-bottom:6px;color:var(--navy);font-weight:400;}
+.sources .url{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);word-break:break-all;font-weight:400;}
+
+.totals{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:28px;border-top:1px solid var(--navy);}
+.totals div{padding:14px 16px 4px 0;}
+.totals .n{font-family:Poppins,sans-serif;font-weight:600;font-size:26px;color:var(--navy);line-height:1.1;}
+.tools{display:flex;gap:10px;align-items:center;margin-top:26px;flex-wrap:wrap;}
+.tools .sp{margin-left:auto;}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;}
+.switch .box{width:38px;height:20px;border:1px solid var(--navy);position:relative;background:var(--surface);}
+.switch .box i{position:absolute;top:2px;left:2px;width:14px;height:14px;background:var(--steel);}
+body.review .switch .box{background:var(--navy);}
+body.review .switch .box i{left:20px;background:var(--brass);}
+.findings{display:none;margin-top:22px;padding:18px 0 4px;border-top:1px solid var(--navy);}
+body.review .findings{display:block;}
+.findings ul{list-style:none;margin-top:10px;}
+.findings li{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:9px 0;border-top:1px solid var(--hair);align-items:baseline;}
+.findings .ftitle{color:var(--navy);font-weight:400;}
+.steps{margin-top:26px;border-top:1px solid var(--navy);}
+.step{display:grid;grid-template-columns:104px 1fr 128px;gap:18px;padding:16px 0;border-bottom:1px solid var(--hair);}
+.step.hidden{display:none;}
+.when .kind{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);font-weight:500;}
+.when .off{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.what .said{font-size:16px;color:var(--navy);font-weight:400;}
+.k-user .what .said::before{content:"\201C";}.k-user .what .said::after{content:"\201D";}
+.what .t{color:var(--navy);font-weight:400;}
+.what .d{font-size:14.5px;margin-top:3px;}
+.what .res{font-family:var(--mono);font-size:12.5px;color:var(--body);background:var(--surface);border:1px solid var(--hair);padding:8px 10px;margin-top:8px;}
+.what .args{font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+.what .meta{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:6px;}
+.ctx{display:grid;grid-template-columns:110px 1fr 110px;gap:12px;align-items:center;margin-top:10px;}
+.ctx .track{height:10px;background:var(--tint);display:block;}
+.ctx .fill{height:10px;background:var(--navy);display:block;}
+.ctx .num{font-family:var(--mono);font-size:12px;color:var(--navy);text-align:right;}
+.where{text-align:right;}
+.layer{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.layer i{display:inline-block;width:8px;height:8px;margin-right:7px;}
+.l-context i{background:var(--navy);}.l-retrieval i{background:var(--midnavy);}
+.l-harness i{background:var(--lightblue);}.l-systems i{background:var(--steel);}
+.rec{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--steel);margin-top:6px;}
+.finding{display:none;margin-top:14px;padding:12px 0 2px;border-top:1px solid var(--navy);font-size:14.5px;}
+body.review .finding{display:block;}
+body.review .step.flagged{background:var(--surface);}
+.finding .fhead{color:var(--navy);}
+.finding .fhead::before{content:"";display:inline-block;width:6px;height:6px;background:var(--brass);margin-right:7px;vertical-align:1px;}
+.finding .ft{color:var(--navy);font-weight:500;margin:4px 0;}
+.finding .fr{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:6px;}
+@media (max-width:720px){.step{grid-template-columns:80px 1fr;}.where{grid-column:2;text-align:left;}.totals{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">Mapper prototype · session trace</div>
+  <h1>What happened</h1>
+  <p class="standfirst">The same session, step by step. Each step is tagged with the layer it belongs to: context, retrieval, harness or systems.</p>
+  <div class="totals">
+    <div><div class="n">12 s</div><div class="mono">Agent time</div></div>
+    <div><div class="n">7,555</div><div class="mono">Tokens in</div></div>
+    <div><div class="n">2,749</div><div class="mono">Tokens out</div></div>
+    <div><div class="n">2 + 3</div><div class="mono">Model calls + searches</div></div>
+  </div>
+  <div class="tools">
+    <button id="stepmode">Step through</button><button id="prev" disabled>Back</button><button id="nextb" disabled>Next</button>
+    <span class="sp"></span>
+    <span class="switch" id="rv"><span class="mono">Reviewer view</span><span class="box"><i></i></span></span>
+  </div>
+  <div class="findings"><div class="mono">One finding in each layer</div><ul><li><span class="layer l-retrieval"><i></i>Retrieval</span><span class="ftitle">The revenue figure for Fin is Intercom's</span></li><li><span class="layer l-context"><i></i>Context</span><span class="ftitle">Asked to rank by revenue, it ranked a company with no revenue figure second</span></li><li><span class="layer l-harness"><i></i>Harness</span><span class="ftitle">Nothing checks that a source link opens</span></li><li><span class="layer l-systems"><i></i>Systems</span><span class="ftitle">Twelve seconds and about ten thousand tokens</span></li></ul></div>
+  <div class="steps" id="steps"><div class="step k-user" data-i="0"><div class="when"><span class="kind">User</span><span class="off">+0.0s</span></div><div class="what"><p class="said">top AI customer support startups</p></div><div class="where"></div></div><div class="step k-harness" data-i="1"><div class="when"><span class="kind">Harness</span><span class="off">+0.0s</span></div><div class="what"><p class="t">Assemble the prompt</p><p class="d">First turn. The harness sends the scoping instructions, today's date and the user's message. No tools are offered on the first turn, so the saved preferences are not loaded yet.</p></div><div class="where"><span class="layer l-harness"><i></i>Harness</span></div></div><div class="step k-model" data-i="2"><div class="when"><span class="kind">Model</span><span class="off">+0.1s</span></div><div class="what"><p class="t">Model call 1</p><p class="d">What the model was sent: the scoping instructions, the date, one user message.</p><div class="ctx"><span class="mono">Context sent</span><span class="track"><span class="fill" style="width:7%"></span></span><span class="num">497 tokens</span></div><p class="meta">62 tokens out · 0.9 s</p></div><div class="where"><span class="layer l-context"><i></i>Context</span></div></div><div class="step k-assistant" data-i="3"><div class="when"><span class="kind">Mapper</span><span class="off">+1.0s</span></div><div class="what"><p class="said">I will map the top 5 AI customer support startups, ranking them by their enterprise adoption and agent-automation capabilities (e.g., handling complex workflows vs. simple FAQ deflection). I’ll include key performance indicators for each like integration depth and proprietary LLM usage. Does this scope work for you?</p></div><div class="where"></div></div><div class="step k-user" data-i="4"><div class="when"><span class="kind">User</span><span class="off">+18.0s</span></div><div class="what"><p class="said">Top 3 only, ranked by revenue. Include customer count.</p></div><div class="where"></div></div><div class="step k-tool" data-i="5"><div class="when"><span class="kind">Tool</span><span class="off">+18.2s</span></div><div class="what"><p class="t"><code>get_preferences</code> <span class="args"></span></p><p class="d res">rank_by: revenue<br>always_include: customer count</p></div><div class="where"><span class="layer l-context"><i></i>Context</span><span class="rec">reconstructed</span></div></div><div class="step k-tool flagged" data-i="6"><div class="when"><span class="kind">Tool</span><span class="off">+18.6s</span></div><div class="what"><p class="t"><code>web_search</code> <span class="args">"AI customer support startups revenue 2026"</span></p><p class="d res">Intercom Revenue 2026: $400M Est. ARR - GetLatka</p><div class="finding"><div class="mono fhead">F1 · Retrieval</div><p class="ft">The revenue figure for Fin is Intercom's</p><p>The page that search returned is about Intercom, the parent company: "Intercom Revenue 2026: $400M Est. ARR". The map shows $400M as the revenue of Fin, one product inside Intercom. The model reported what it was given. The evidence was about the wrong thing.</p><p class="fr">Fails O2. The source doesn't support the figure as labeled.</p></div></div><div class="where"><span class="layer l-retrieval"><i></i>Retrieval</span><span class="rec">reconstructed</span></div></div><div class="step k-tool" data-i="7"><div class="when"><span class="kind">Tool</span><span class="off">+20.1s</span></div><div class="what"><p class="t"><code>web_search</code> <span class="args">"Ada AI customer service revenue growth 2026"</span></p><p class="d res">Ada Doubles YoY Growth as Demand for Agentic Customer Service Surges</p></div><div class="where"><span class="layer l-retrieval"><i></i>Retrieval</span><span class="rec">reconstructed</span></div></div><div class="step k-tool" data-i="8"><div class="when"><span class="kind">Tool</span><span class="off">+21.7s</span></div><div class="what"><p class="t"><code>web_search</code> <span class="args">"Forethought AI revenue customers 2026"</span></p><p class="d res">Forethought Surpasses $1B in Customer ROI</p></div><div class="where"><span class="layer l-retrieval"><i></i>Retrieval</span><span class="rec">reconstructed</span></div></div><div class="step k-tool" data-i="9"><div class="when"><span class="kind">Tool</span><span class="off">+23.0s</span></div><div class="what"><p class="t"><code>read_page</code> <span class="args">3 pages</span></p><p class="d res">Page text added to the context.</p></div><div class="where"><span class="layer l-retrieval"><i></i>Retrieval</span><span class="rec">reconstructed</span></div></div><div class="step k-model flagged" data-i="10"><div class="when"><span class="kind">Model</span><span class="off">+24.5s</span></div><div class="what"><p class="t">Model call 2</p><p class="d">What the model was sent: the full instructions, the conversation, the preferences and the research. The context is fourteen times larger than on the first call.</p><div class="ctx"><span class="mono">Context sent</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="num">6,816 tokens</span></div><p class="meta">751 tokens out · 11.1 s</p><div class="finding"><div class="mono fhead">F2 · Context</div><p class="ft">Asked to rank by revenue, it ranked a company with no revenue figure second</p><p>The instruction was in the context twice: in the saved preferences and in the user's last message. Ada is ranked second with its revenue listed as undisclosed. The model saw the instruction and didn't follow it, which points to the prompt or the model.</p><p class="fr">No v1 line covers this.</p></div></div><div class="where"><span class="layer l-context"><i></i>Context</span></div></div><div class="step k-tool flagged" data-i="11"><div class="when"><span class="kind">Tool</span><span class="off">+29.0s</span></div><div class="what"><p class="t"><code>build_market_map</code> <span class="args">title, 2 columns, 3 companies, rationale, 3 sources</span></p><p class="d res">Map shown in the chat. Source links are passed through as returned.</p><div class="finding"><div class="mono fhead">F3 · Harness</div><p class="ft">Nothing checks that a source link opens</p><p>One source link points to a logo image. The other two are raw search-redirect links. The harness passed all three to the user as they came back. The fix is code in the loop: open each link before the map is shown.</p><p class="fr">Fails O2. A link that does not open cannot support a figure.</p></div></div><div class="where"><span class="layer l-harness"><i></i>Harness</span></div></div><div class="step k-assistant" data-i="12"><div class="when"><span class="kind">Mapper</span><span class="off">+29.1s</span></div><div class="what"><div class="map"><div class="mono">Market map</div><h2>AI Customer Support Startups</h2><p class="mapdesc">Top 3 AI customer support startups ranked by estimated annual revenue and enterprise scale.</p><table><tr><th>Company</th><th>Revenue</th><th>Customer Count</th></tr><tr><td>Fin (Intercom)</td><td>$400M (FY2026 est.)</td><td>8,000+ (2026)</td></tr><tr><td>Ada</td><td>Undisclosed (108% growth Mar 2026)</td><td>350+ (2026)</td></tr><tr><td>Forethought</td><td>$50M - $100M (FY2026 est.)</td><td>410+ (2026)</td></tr></table><p class="rationale">Ranked by annual revenue estimates for FY2026. Fin leads significantly due to its established platform base, while Ada and Forethought are positioned as specialized agentic-first competitors.</p><div class="sources"><div class="mono">Sources</div><ol><li>Intercom Revenue 2026: $400M Est. ARR - GetLatka<span class="url">getlatka.com/company-logo?d=helpscout.com&amp;p=...helpscout.com.png</span></li><li>Ada Doubles YoY Growth as Demand for Agentic Customer Service Surges<span class="url">vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFw37...</span></li><li>Forethought Surpasses $1B in Customer ROI<span class="url">vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEREk...</span></li></ol></div></div></div><div class="where"></div></div><div class="step k-systems flagged" data-i="13"><div class="when"><span class="kind">Totals</span><span class="off">+29.1s</span></div><div class="what"><p class="t">Session totals</p><p class="d">12.0 seconds of agent time. 7,555 tokens in, 2,749 tokens out. 2 model calls, 3 searches.</p><div class="finding"><div class="mono fhead">F4 · Systems</div><p class="ft">Twelve seconds and about ten thousand tokens</p><p>Nothing is wrong here. This is the layer you check against the release thresholds: cost per session and time to first map. A session can be correct and still fail on these.</p><p class="fr">Checked against the release thresholds in the PRD.</p></div></div><div class="where"><span class="layer l-systems"><i></i>Systems</span></div></div></div>
+  <p class="mono" style="margin-top:16px">Press R for the reviewer view. <a href="mapper-simulation.html">Back to the simulation</a></p>
+  <div class="foot"><div class="note">Companies, figures, source titles, token counts and timings are from a real Mapper session recorded on Oct 2, 2026. The step structure is reconstructed for the simplified five-tool prototype: the preference lookup, the search queries and the page reads are illustrative.</div><div class="word">calibre<i></i></div></div>
+</div>
+<script>
+(function(){
+  var steps=[].slice.call(document.querySelectorAll('.step')),n=steps.length,i=n,mode=false;
+  var sm=document.getElementById('stepmode'),pv=document.getElementById('prev'),nx=document.getElementById('nextb');
+  function render(){
+    steps.forEach(function(s,k){s.classList.toggle('hidden',mode&&k>=i);});
+    sm.textContent=mode?'Show all':'Step through';
+    pv.disabled=!mode||i<=1; nx.disabled=!mode||i>=n;
+  }
+  function next(){if(mode&&i<n){i++;render();steps[i-1].scrollIntoView({block:'nearest'});}}
+  function prev(){if(mode&&i>1){i--;render();}}
+  sm.addEventListener('click',function(){mode=!mode;i=mode?1:n;render();});
+  nx.addEventListener('click',next); pv.addEventListener('click',prev);
+  function review(){document.body.classList.toggle('review');}
+  document.getElementById('rv').addEventListener('click',review);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='r'||e.key==='R'){review();}
+    if(e.key==='ArrowRight'){next();} if(e.key==='ArrowLeft'){prev();}
+  });
+  if(location.hash==='#review'){document.body.classList.add('review');}
+  render();
+})();
+</script>
+</body>
+</html>

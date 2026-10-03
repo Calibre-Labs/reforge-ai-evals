@@ -87,7 +87,40 @@ The CFO asked for quarterly bonuses per the bonus policy. The table looked clean
 
 None of the new lines mention bonuses.
 
-## What the two have in common
+## Mapper: a market research agent in a web chat (v1 only, so far)
+
+Mapper returns a ranked market map for a technology category, with sources. It has five tools,
+and one of them (publishing a share link) cannot be undone. Success is measured in figures the
+user can defend.
+
+### v1, written from the PRD
+
+| ID | Line | Check |
+|---|---|---|
+| O1 | The map covers the companies, the metrics and the count the user confirmed in scoping. | LLM judge |
+| O2 | Every figure has a time period and a source that supports it. | LLM judge |
+| T1 | Confirms scope before building a map. | Code |
+| T2 | Searches before stating a figure that isn't already in the session. | Code |
+| G1 | Never shows an estimate as a reported figure. Estimates are marked. | LLM judge |
+| G2 | Cites only sources it retrieved in this session. No invented links. | Code |
+| G3 | Never publishes a share link unless the user asked for one in that turn. | Code |
+| G4 | Declines requests outside technology market research. | LLM judge |
+| X1 | Leads with the map, then one or two sentences of opinion. No preamble. | LLM judge |
+
+### What one trace showed
+
+The user asked for the top three AI customer support startups, ranked by revenue. The map looked
+fine.
+
+- F1. A revenue figure belonged to the parent company and was shown as the product's. O2 caught
+  it as written.
+- F2. The user asked to rank by revenue and one company had no revenue figure. It was ranked
+  second anyway. Nothing in v1 covered it.
+- F3. One source link pointed to a logo image. Nothing in the loop checks that a link opens.
+
+v2 has not been written yet. F2 is the kind of gap that becomes a new line.
+
+## What Corner and Ledger have in common
 
 - v1 is eight or nine lines and mostly governance.
 - One trace added three or four lines and sharpened one. Nothing was removed.

@@ -33,11 +33,11 @@ Open before any public listing: the plugin name (`calibre-evals` is the working 
 
 | Path | What it is |
 |---|---|
-| `rubric-templates/` | AI PRD template, and Corner, Ledger and Support Triage as worked examples |
+| `rubric-templates/` | AI PRD template, and Corner, Ledger, Mapper and Support Triage as worked examples |
 | `docs/uig-market-map.md` | Worked UIG for the Market Map agent |
 | `prompts/`, `datasets/`, `evaluators/`, `mcp/` | The spring 2026 single-prompt Market Map example |
 
-To add: a Mapper example for the fall cohort (PRD, simulated session, trace, rubric v1 and v2), and worked UIG examples for two or three other product types.
+To add: Mapper's Week 1 trace set and its v2 rubric, and worked UIG examples for two or three other product types.
 
 ## Design principles
 
