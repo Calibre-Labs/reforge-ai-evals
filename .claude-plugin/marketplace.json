@@ -8,7 +8,7 @@
   },
   "plugins": [
     {
-      "name": "calibre-evals",
+      "name": "ai-evals",
       "source": "./",
       "description": "Skills for evaluating an AI product, from the eval rubric in the PRD to judges checked against your labels."
     }

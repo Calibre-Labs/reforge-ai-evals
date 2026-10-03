@@ -1,4 +1,4 @@
-# Calibre evals: plan
+# AI Evals plugin: plan
 
 A plugin of skills for building, auditing and improving eval loops for AI products. Each skill is a folder with a `SKILL.md` that works on plain files, with no dependency on an eval platform.
 
@@ -24,10 +24,10 @@ Also to do: a local trace viewer the skills can generate. One HTML file served b
 
 - `.claude-plugin/plugin.json` and `marketplace.json`: Claude Code plugin. Validated with `claude plugin validate`.
 - `.codex-plugin/plugin.json` and `skills/*/agents/openai.yaml`: Codex. Not tested yet.
-- `scripts/build-plugin.sh`: builds `dist/calibre-evals.plugin` for the Claude desktop app.
+- `scripts/build-plugin.sh`: builds `dist/ai-evals.plugin` for the Claude desktop app.
 - `install-skills.sh`: fallback that installs the skills as slash commands.
 
-Open before any public listing: the plugin name (`calibre-evals` is the working name and is permanent once listed), and a license file.
+The plugin is named `ai-evals`, in the `calibre-labs` marketplace. Open before any public listing: a license file.
 
 ## Docs and examples
 

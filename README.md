@@ -1,4 +1,4 @@
-# Calibre evals
+# AI Evals
 
 A plugin of skills for building an eval loop for an AI product, from the rubric in your PRD to judges you can trust. It is the working repo for the [Reforge AI Evals course](https://www.reforge.com) taught by [Calibre Labs](https://blog.calibrelabs.ai), and it works for any agent or AI feature.
 
@@ -12,8 +12,8 @@ We add skills as the course moves through its sessions, so this repo grows over 
 
 | Step | Who does it | Skill | Added in | Status |
 |---|---|---|---|---|
-| Not sure where to start | Claude | [`eval-guide`](skills/eval-guide/SKILL.md) | Module 0 | Available |
-| Write the eval rubric into the PRD, v1 before traces and v2 after | Claude drafts, you decide | [`eval-rubric`](skills/eval-rubric/SKILL.md) | Module 0 | Available |
+| Not sure where to start | Claude | [`eval-guide`](skills/eval-guide/SKILL.md) | Week 0 | Available |
+| Write the eval rubric into the PRD, v1 before traces and v2 after | Claude drafts, you decide | [`eval-rubric`](skills/eval-rubric/SKILL.md) | Week 0 | Available |
 | Build a diverse set of test inputs | Claude | [`uig`](skills/uig/SKILL.md) | Week 1 | Available |
 | Read and annotate traces | **You** | | Week 1 | |
 | Cluster your notes into trace codes | Claude | [`trace-codes`](skills/trace-codes/SKILL.md) | Week 1 | Available |
@@ -36,10 +36,10 @@ Start with `eval-guide` if you are not sure which one you need. It looks at your
 
 ```bash
 claude plugin marketplace add Calibre-Labs/reforge-ai-evals
-claude plugin install calibre-evals@calibre-labs
+claude plugin install ai-evals@calibre-labs
 ```
 
-Skills then run as `/calibre-evals:eval-rubric`, `/calibre-evals:trace-codes` and so on, or just describe what you need and the right skill loads.
+Skills then run as `/ai-evals:eval-rubric`, `/ai-evals:trace-codes` and so on, or just describe what you need and the right skill loads.
 
 **For one session, from a clone:**
 
@@ -48,7 +48,7 @@ git clone https://github.com/Calibre-Labs/reforge-ai-evals
 claude --plugin-dir ./reforge-ai-evals
 ```
 
-**Claude desktop app:** run `bash scripts/build-plugin.sh` and install `dist/calibre-evals.plugin`.
+**Claude desktop app:** run `bash scripts/build-plugin.sh` and install `dist/ai-evals.plugin`.
 
 **Codex:** a `.codex-plugin/` manifest and per-skill `agents/openai.yaml` files are included. We have not tested them yet.
 
