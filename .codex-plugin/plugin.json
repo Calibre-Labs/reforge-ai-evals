@@ -1,0 +1,25 @@
+{
+  "name": "calibre-evals",
+  "version": "0.2.0",
+  "description": "Skills for building an eval loop for an AI product, from the rubric in the PRD to calibrated judges. The agent does the steps in between. You annotate traces and calibrate.",
+  "author": {
+    "name": "Calibre Labs"
+  },
+  "homepage": "https://blog.calibrelabs.ai",
+  "repository": "https://github.com/Calibre-Labs/reforge-ai-evals",
+  "keywords": ["evals", "evaluation", "rubric", "trace-analysis", "llm-judge", "agents"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Calibre Evals",
+    "shortDescription": "Build an eval loop for your AI product, starting from the PRD.",
+    "longDescription": "Skills for product-specific AI evaluation: the eval rubric, input grids, trace codes, code-based evals, LLM judges, judge alignment and dataset growth.",
+    "developerName": "Calibre Labs",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Write a v1 eval rubric from my PRD.",
+      "Cluster my trace notes into trace codes.",
+      "Check whether my LLM judge agrees with my labels."
+    ]
+  }
+}

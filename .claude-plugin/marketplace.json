@@ -1,0 +1,16 @@
+{
+  "name": "calibre-labs",
+  "metadata": {
+    "description": "Skills from Calibre Labs for evaluating AI products"
+  },
+  "owner": {
+    "name": "Calibre Labs"
+  },
+  "plugins": [
+    {
+      "name": "calibre-evals",
+      "source": "./",
+      "description": "Skills for building an eval loop for an AI product, from the rubric in the PRD to calibrated judges."
+    }
+  ]
+}

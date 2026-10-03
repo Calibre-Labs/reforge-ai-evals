@@ -1,0 +1,7 @@
+interface:
+  display_name: "Code-based eval"
+  short_description: "Write deterministic checks for a rubric line."
+  default_prompt: "Use $eval-code to write a code-based evaluator."
+
+policy:
+  allow_implicit_invocation: true

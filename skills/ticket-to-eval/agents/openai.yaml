@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ticket to eval"
+  short_description: "Turn a ticket or trace into dataset rows."
+  default_prompt: "Use $ticket-to-eval to turn this ticket into test data."
+
+policy:
+  allow_implicit_invocation: true

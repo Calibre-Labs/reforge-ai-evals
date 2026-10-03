@@ -1,0 +1,7 @@
+interface:
+  display_name: "Eval rubric"
+  short_description: "Write or update the eval rubric in your PRD."
+  default_prompt: "Use $eval-rubric to write a v1 eval rubric from my PRD."
+
+policy:
+  allow_implicit_invocation: true

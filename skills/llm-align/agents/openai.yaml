@@ -1,0 +1,7 @@
+interface:
+  display_name: "Judge alignment"
+  short_description: "Measure a judge against human labels."
+  default_prompt: "Use $llm-align to check my judge against my labels."
+
+policy:
+  allow_implicit_invocation: true

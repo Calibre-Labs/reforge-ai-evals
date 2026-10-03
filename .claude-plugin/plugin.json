@@ -1,0 +1,11 @@
+{
+  "name": "calibre-evals",
+  "version": "0.2.0",
+  "description": "Skills for building an eval loop for an AI product, from the rubric in the PRD to calibrated judges. Claude does the steps in between. You annotate traces and calibrate.",
+  "author": {
+    "name": "Calibre Labs"
+  },
+  "homepage": "https://blog.calibrelabs.ai",
+  "repository": "https://github.com/Calibre-Labs/reforge-ai-evals",
+  "keywords": ["evals", "evaluation", "rubric", "trace-analysis", "llm-judge", "agents"]
+}
