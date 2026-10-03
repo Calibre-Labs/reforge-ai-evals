@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapper trace 1: public ai companies in 2028</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lexend:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Righteous&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#172a49;--brass:#d4af37;--midnavy:#5a7ba3;--lightblue:#9abcda;--steel:#b2bec3;
+  --ground:#f5f6fa;--surface:#ffffff;--body:#464e50;--muted:#67707a;--hair:#dfe3ea;--tint:#e8ecf2;
+  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ground);color:var(--body);font-family:Lexend,"Helvetica Neue",Arial,sans-serif;
+  font-weight:300;font-size:16px;line-height:1.55;}
+.page{max-width:980px;margin:0 auto;padding:48px 32px 56px;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+h1{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:36px;line-height:1.12;letter-spacing:-.01em;color:var(--navy);}
+h2{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:20px;color:var(--navy);}
+.standfirst{font-size:18px;margin-top:10px;max-width:680px;}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+a{color:var(--navy);}
+.foot{margin-top:48px;padding-top:16px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:24px;align-items:flex-start;}
+.foot .note{font-size:13px;color:var(--muted);max-width:720px;}
+.word{font-family:Righteous,Poppins,sans-serif;font-size:20px;color:var(--navy);white-space:nowrap;}
+.word i{display:inline-block;width:9px;height:17px;background:var(--brass);margin-left:3px;vertical-align:-2px;}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);
+  background:var(--surface);border:1px solid var(--steel);padding:9px 14px;cursor:pointer;border-radius:0;}
+button:hover{border-color:var(--navy);}
+button.primary{background:var(--navy);color:var(--ground);border-color:var(--navy);}
+button:disabled{opacity:.4;cursor:default;}
+table{width:100%;border-collapse:collapse;}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400;text-align:left;padding:10px 14px 10px 0;border-top:1px solid var(--navy);}
+td{padding:11px 14px 11px 0;border-top:1px solid var(--hair);vertical-align:top;}
+td:first-child{color:var(--navy);font-weight:400;}
+code{font-family:var(--mono);font-size:13px;color:var(--navy);}
+
+.map{background:var(--surface);border:1px solid var(--hair);padding:22px 24px;}
+.map h2{margin-top:6px;}
+.mapdesc{margin:6px 0 14px;color:var(--muted);font-size:14.5px;}
+.rationale{margin-top:14px;font-size:14.5px;}
+.sources{margin-top:16px;padding-top:12px;border-top:1px solid var(--hair);}
+.sources ol{margin:8px 0 0 18px;font-size:14px;}
+.sources li{margin-bottom:6px;color:var(--navy);font-weight:400;}
+.sources .url{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);word-break:break-all;font-weight:400;}
+
+.totals{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:28px;border-top:1px solid var(--navy);}
+.totals div{padding:14px 16px 4px 0;}
+.totals .n{font-family:Poppins,sans-serif;font-weight:600;font-size:26px;color:var(--navy);line-height:1.1;}
+.tools{display:flex;gap:10px;align-items:center;margin-top:26px;flex-wrap:wrap;}
+.tools .sp{margin-left:auto;}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;}
+.switch .box{width:38px;height:20px;border:1px solid var(--navy);position:relative;background:var(--surface);}
+.switch .box i{position:absolute;top:2px;left:2px;width:14px;height:14px;background:var(--steel);}
+body.review .switch .box{background:var(--navy);}
+body.review .switch .box i{left:20px;background:var(--brass);}
+.findings{display:none;margin-top:22px;padding:18px 0 4px;border-top:1px solid var(--navy);}
+body.review .findings{display:block;}
+.findings ul{list-style:none;margin-top:10px;}
+.findings li{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:9px 0;border-top:1px solid var(--hair);align-items:baseline;}
+.findings .ftitle{color:var(--navy);font-weight:400;}
+.steps{margin-top:26px;border-top:1px solid var(--navy);}
+.step{display:grid;grid-template-columns:104px 1fr 128px;gap:18px;padding:16px 0;border-bottom:1px solid var(--hair);}
+.step.hidden{display:none;}
+.when .kind{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);font-weight:500;}
+.when .off{font-family:var(--mono);font-size:11px;color:var(--muted);}
+.what .said{font-size:16px;color:var(--navy);font-weight:400;}
+.k-user .what .said::before{content:"\201C";}.k-user .what .said::after{content:"\201D";}
+.what .t{color:var(--navy);font-weight:400;}
+.what .d{font-size:14.5px;margin-top:3px;}
+.what .res{font-family:var(--mono);font-size:12.5px;color:var(--body);background:var(--surface);border:1px solid var(--hair);padding:8px 10px;margin-top:8px;}
+.what .args{font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+.what .meta{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:6px;}
+.ctx{display:grid;grid-template-columns:110px 1fr 110px;gap:12px;align-items:center;margin-top:10px;}
+.ctx .track{height:10px;background:var(--tint);display:block;}
+.ctx .fill{height:10px;background:var(--navy);display:block;}
+.ctx .num{font-family:var(--mono);font-size:12px;color:var(--navy);text-align:right;}
+.where{text-align:right;}
+.layer{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.layer i{display:inline-block;width:8px;height:8px;margin-right:7px;}
+.l-context i{background:var(--navy);}.l-retrieval i{background:var(--midnavy);}
+.l-harness i{background:var(--lightblue);}.l-systems i{background:var(--steel);}
+.rec{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--steel);margin-top:6px;}
+.finding{display:none;margin-top:14px;padding:12px 0 2px;border-top:1px solid var(--navy);font-size:14.5px;}
+body.review .finding{display:block;}
+body.review .step.flagged{background:var(--surface);}
+.finding .fhead{color:var(--navy);}
+.finding .fhead::before{content:"";display:inline-block;width:6px;height:6px;background:var(--brass);margin-right:7px;vertical-align:1px;}
+.finding .ft{color:var(--navy);font-weight:500;margin:4px 0;}
+.finding .fr{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:6px;}
+@media (max-width:720px){.step{grid-template-columns:80px 1fr;}.where{grid-column:2;text-align:left;}.totals{grid-template-columns:repeat(2,1fr);}}
+
+.analysis h3{font-family:Poppins,sans-serif;font-weight:600;font-size:15px;color:var(--navy);margin-top:16px;}
+.analysis p{font-size:14.5px;margin-top:6px;}
+.what .said + .said{margin-top:10px;}
+.notes{margin-top:30px;padding-top:18px;border-top:1px solid var(--navy);}
+.notes p{font-size:14.5px;margin-top:6px;max-width:680px;}
+textarea{width:100%;min-height:150px;margin-top:12px;padding:12px 14px;font-family:Lexend,Arial,sans-serif;font-weight:300;font-size:15px;
+  line-height:1.5;color:var(--body);background:var(--surface);border:1px solid var(--steel);border-radius:0;resize:vertical;}
+textarea:focus{outline:none;border-color:var(--navy);}
+.saved{margin-top:8px;min-height:14px;}
+.nav{display:flex;gap:10px;align-items:center;margin-top:22px;flex-wrap:wrap;}
+.nav .sp{margin-left:auto;}
+.nav a{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);text-decoration:none;
+  border:1px solid var(--steel);padding:9px 14px;background:var(--surface);}
+.nav a:hover{border-color:var(--navy);}
+.nav a.off{opacity:.4;pointer-events:none;}
+.set td a{color:var(--navy);font-weight:400;}
+.set td.num,.set th.num{text-align:right;white-space:nowrap;}
+.set td.has{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);white-space:nowrap;}
+.count{margin-top:26px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">Mapper prototype · Week 1 trace set · trace 1 of 9</div>
+  <h1>“public ai companies in 2028”</h1>
+  <p class="standfirst">Read the session step by step. Then write what you notice in the notes box at the bottom.</p>
+  <div class="totals">
+    <div><div class="n">13.5 s</div><div class="mono">Agent time</div></div>
+    <div><div class="n">7,590</div><div class="mono">Tokens in</div></div>
+    <div><div class="n">3,309</div><div class="mono">Tokens out</div></div>
+    <div><div class="n">5</div><div class="mono">Sources cited</div></div>
+  </div>
+  <div class="tools">
+    <button id="stepmode">Step through</button><button id="prev" disabled>Back</button><button id="nextb" disabled>Next</button>
+  </div>
+  <div class="steps" id="steps"><div class="step k-user" data-i="0"><div class="when"><span class="kind">User</span><span class="off">+0s</span></div><div class="what"><p class="said">public ai companies in 2028</p></div><div class="where"></div></div><div class="step k-harness" data-i="1"><div class="when"><span class="kind">Harness</span><span class="off">+0s</span></div><div class="what"><p class="t">Assemble the prompt</p><p class="d">First turn. The harness sends the scoping instructions, today’s date and the user’s message. No tools are offered on the first turn.</p></div><div class="where"><span class="layer l-harness"><i></i>Harness</span></div></div><div class="step k-model" data-i="2"><div class="when"><span class="kind">Model</span></div><div class="what"><p class="t">Model call 1</p><p class="d">What the model was sent: the scoping instructions, the date, one user message.</p><div class="ctx"><span class="mono">Context sent</span><span class="track"><span class="fill" style="width:7%"></span></span><span class="num">501 tokens</span></div><p class="meta">92 tokens out · 1.1 s</p></div><div class="where"><span class="layer l-context"><i></i>Context</span></div></div><div class="step k-assistant" data-i="3"><div class="when"><span class="kind">Mapper</span><span class="off">+1s</span></div><div class="what"><p class="said">I will provide a market map of the top 5 public companies currently dominating the AI infrastructure and model-deployment stack, focusing on their 2026-2028 trajectory, core revenue drivers, and market positioning. I'll include key metrics like enterprise AI adoption rates and infrastructure dominance to explain why these players are winning. Does this scope meet your expectations, or should I narrow it to a specific sector like hardware vs. software models?</p></div><div class="where"></div></div><div class="step k-user" data-i="4"><div class="when"><span class="kind">User</span><span class="off">+15s</span></div><div class="what"><p class="said">Yes, go ahead.</p></div><div class="where"></div></div><div class="step k-tool" data-i="5"><div class="when"><span class="kind">Tool</span></div><div class="what"><p class="t"><code>get_preferences</code> <span class="args"></span></p><p class="d res">No saved preferences.</p></div><div class="where"><span class="layer l-context"><i></i>Context</span><span class="rec">reconstructed</span></div></div><div class="step k-tool" data-i="6"><div class="when"><span class="kind">Tool</span></div><div class="what"><p class="t"><code>web_search</code> <span class="args">(queries not recorded)</span></p><p class="d res">NVIDIA Q2 FY2027 Results<br>Alphabet Q2 2026 Results<br>Microsoft Cloud and AI Strength FY2026<br>AWS Statistics 2026<br>Meta Q2 2026 Financials/Seeking Alpha</p><p class="meta">Research model call: 268 tokens in · 1,928 tokens out</p></div><div class="where"><span class="layer l-retrieval"><i></i>Retrieval</span><span class="rec">reconstructed</span></div></div><div class="step k-tool" data-i="7"><div class="when"><span class="kind">Tool</span></div><div class="what"><p class="t"><code>read_page</code> <span class="args">5 pages</span></p><p class="d res">Page text added to the context.</p></div><div class="where"><span class="layer l-retrieval"><i></i>Retrieval</span><span class="rec">reconstructed</span></div></div><div class="step k-model" data-i="8"><div class="when"><span class="kind">Model</span></div><div class="what"><p class="t">Model call 2</p><p class="d">What the model was sent: the full instructions, the conversation and the research. The context is 14 times larger than on the first call.</p><div class="ctx"><span class="mono">Context sent</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="num">6,821 tokens</span></div><p class="meta">1,289 tokens out</p></div><div class="where"><span class="layer l-context"><i></i>Context</span></div></div><div class="step k-tool" data-i="9"><div class="when"><span class="kind">Tool</span></div><div class="what"><p class="t"><code>build_market_map</code> <span class="args">title, 3 columns, 5 companies, rationale, 5 sources</span></p><p class="d res">Map shown in the chat. Source links are passed through as returned.</p></div><div class="where"><span class="layer l-harness"><i></i>Harness</span></div></div><div class="step k-assistant" data-i="10"><div class="when"><span class="kind">Mapper</span><span class="off">+27s</span></div><div class="what"><div class="map"><div class="mono">Market map</div><h2>2026 AI Market Leaders</h2><p class="mapdesc">Public leaders in AI infrastructure, compute, and model deployment as of Q3 2026.</p><table><tr><th>Company</th><th>Recent Revenue (Period)</th><th>Market/Adoption Metric</th><th>Core AI Focus</th></tr><tr><td>NVIDIA</td><td>$215.9B (FY2026)</td><td>$80%+ (2026)</td><td>Hardware/Compute</td></tr><tr><td>Amazon (AWS)</td><td>$42.2B (Q2 2026)</td><td>~31% (Q1 2026)</td><td>Cloud Infrastructure</td></tr><tr><td>Alphabet (Google)</td><td>$24.8B (Q2 2026)</td><td>~90% (F100, 2026)</td><td>Cloud/Model Deployment</td></tr><tr><td>Microsoft</td><td>$90B (Q4 FY2026)</td><td>30M (Q4 FY2026)</td><td>Cloud/Enterprise AI</td></tr><tr><td>Meta Platforms</td><td>$60.8B (Q2 2026)</td><td>$130B-$145B (2026)</td><td>Consumer/Ad AI</td></tr></table><p class="rationale">Ranked by their critical influence on the AI supply chain, from foundational compute (NVIDIA) to hyperscale cloud deployment and application-layer dominance (Meta). All companies were selected based on 2026 performance data reported in official earnings releases.</p><div class="sources"><div class="mono">Sources</div><ol><li>NVIDIA Q2 FY2027 Results<span class="url">vertexaisearch.cloud.google.com/grounding-api-redirect/…</span></li><li>Alphabet Q2 2026 Results<span class="url">vertexaisearch.cloud.google.com/grounding-api-redirect/…</span></li><li>Microsoft Cloud and AI Strength FY2026<span class="url">vertexaisearch.cloud.google.com/grounding-api-redirect/…</span></li><li>AWS Statistics 2026<span class="url">vertexaisearch.cloud.google.com/grounding-api-redirect/…</span></li><li>Meta Q2 2026 Financials/Seeking Alpha<span class="url">vertexaisearch.cloud.google.com/grounding-api-redirect/…</span></li></ol></div></div></div><div class="where"></div></div><div class="step k-systems" data-i="11"><div class="when"><span class="kind">Totals</span><span class="off">+27s</span></div><div class="what"><p class="t">Session totals</p><p class="d">13.5 seconds of agent time: 1.1 s for the first reply and 12.4 s for the second. 7,590 tokens in, 3,309 tokens out.</p></div><div class="where"><span class="layer l-systems"><i></i>Systems</span></div></div></div>
+  <div class="notes">
+    <h2>Your notes</h2>
+    <p>Write what you see, in your own words: what looks wrong, what looks right, and anything you would want to check. One trace can have several observations.</p>
+    <textarea id="note" data-id="trace-01" placeholder="What do you notice in this session?"></textarea>
+    <div class="mono saved" id="saved"></div>
+  </div>
+  <div class="nav"><a class="off">Previous trace</a><a href="trace-02.html">Next trace</a><span class="sp"></span><a href="index.html">All traces</a></div>
+  <div class="foot"><div class="note">User inputs, Mapper’s replies, the maps, source titles and links, token counts and timings are from real Mapper sessions recorded on Oct 2, 2026. The user’s second message in each session was written for the recording. The step structure is reconstructed for the five-tool prototype: the preference lookup, the search step and the page reads are illustrative, and the search queries were not recorded.</div><div class="word">calibre<i></i></div></div>
+</div>
+<script>
+(function(){
+  var steps=[].slice.call(document.querySelectorAll('.step')),n=steps.length,i=n,mode=false;
+  var sm=document.getElementById('stepmode'),pv=document.getElementById('prev'),nx=document.getElementById('nextb');
+  function render(){
+    steps.forEach(function(s,k){s.classList.toggle('hidden',mode&&k>=i);});
+    sm.textContent=mode?'Show all':'Step through';
+    pv.disabled=!mode||i<=1; nx.disabled=!mode||i>=n;
+  }
+  function next(){if(mode&&i<n){i++;render();steps[i-1].scrollIntoView({block:'nearest'});}}
+  function prev(){if(mode&&i>1){i--;render();}}
+  sm.addEventListener('click',function(){mode=!mode;i=mode?1:n;render();});
+  nx.addEventListener('click',next); pv.addEventListener('click',prev);
+  render();
+  var box=document.getElementById('note'),key='mapper-notes:'+box.getAttribute('data-id'),saved=document.getElementById('saved');
+  try{box.value=localStorage.getItem(key)||'';}catch(e){saved.textContent='This browser is not saving notes. Copy them before you close the page.';}
+  var timer=null;
+  box.addEventListener('input',function(){
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      try{ if(box.value.trim()){localStorage.setItem(key,box.value);}else{localStorage.removeItem(key);} saved.textContent='Saved in this browser';}
+      catch(e){saved.textContent='This browser is not saving notes. Copy them before you close the page.';}
+    },300);
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.target===box){return;}
+    if(e.key==='ArrowRight'){next();} if(e.key==='ArrowLeft'){prev();}
+  });
+})();
+</script>
+</body>
+</html>

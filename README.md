@@ -86,6 +86,8 @@ Mapper is the course project for the fall 2026 cohort of AI Evals: a market rese
 | `mapper/mapper-rubric-v1.html` | Mapper's v1 rubric: nine lines, written from the PRD before a single trace |
 | `mapper/mapper-simulation.html` | A recorded Mapper session, click through what the user saw |
 | `mapper/mapper-trace.html` | The trace behind that session, tagged by layer, with a reviewer view (press R) |
+| `mapper/traces/index.html` | Nine more recorded Mapper sessions to read and annotate in Week 1. Each trace page has a notes box, and the index exports the notes as a CSV for `trace-codes` |
+| `mapper/traces/sessions.json` | The same nine sessions as data |
 | `support-triage/support-triage-prd.md` | Sample PRD for a support-ticket triage agent that categorizes tickets by intent, sentiment, and urgency |
 
 Corner and Ledger sit on opposite ends of the same framework: a consumer product where asking the user is expensive and mistakes are small and recoverable, and an enterprise product where asking is free and a mistake compounds. See the [webinar recording and slides](https://luma.com/ayok3w9i) for the full walkthrough.

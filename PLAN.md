@@ -37,7 +37,9 @@ The plugin is named `ai-evals`, in the `calibre-labs` marketplace. Open before a
 | `docs/uig-market-map.md` | Worked UIG for the Market Map agent |
 | `prompts/`, `datasets/`, `evaluators/`, `mcp/` | The spring 2026 single-prompt Market Map example |
 
-To add: Mapper's Week 1 trace set and its v2 rubric, and worked UIG examples for two or three other product types.
+To add: Mapper's v2 rubric, and worked UIG examples for two or three other product types.
+
+To do before the cohort uses them: review the Mapper pages and the Week 1 trace set, and change what we don't like.
 
 ## Design principles
 
