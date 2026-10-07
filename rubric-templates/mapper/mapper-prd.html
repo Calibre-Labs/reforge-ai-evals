@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapper: AI PRD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lexend:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Righteous&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#172a49;--brass:#d4af37;--midnavy:#5a7ba3;--lightblue:#9abcda;--steel:#b2bec3;
+  --ground:#f5f6fa;--surface:#ffffff;--body:#464e50;--muted:#67707a;--hair:#dfe3ea;--tint:#e8ecf2;
+  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ground);color:var(--body);font-family:Lexend,"Helvetica Neue",Arial,sans-serif;
+  font-weight:300;font-size:16px;line-height:1.55;}
+.page{max-width:980px;margin:0 auto;padding:48px 32px 56px;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+h1{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:36px;line-height:1.12;letter-spacing:-.01em;color:var(--navy);}
+h2{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:20px;color:var(--navy);}
+.standfirst{font-size:18px;margin-top:10px;max-width:680px;}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+a{color:var(--navy);}
+.foot{margin-top:48px;padding-top:16px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:24px;align-items:flex-start;}
+.foot .note{font-size:13px;color:var(--muted);max-width:720px;}
+.word{font-family:Righteous,Poppins,sans-serif;font-size:20px;color:var(--navy);white-space:nowrap;}
+.word i{display:inline-block;width:9px;height:17px;background:var(--brass);margin-left:3px;vertical-align:-2px;}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);
+  background:var(--surface);border:1px solid var(--steel);padding:9px 14px;cursor:pointer;border-radius:0;}
+button:hover{border-color:var(--navy);}
+button.primary{background:var(--navy);color:var(--ground);border-color:var(--navy);}
+button:disabled{opacity:.4;cursor:default;}
+table{width:100%;border-collapse:collapse;}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400;text-align:left;padding:10px 14px 10px 0;border-top:1px solid var(--navy);}
+td{padding:11px 14px 11px 0;border-top:1px solid var(--hair);vertical-align:top;}
+td:first-child{color:var(--navy);font-weight:400;}
+code{font-family:var(--mono);font-size:13px;color:var(--navy);}
+
+.sec{margin-top:40px;}
+.sec > p{max-width:720px;margin-top:8px;}
+.sec table{margin-top:14px;}
+.sec ul{margin:10px 0 0 20px;max-width:720px;}
+.sec li{margin-bottom:6px;}
+.num{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);display:block;margin-bottom:4px;}
+.line{display:grid;grid-template-columns:52px 1fr 110px;gap:18px;padding:14px 0;border-top:1px solid var(--hair);align-items:baseline;}
+.group .line:first-of-type{margin-top:14px;border-top:1px solid var(--navy);}
+.group{margin-top:40px;}
+.group .q{color:var(--muted);margin-top:2px;}
+.id{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--navy);}
+.text{font-weight:400;color:var(--navy);}
+.from{display:block;font-weight:300;font-size:13.5px;color:var(--muted);margin-top:4px;}
+.check{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;}
+.meta{margin-top:18px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">AI PRD · prototype</div>
+  <h1>Mapper</h1>
+  <p class="standfirst">A market research agent for technology categories.</p>
+  <div class="mono meta">October 2026 · written before any traces</div>
+  <div class="sec"><span class="num">01</span><h2>Product</h2><p>You name a technology category or a company, and Mapper returns a market map: the top three companies, ranked, with the metrics you care about and the sources behind each number. When it works, you have a table you can paste into a doc in under a minute and defend in a meeting.</p></div>
+  <div class="sec"><span class="num">02</span><h2>User and channel</h2><p>A product manager, founder or investor getting ready for a meeting, in a web chat. This user will wait 20 or 30 seconds. They will not forgive a number that turns out to be wrong, stale or unsourced. Success is measured in figures you can defend.</p></div>
+  <div class="sec"><span class="num">03</span><h2>Jobs to be done</h2><ul><li>Map a category I name: "top AI customer support startups".</li><li>Map the competitors of a company I name: "Reforge competitors".</li><li>Rank by the metric I care about, and always show the columns I always want.</li><li>Give me something I can share with my team.</li></ul></div>
+  <div class="sec"><span class="num">04</span><h2>Tool surface</h2><table><tr><th>Tool</th><th>What it does</th><th>Reversible?</th></tr><tr><td><code>get_preferences()</code></td><td>Returns the user's saved preferences: the ranking metric and the columns to always include.</td><td>Yes, read only</td></tr><tr><td><code>web_search(query)</code></td><td>Returns titles, links and snippets.</td><td>Yes, read only</td></tr><tr><td><code>read_page(url)</code></td><td>Returns the text of a page, cut at a length limit.</td><td>Yes, read only</td></tr><tr><td><code>build_market_map(...)</code></td><td>Shows the ranked table in the chat.</td><td>Yes, it can be rebuilt</td></tr><tr><td><code>publish_share_link(map)</code></td><td>Creates a public link to a map. Anyone with the link can open it.</td><td>No</td></tr></table><p>One tool, <code>publish_share_link</code>, is the only action Mapper can't take back.</p></div>
+  <div class="sec"><span class="num">05</span><h2>Autonomy</h2><table><tr><th>Action</th><th>Autonomy</th><th>Why</th></tr><tr><td>Reading preferences, searching, reading pages</td><td>Acts</td><td>Read only. No cost to being wrong.</td></tr><tr><td>Building a market map</td><td>Confirms scope first</td><td>A map of the wrong category or the wrong metric wastes the user's turn.</td></tr><tr><td>Publishing a share link</td><td>Confirms first</td><td>A public link can't be recalled once someone has it.</td></tr><tr><td>A request outside technology market research, or for investment advice</td><td>Declines</td><td>Not the product.</td></tr></table></div>
+  <div class="sec"><span class="num">06</span><h2>Happy path</h2><p>Thursday, 6:40pm, the evening before a board meeting. The user types "top AI customer support startups". Mapper reads the saved preferences (rank by revenue, always include customer count), confirms the scope in one line, searches, reads two or three pages, and builds a map of three companies with revenue, customer count and three sources. It adds one or two sentences on what stands out.</p></div>
+  <div class="sec"><span class="num">07</span><h2>Non-goals</h2><ul><li>Markets where technology isn't the core of the product.</li><li>Investment advice. Mapper ranks companies. It does not say what to buy.</li><li>Private or proprietary data.</li><li>Long reports. The output is a table and two sentences.</li></ul></div>
+  <div class="sec"><span class="num">08</span><h2>Eval rubric</h2><p>Success, in plain language: the map covers the companies, the metrics and the count the user asked for. Every figure has a time period and a source that supports it. Estimates are marked as estimates. A reader can check any number in under a minute by opening its source.</p><p>Known risks: a stale figure shown as current, an estimate shown as a reported number, a source that does not exist or does not say what the map says, a share link published when nobody asked for one, and a request outside technology answered anyway.</p><p>The rubric is its own page: <a href="mapper-rubric-v1.html">Mapper eval rubric v1</a>.</p></div>
+  <div class="sec"><span class="num">09</span><h2>Release thresholds</h2><table><tr><th>Metric</th><th>Target</th><th>Why</th></tr><tr><td>Cost per session</td><td>Under $0.10</td><td>Cheap enough to use before every meeting.</td></tr><tr><td>Time to first map, median</td><td>Under 30 seconds</td><td>A web chat user will wait that long for research.</td></tr><tr><td>Sessions failing any Governance line</td><td>Under 1% at launch</td><td>One published link or one invented source is what people remember.</td></tr></table><p>These are targets until there is data behind them.</p></div>
+  <div class="sec"><span class="num">10</span><h2>Rollout</h2><ul><li>Internal use. The team reads every trace.</li><li>Cohort beta. A sample of sessions is reviewed against the rubric each week. Exit when the Governance threshold holds for two weeks.</li><li>General availability. The thresholds become the ongoing bar.</li></ul></div>
+  <div class="sec"><span class="num">11</span><h2>Open questions</h2><ul><li>What counts as "current"? The last twelve months, or the last fiscal year?</li><li>Should Mapper be able to change saved preferences, or only read them?</li><li>Which sources are good enough to cite for a private company’s revenue?</li></ul></div>
+  <div class="foot"><div class="note">Mapper is the course project for AI Evals. This PRD describes the simplified prototype used in Week 0 and Week 1.</div><div class="word">calibre<i></i></div></div>
+</div>
+
+</body>
+</html>

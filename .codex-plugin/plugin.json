@@ -1,0 +1,32 @@
+{
+  "name": "ai-evals",
+  "version": "0.2.0",
+  "description": "Skills for evaluating an AI product: write the eval rubric, build test inputs, turn trace notes into codes, write judges and check them against your labels. You annotate traces and label for calibration. The skills do the rest.",
+  "author": {
+    "name": "Calibre Labs"
+  },
+  "homepage": "https://blog.calibrelabs.ai",
+  "repository": "https://github.com/Calibre-Labs/reforge-ai-evals",
+  "keywords": [
+    "evals",
+    "evaluation",
+    "rubric",
+    "trace-analysis",
+    "llm-judge",
+    "agents"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AI Evals",
+    "shortDescription": "Evaluate your AI product, starting from the PRD.",
+    "longDescription": "Skills for product-specific AI evaluation: the eval rubric, input grids, trace codes, code-based evals, LLM judges, judge alignment and dataset growth.",
+    "developerName": "Calibre Labs",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Write a v1 eval rubric from my PRD.",
+      "Cluster my trace notes into trace codes.",
+      "Check whether my LLM judge agrees with my labels."
+    ]
+  }
+}

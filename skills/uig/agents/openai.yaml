@@ -1,0 +1,7 @@
+interface:
+  display_name: "User input grid"
+  short_description: "Build a diverse set of test inputs and audit a dataset."
+  default_prompt: "Use $uig to build a user input grid for my product."
+
+policy:
+  allow_implicit_invocation: true
