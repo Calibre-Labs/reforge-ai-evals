@@ -12,8 +12,8 @@ We add skills as the course moves through its sessions, so this repo grows over 
 
 | Step | Who does it | Skill | Added in | Status |
 |---|---|---|---|---|
-| Not sure where to start | Claude | [`eval-guide`](skills/eval-guide/SKILL.md) | Week 0 | Available |
-| Write the eval rubric into the PRD, v1 before traces and v2 after | Claude drafts, you decide | [`eval-rubric`](skills/eval-rubric/SKILL.md) | Week 0 | Available |
+| Not sure where to start | Claude | [`eval-guide`](skills/eval-guide/SKILL.md) | Week 1 | Available |
+| Write the eval rubric into the PRD, v1 before traces and v2 after | Claude drafts, you decide | [`eval-rubric`](skills/eval-rubric/SKILL.md) | Week 1 | Available |
 | Build a diverse set of test inputs | Claude | [`uig`](skills/uig/SKILL.md) | Week 1 | Available |
 | Read and annotate traces | **You** | | Week 1 | |
 | Cluster your notes into trace codes | Claude | [`trace-codes`](skills/trace-codes/SKILL.md) | Week 1 | Available |
