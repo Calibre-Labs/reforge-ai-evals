@@ -1,27 +1,29 @@
-# Claude Code skills for AI evals
+# Agent skills for AI evals
 
-The skills in the `ai-evals` plugin. Together they cover the eval loop for any AI product or agent: writing the eval rubric, designing an eval dataset, turning trace notes into failure codes, writing code-based evaluators and LLM-as-a-judge prompts, checking judges against human labels, and turning production failures into regression tests.
+Eight skills that guide an AI coding agent through the eval loop for any AI product. See the [main README](../README.md) for how they fit together.
 
-Install the plugin in Claude Code:
+| Skill | What it does |
+|-------|--------------|
+| [eval-guide](eval-guide/SKILL.md) | Entry point. Routes to the skill that matches where you are |
+| [eval-rubric](eval-rubric/SKILL.md) | Writes the eval rubric and release thresholds: v1 from the PRD, v2 from trace codes, or an audit |
+| [uig](uig/SKILL.md) | Builds a User Input Grid, audits dataset coverage and proposes inputs to fill the gaps |
+| [trace-codes](trace-codes/SKILL.md) | Clusters trace notes into named yes/no failure codes with counts and a label sheet |
+| [eval-code](eval-code/SKILL.md) | Writes deterministic, code-based evaluators |
+| [eval-llm-judge](eval-llm-judge/SKILL.md) | Writes LLM-as-a-judge prompts with one criterion each |
+| [llm-align](llm-align/SKILL.md) | Measures judges against human labels (TPR/TNR) and suggests prompt fixes |
+| [ticket-to-eval](ticket-to-eval/SKILL.md) | Turns support tickets and bad traces into PII-stripped regression rows |
+
+## Install
 
 ```bash
-claude plugin marketplace add Calibre-Labs/reforge-ai-evals
+npx skills add https://github.com/Calibre-Labs/reforge-ai-evals            # any coding agent
+claude plugin marketplace add Calibre-Labs/reforge-ai-evals               # Claude Code plugin
 claude plugin install ai-evals@calibre-labs
 ```
 
-Or copy them as plain slash commands with `bash install-skills.sh` from the repo root. See the [main README](../README.md#quick-start) for other options.
+Other options:
+- **Claude desktop app:** `bash scripts/build-plugin.sh`, then install `dist/ai-evals.plugin`.
+- **Codex:** the repo includes `.codex-plugin/` and a per-skill `agents/openai.yaml` (not yet tested).
+- **Claude Code slash commands without the plugin:** `bash scripts/install-skills.sh`, or run Claude Code from the repo root, where `.claude/commands/` links to these skills.
 
-| Skill | Use it to |
-|-------|-----------|
-| [`eval-guide`](eval-guide/SKILL.md) | Find the right skill when you're not sure where to start |
-| [`eval-rubric`](eval-rubric/SKILL.md) | Write the eval rubric for an agent: v1 from the PRD before traces, v2 from trace codes, or an audit of an existing rubric, plus release thresholds |
-| [`uig`](uig/SKILL.md) | Build a User Input Grid (UIG) for your product, audit an eval dataset's coverage, and propose new queries to fill the gaps |
-| [`trace-codes`](trace-codes/SKILL.md) | Cluster free-form trace notes into named yes/no failure codes with definitions, examples and counts, and write a label sheet for review |
-| [`eval-code`](eval-code/SKILL.md) | Write deterministic evaluators for structure, counts, formats and citations |
-| [`eval-llm-judge`](eval-llm-judge/SKILL.md) | Write an LLM-as-a-judge prompt: one criterion, binary PASS/FAIL, few-shot examples, JSON output, TPR/TNR validation plan |
-| [`llm-align`](llm-align/SKILL.md) | Compute TPR/TNR between an LLM judge and human labels, investigate each disagreement, and suggest prompt fixes and few-shot examples |
-| [`ticket-to-eval`](ticket-to-eval/SKILL.md) | Convert a support ticket or production trace into PII-stripped regression and coverage rows |
-
-Each skill folder has a `SKILL.md` and an `agents/openai.yaml` for Codex. `eval-rubric` also ships reference files (PRD sections, an HTML rubric template and worked examples).
-
-For example output, see [`docs/uig-market-map.md`](../docs/uig-market-map.md) (from `uig`) and the rubrics in [`rubric-templates/`](../rubric-templates/) (the kind `eval-rubric` writes).
+Each skill is a folder with a `SKILL.md`. `eval-rubric` also ships reference files, so copy the whole folder when installing by hand.

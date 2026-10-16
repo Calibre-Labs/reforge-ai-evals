@@ -1,6 +1,6 @@
-# GitHub Pages (Jekyll) settings, used once Pages is enabled for this repo
+# GitHub Pages (Jekyll) settings
 title: "AI Evals Toolkit: LLM judges, eval datasets and rubrics"
-description: "Open-source toolkit for evaluating AI agents: LLM-as-a-judge templates, code evaluators, the User Input Grid for eval dataset design, AI PRD and eval rubric templates, and Claude Code skills. From the Reforge AI Evals course by Calibre."
+description: "Open-source toolkit for evaluating AI agents: LLM-as-a-judge templates, code evaluators, the User Input Grid for eval dataset design, AI PRD and eval rubric templates, and skills for AI coding agents. From the Reforge AI Evals course by Calibre."
 tagline: "Open-source AI evals toolkit by Calibre"
 author: "Sandhya Hegde and Justin Bauer (Calibre)"
 url: "https://calibre-labs.github.io"
@@ -16,5 +16,4 @@ relative_links:
 include:
   - llms.txt
 exclude:
-  - names.json
-  - install-skills.sh
+  - scripts/

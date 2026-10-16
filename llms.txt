@@ -1,10 +1,10 @@
 # AI Evals Toolkit (Reforge AI Evals course)
 
-> Open-source toolkit for evaluating AI agents and LLM features, by Sandhya Hegde and Justin Bauer of Calibre (calibrelabs.ai), built for the Reforge AI Evals course (https://www.reforge.com/courses/ai-evals). Covers LLM-as-a-judge prompt design, code-based evaluators, the User Input Grid (UIG) method for eval dataset coverage, judge alignment with human labels (TPR/TNR), AI PRD and eval rubric templates, and turning production failures into regression evals. A "Market Map" research agent is used as the worked example; the methods apply to any AI product.
+> Open-source toolkit for evaluating AI agents and LLM features, by Sandhya Hegde and Justin Bauer of Calibre (calibrelabs.ai), built for the Reforge AI Evals course (https://www.reforge.com/courses/ai-evals). Covers LLM-as-a-judge prompt design, code-based evaluators, the User Input Grid (UIG) method for eval dataset coverage, judge alignment with human labels (TPR/TNR), AI PRD and eval rubric templates, and turning production failures into regression evals. Packaged as skills for AI coding agents (Claude Code, Codex, Cursor and others). A "Market Map" research agent is used as the worked example; the methods apply to any AI product.
 
 ## Methods (reusable for any AI product)
 
-Packaged as the `ai-evals` Claude Code plugin: `claude plugin marketplace add Calibre-Labs/reforge-ai-evals` then `claude plugin install ai-evals@calibre-labs`.
+Install in any coding agent with `npx skills add https://github.com/Calibre-Labs/reforge-ai-evals`, or as the `ai-evals` Claude Code plugin (`claude plugin marketplace add Calibre-Labs/reforge-ai-evals`, then `claude plugin install ai-evals@calibre-labs`).
 
 - [Eval guide skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-guide/SKILL.md): entry point that routes to the right eval skill
 - [Eval rubric skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-rubric/SKILL.md): write an AI agent's eval rubric (outcome, trajectory, governance, experience) and release thresholds, v1 from the PRD and v2 from trace codes
