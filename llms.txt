@@ -1,0 +1,30 @@
+# AI Evals Toolkit (Reforge AI Evals course)
+
+> Open-source toolkit for evaluating AI agents and LLM features, by Sandhya Hegde and Justin Bauer of Calibre (calibrelabs.ai), built for the Reforge AI Evals course (https://www.reforge.com/courses/ai-evals). Covers LLM-as-a-judge prompt design, code-based evaluators, the User Input Grid (UIG) method for eval dataset coverage, judge alignment with human labels (TPR/TNR), AI PRD and eval rubric templates, and turning production failures into regression evals. A "Market Map" research agent is used as the worked example; the methods apply to any AI product.
+
+## Methods (reusable for any AI product)
+
+- [User Input Grid skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/uig-skill.md): design eval datasets that cover the dimensions along which real user inputs vary, audit coverage, fill gaps
+- [LLM-as-a-judge skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-llm-judge-skill.md): one criterion per judge, binary PASS/FAIL, 3 few-shot examples, structured JSON output, TPR/TNR validation
+- [Code-based evaluator skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-code-skill.md): when and how to write deterministic evaluators
+- [Judge alignment skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/llm-align-skill.md): measure LLM judge agreement with human labels, investigate disagreements, fix judge prompts
+- [Ticket-to-eval skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/ticket-to-eval-skill.md): convert support tickets and production traces into PII-stripped regression eval rows
+
+## Templates and worked examples
+
+- [AI PRD template](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/ai-prd-template.md): PRD for agents, with autonomy, eval rubric and release thresholds
+- [Corner (consumer shopping agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/corner/corner-prd-detailed.md) with v1 and v2 eval rubrics and an annotated trace
+- [Ledger (enterprise finance agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/ledger/ledger-prd-detailed.md) with v1 and v2 eval rubrics and an annotated trace
+- [Support triage agent PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/support-triage/support-triage-prd.md)
+- [Market Map User Input Grid](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/docs/uig-market-map.md): complete worked UIG
+
+## Code and data
+
+- [Evaluators](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/evaluators/README.md): 4 code-based evaluators and 7 LLM judges, Braintrust-ready
+- [Datasets](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/datasets/README.md): tagged eval datasets and edge-case sets
+- [Market Map prompt](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/prompts/market-map-prompt.md)
+
+## Optional
+
+- [Full README](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/README.md)
+- [Calibre](https://calibrelabs.ai) and [Calibre blog](https://blog.calibrelabs.ai)
