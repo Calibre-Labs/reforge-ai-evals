@@ -143,9 +143,6 @@ Now evaluate:
 
 Input: {input}
 Output: {output}
-
-Respond with JSON only:
-{{"critique": "<2-3 sentence explanation>", "score": "PASS" | "FAIL"}}
 """
 ```
 
@@ -153,40 +150,41 @@ Respond with JSON only:
 
 ## Runner Function Template
 
+The runner uses structured outputs, so the response is always schema-valid JSON — no
+fence-stripping or parse-failure path. `critique` is declared before `score` so it is written first.
+
 ```python
+from typing import Literal
+from pydantic import BaseModel
+
+JUDGE_MODEL = "claude-opus-5"  # one place to upgrade; re-validate TPR/TNR after changing it
+
+class JudgeResult(BaseModel):
+    critique: str
+    score: Literal["PASS", "FAIL"]
+
 def my_judge(output: str, input: str, expected: str = None) -> dict:
     """
     LLM judge for [criterion name].
-    Returns: {"score": 0.0|0.5|1.0, "metadata": {"critique": str, "label": str}}
+    Returns: {"score": 0.0|1.0|None, "metadata": {"critique": str, "label": str}}
+    score is None when the judge didn't produce a verdict (refusal / truncation) —
+    that row is skipped, not silently counted as FAIL.
     """
-    import anthropic, json, re
+    import anthropic
 
     client = anthropic.Anthropic()
-    prompt = JUDGE_PROMPT.format(input=input, output=output)
-
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=512,
-        messages=[{"role": "user", "content": prompt}]
+    response = client.messages.parse(
+        model=JUDGE_MODEL,
+        max_tokens=16000,  # thinking counts toward max_tokens
+        messages=[{"role": "user", "content": JUDGE_PROMPT.format(input=input, output=output)}],
+        output_format=JudgeResult,
     )
-    text = response.content[0].text.strip()
-
-    # Strip markdown fences if present
-    text = re.sub(r'^```(?:json)?\n?', '', text)
-    text = re.sub(r'\n?```$', '', text)
-
-    try:
-        result = json.loads(text)
-    except json.JSONDecodeError:
-        return {"score": 0.0, "metadata": {"critique": "Failed to parse response", "raw": text}}
-
-    score_map = {"PASS": 1.0, "FAIL": 0.0}
+    result = response.parsed_output
+    if result is None:
+        return {"score": None, "metadata": {"error": f"no verdict (stop_reason={response.stop_reason})"}}
     return {
-        "score": score_map.get(result.get("score", "FAIL"), 0.0),
-        "metadata": {
-            "critique": result.get("critique", ""),
-            "label": result.get("score", "FAIL")
-        }
+        "score": 1.0 if result.score == "PASS" else 0.0,
+        "metadata": {"critique": result.critique, "label": result.score},
     }
 ```
 
@@ -215,8 +213,9 @@ def my_judge(output: str, input: str, expected: str = None) -> dict:
   definition more specific and add a clear FAIL example.
 
 - **Model choice matters for judge quality.** Use the strongest model you can afford for judges.
-  A weaker judge model introduces noise that looks like model variation. claude-sonnet-4-6 is
-  the minimum; claude-opus-4-6 is preferable for nuanced semantic judgments.
+  A weaker judge model introduces noise that looks like model variation. Use the current
+  Opus-tier model for nuanced semantic judgments; current Sonnet-tier is the floor. Changing
+  `JUDGE_MODEL` is a judge change — re-run the human-labeled validation set afterwards.
 
 - **Re-validate judges when the prompt changes.** If you update the system prompt (e.g., adding
   few-shot examples), re-run your human-labeled validation set. Prompt changes shift output

@@ -33,6 +33,8 @@ pip install anthropic
 bash install-skills.sh   # installs /uig, /eval-code, /eval-llm-judge, /llm-align, /ticket-to-eval
 ```
 
+To use the skills only while working in this repo, skip the install script: the repo's `.claude/commands/` links to `skills/`, so Claude Code picks them up whenever you run it from the repo root.
+
 Then open Claude Code in your own project and run `/uig` to design an eval dataset, or `/eval-llm-judge` to write your first judge.
 
 **Run the evaluators locally:**
