@@ -10,6 +10,8 @@ Your coding agent can do most of the eval work if it has the right instructions.
 
 Start with **[eval-guide](skills/eval-guide/SKILL.md)**. It looks at where you are and loads the right skill.
 
+![The AI evals loop: your coding agent runs six steps with skills, and two steps, reading traces and labeling a sample, stay with you](docs/workflow.png)
+
 | Step | Skill | What it does |
 |------|-------|--------------|
 | 1. Define good | [eval-rubric](skills/eval-rubric/SKILL.md) | Writes the eval rubric into your PRD: v1 before traces, v2 after |
