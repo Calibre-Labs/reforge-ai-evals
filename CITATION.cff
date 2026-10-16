@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this toolkit, please cite it as below."
+title: "AI Evals Toolkit: LLM judges, eval datasets and rubrics (Reforge AI Evals course)"
+abstract: "Open-source toolkit for evaluating AI agents and LLM features: LLM-as-a-judge templates, code-based evaluators, the User Input Grid method for eval dataset design, AI PRD and eval rubric templates, judge alignment (TPR/TNR), and Claude Code skills. Built for the Reforge AI Evals course."
+type: software
+authors:
+  - given-names: Sandhya
+    family-names: Hegde
+    affiliation: Calibre
+  - given-names: Justin
+    family-names: Bauer
+    affiliation: Calibre
+repository-code: "https://github.com/Calibre-Labs/reforge-ai-evals"
+url: "https://www.reforge.com/courses/ai-evals"
+keywords:
+  - ai evals
+  - llm evaluation
+  - llm-as-a-judge
+  - eval rubric
+  - eval dataset
+  - user input grid
+  - ai product management
+  - agent evaluation
+  - claude code
+  - braintrust
