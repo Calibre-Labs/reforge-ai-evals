@@ -1,1 +1,1 @@
-../../skills/eval-llm-judge-skill.md
+../../skills/eval-llm-judge/SKILL.md

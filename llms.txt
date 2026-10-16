@@ -4,17 +4,23 @@
 
 ## Methods (reusable for any AI product)
 
-- [User Input Grid skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/uig-skill.md): design eval datasets that cover the dimensions along which real user inputs vary, audit coverage, fill gaps
-- [LLM-as-a-judge skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-llm-judge-skill.md): one criterion per judge, binary PASS/FAIL, 3 few-shot examples, structured JSON output, TPR/TNR validation
-- [Code-based evaluator skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-code-skill.md): when and how to write deterministic evaluators
-- [Judge alignment skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/llm-align-skill.md): measure LLM judge agreement with human labels, investigate disagreements, fix judge prompts
-- [Ticket-to-eval skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/ticket-to-eval-skill.md): convert support tickets and production traces into PII-stripped regression eval rows
+Packaged as the `ai-evals` Claude Code plugin: `claude plugin marketplace add Calibre-Labs/reforge-ai-evals` then `claude plugin install ai-evals@calibre-labs`.
+
+- [Eval guide skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-guide/SKILL.md): entry point that routes to the right eval skill
+- [Eval rubric skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-rubric/SKILL.md): write an AI agent's eval rubric (outcome, trajectory, governance, experience) and release thresholds, v1 from the PRD and v2 from trace codes
+- [Trace codes skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/trace-codes/SKILL.md): cluster trace-analysis notes into named yes/no failure codes with counts
+- [User Input Grid skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/uig/SKILL.md): design eval datasets that cover the dimensions along which real user inputs vary, audit coverage, fill gaps
+- [LLM-as-a-judge skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-llm-judge/SKILL.md): one criterion per judge, binary PASS/FAIL, 3 few-shot examples, structured JSON output, TPR/TNR validation
+- [Code-based evaluator skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-code/SKILL.md): when and how to write deterministic evaluators
+- [Judge alignment skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/llm-align/SKILL.md): measure LLM judge agreement with human labels, investigate disagreements, fix judge prompts
+- [Ticket-to-eval skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/ticket-to-eval/SKILL.md): convert support tickets and production traces into PII-stripped regression eval rows
 
 ## Templates and worked examples
 
 - [AI PRD template](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/ai-prd-template.md): PRD for agents, with autonomy, eval rubric and release thresholds
 - [Corner (consumer shopping agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/corner/corner-prd-detailed.md) with v1 and v2 eval rubrics and an annotated trace
 - [Ledger (enterprise finance agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/ledger/ledger-prd-detailed.md) with v1 and v2 eval rubrics and an annotated trace
+- [Mapper (market research agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/mapper/mapper-prd-detailed.md) with v1 eval rubric, a recorded session and ten annotatable traces
 - [Support triage agent PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/support-triage/support-triage-prd.md)
 - [Market Map User Input Grid](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/docs/uig-market-map.md): complete worked UIG
 

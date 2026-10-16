@@ -1,0 +1,7 @@
+interface:
+  display_name: "Trace codes"
+  short_description: "Cluster trace notes into yes/no codes."
+  default_prompt: "Use $trace-codes to cluster my trace notes into codes."
+
+policy:
+  allow_implicit_invocation: true

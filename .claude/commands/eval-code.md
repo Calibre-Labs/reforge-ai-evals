@@ -1,1 +1,1 @@
-../../skills/eval-code-skill.md
+../../skills/eval-code/SKILL.md

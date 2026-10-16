@@ -1,1 +1,1 @@
-../../skills/llm-align-skill.md
+../../skills/llm-align/SKILL.md

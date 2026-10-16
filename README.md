@@ -1,8 +1,8 @@
 # AI Evals Toolkit: LLM judges, eval datasets and rubrics
 
-**An open-source, practical toolkit for evaluating AI agents and LLM features.** It covers LLM-as-a-judge prompt templates, code-based evaluators, a method for designing eval datasets (the User Input Grid), AI PRD and eval rubric templates, judge alignment (TPR/TNR) and Claude Code skills that automate each step.
+**An open-source plugin and toolkit for evaluating AI agents and LLM features.** It covers writing the eval rubric in your PRD, designing eval datasets (the User Input Grid), turning trace notes into failure codes, writing code-based evaluators and LLM-as-a-judge prompts, and checking judges against human labels (TPR/TNR). Each step is a skill for Claude Code (and Codex) that your coding agent can run.
 
-It was built live for the [Reforge AI Evals course](https://www.reforge.com/courses/ai-evals), taught by Sandhya Hegde and Justin Bauer of [Calibre](https://calibrelabs.ai). The methods apply to any AI product, from a single-turn prompt to a multi-step agent. Market Map, the example agent used throughout, is only the demo.
+It is the working repo for the [Reforge AI Evals course](https://www.reforge.com/courses/ai-evals), taught by Sandhya Hegde and Justin Bauer of [Calibre](https://calibrelabs.ai), and it works for any agent or AI feature, from a single-turn prompt to a multi-step agent. Two steps stay with you: reading traces and labeling outputs to calibrate judges. The skills cover the rest.
 
 **Who it's for:** product managers, AI engineers and founders who want to go from "I have a prompt that works" to "I have an eval loop I trust", and then to monitoring the agent in production.
 
@@ -11,11 +11,12 @@ It was built live for the [Reforge AI Evals course](https://www.reforge.com/cour
 ## Contents
 
 - [Quick start](#quick-start)
+- [The skills](#the-skills)
 - [What's in this repo](#whats-in-this-repo)
 - [The User Input Grid (UIG)](#the-user-input-grid-uig)
 - [Key ideas](#key-ideas)
 - [FAQ](#faq)
-- [The example agent: Market Map](#the-example-agent-market-map)
+- [Example agents: Mapper and Market Map](#example-agents-mapper-and-market-map)
 - [Course sessions](#course-sessions)
 - [About](#about)
 - [License](#license)
@@ -24,20 +25,32 @@ It was built live for the [Reforge AI Evals course](https://www.reforge.com/cour
 
 ## Quick start
 
-**Prerequisites:** a [Braintrust](https://braintrust.dev) account, an [Anthropic API key](https://console.anthropic.com) for the LLM judges, and Python 3.10+.
+**Claude Code, as a plugin (recommended):**
+
+```bash
+claude plugin marketplace add Calibre-Labs/reforge-ai-evals
+claude plugin install ai-evals@calibre-labs
+```
+
+Skills then run as `/ai-evals:eval-rubric`, `/ai-evals:trace-codes` and so on, or just describe what you need and the right skill loads. Start with `/ai-evals:eval-guide` if you are not sure which one you need.
+
+**For one session, from a clone:**
 
 ```bash
 git clone https://github.com/Calibre-Labs/reforge-ai-evals.git
-cd reforge-ai-evals
-pip install anthropic
-bash install-skills.sh   # installs /uig, /eval-code, /eval-llm-judge, /llm-align, /ticket-to-eval
+claude --plugin-dir ./reforge-ai-evals
 ```
 
-To use the skills only while working in this repo, skip the install script: the repo's `.claude/commands/` links to `skills/`, so Claude Code picks them up whenever you run it from the repo root.
+You can also run Claude Code from the repo root: `.claude/commands/` links to `skills/`, so the skills load as plain slash commands there.
 
-Then open Claude Code in your own project and run `/uig` to design an eval dataset, or `/eval-llm-judge` to write your first judge.
+**Other ways to install:**
+- **Claude desktop app:** run `bash scripts/build-plugin.sh` and install `dist/ai-evals.plugin`.
+- **Codex:** a `.codex-plugin/` manifest and per-skill `agents/openai.yaml` files are included (not yet tested).
+- **Plain slash commands, no plugin:** `bash install-skills.sh` copies each skill into `~/.claude/commands/`.
 
-**Run the evaluators locally:**
+The skills read and write plain files (markdown, CSV, JSON, HTML), so you don't need an account with any eval platform. `llm-align` and `ticket-to-eval` can also read from a platform such as Braintrust or LangSmith if your data lives there.
+
+**Run the example evaluators locally** (the LLM judges need an [Anthropic API key](https://console.anthropic.com) and `pip install anthropic`):
 
 ```python
 from evaluators import company_count, has_sources, ranking_quality_judge
@@ -49,14 +62,29 @@ print(company_count(output, input_query))          # 0.0, 0.5, or 1.0
 print(ranking_quality_judge(output, input_query))  # {"score": 1.0, "metadata": {...}}
 ```
 
-**Run the Market Map demo in Braintrust:**
+**Optional: braintrust-write MCP server.** This lets Claude insert dataset rows directly into Braintrust (`ticket-to-eval` can use it). Run `pip install -r mcp/requirements.txt`; `install-skills.sh` prints the config snippet to add to `~/.claude/settings.json`. `names.json` holds the short aliases it uses.
 
-1. Import `datasets/week2-dataset-30.csv` into Braintrust as a new dataset
-2. Paste `prompts/market-map-prompt.md` into the Braintrust playground as the system prompt
-3. Run an experiment against the dataset
-4. Add the scorers in `evaluators/` to the experiment
+---
 
-**Optional: braintrust-write MCP server.** This lets Claude insert dataset rows directly into Braintrust (`/ticket-to-eval` uses it). Run `pip install -r mcp/requirements.txt`; `install-skills.sh` prints the config snippet to add to `~/.claude/settings.json`.
+## The skills
+
+Skills are added as the course moves through its sessions, so this list grows over the five weeks.
+
+| Step | Who does it | Skill | Course week | Status |
+|---|---|---|---|---|
+| Not sure where to start | Claude | [`eval-guide`](skills/eval-guide/SKILL.md) | Week 1 | Available |
+| Write the eval rubric into the PRD, v1 before traces and v2 after | Claude drafts, you decide | [`eval-rubric`](skills/eval-rubric/SKILL.md) | Week 1 | Available |
+| Build a diverse set of test inputs (User Input Grid) | Claude | [`uig`](skills/uig/SKILL.md) | Week 1 | Available |
+| Read and annotate traces | **You** | | Week 1 | |
+| Cluster your trace notes into failure codes | Claude | [`trace-codes`](skills/trace-codes/SKILL.md) | Week 1 | Available |
+| Write code-based evaluators | Claude | [`eval-code`](skills/eval-code/SKILL.md) | Week 2 | Available |
+| Write LLM-as-a-judge evaluators | Claude | [`eval-llm-judge`](skills/eval-llm-judge/SKILL.md) | Week 2 | Available |
+| Run the agent and the scorers over a dataset | Claude | `eval-run` | Week 2 | Coming |
+| Label a sample pass or fail | **You** | | Week 3 | |
+| Measure each judge against your labels (TPR/TNR) and fix it | Claude | [`llm-align`](skills/llm-align/SKILL.md) | Week 3 | Available |
+| Turn support tickets and bad traces into regression eval rows | Claude | [`ticket-to-eval`](skills/ticket-to-eval/SKILL.md) | Week 3 | Available |
+| Check tool calls and multi-step traces | Claude | `eval-trace` | Week 4 | Coming |
+| Score production on a schedule and report drift | Claude | `eval-monitor` | Week 4 | Coming |
 
 ---
 
@@ -64,27 +92,17 @@ print(ranking_quality_judge(output, input_query))  # {"score": 1.0, "metadata": 
 
 | Folder | What it gives you | Reusable for any AI product? |
 |--------|-------------------|------------------------------|
-| [`skills/`](skills/) | Claude Code skills for building a UIG, writing code evaluators, writing LLM judges, aligning judges with human labels, and turning support tickets into eval rows | Yes |
-| [`rubric-templates/`](rubric-templates/) | AI PRD template plus two fully worked eval rubrics (consumer and enterprise agents), each taken from v1 through a real trace to v2 | Yes |
-| [`evaluators/`](evaluators/) | 4 code-based evaluators and 7 LLM-as-a-judge evaluators, ready for Braintrust | Patterns yes, criteria are Market Map–specific |
+| [`skills/`](skills/) | The plugin's skills: eval rubrics, User Input Grid, trace codes, code evaluators, LLM judges, judge alignment, ticket-to-eval | Yes |
+| [`rubric-templates/`](rubric-templates/) | AI PRD template plus worked PRDs, eval rubrics, simulated sessions and annotated traces for three agents (consumer, enterprise, market research) | Yes |
+| [`evaluators/`](evaluators/) | 4 code-based evaluators and 7 LLM-as-a-judge evaluators for the Market Map agent | Patterns yes, criteria are Market Map–specific |
 | [`datasets/`](datasets/) | Tagged eval datasets (10 to 54 rows) plus targeted edge-case sets for geography, history, jargon, currency and impossible queries | Example only |
 | [`prompts/`](prompts/) | The Market Map system prompt (v2, with 3 few-shot examples) | Example only |
 | [`docs/`](docs/) | A complete worked User Input Grid for the Market Map agent | Example only |
 | [`mcp/`](mcp/) | A small MCP server for writing rows to Braintrust datasets | Yes |
 
-### `skills/`: Claude Code skills for AI evals
-
-Install them with `bash install-skills.sh`, which copies each one to `~/.claude/commands/`.
-
-| Skill | Command | What it does |
-|-------|---------|--------------|
-| [`uig-skill.md`](skills/uig-skill.md) | `/uig` | Builds a User Input Grid for any AI product, audits your eval dataset's coverage against it, and proposes queries to fill the gaps |
-| [`eval-code-skill.md`](skills/eval-code-skill.md) | `/eval-code` | Writes deterministic, code-based evaluators: when to use them, their failure modes, common patterns |
-| [`eval-llm-judge-skill.md`](skills/eval-llm-judge-skill.md) | `/eval-llm-judge` | Writes LLM-as-a-judge prompts: one criterion, binary PASS/FAIL, 3 few-shot examples, structured output, TPR/TNR validation |
-| [`llm-align-skill.md`](skills/llm-align-skill.md) | `/llm-align` | Measures how well an LLM judge agrees with human labels (TPR/TNR), investigates disagreements, and suggests fixes to the judge prompt |
-| [`ticket-to-eval-skill.md`](skills/ticket-to-eval-skill.md) | `/ticket-to-eval` | Turns a support ticket or production trace into eval rows: strips PII, classifies the failure mode, maps it to the UIG, and appends it to your regression dataset |
-
 ### `rubric-templates/`: AI PRD and eval rubric examples
+
+**Mapper** is the course project for the fall 2026 cohort: a market research agent with five tools. Its session was recorded from a real run on Oct 2, 2026, and its trace page tags every step with a layer (context, retrieval, harness, systems).
 
 Corner and Ledger were built live during the [Eval Rubrics that Drive AI Product Strategy](https://luma.com/ayok3w9i) webinar. They sit at opposite ends of the same framework. Corner is a consumer product where asking the user is expensive and mistakes are small and recoverable. Ledger is an enterprise product where asking is free and a mistake compounds.
 
@@ -101,6 +119,11 @@ Corner and Ledger were built live during the [Eval Rubrics that Drive AI Product
 | [`ledger/ledger-rubric-v2.html`](rubric-templates/ledger/ledger-rubric-v2.html) | Ledger's v2 rubric, sharpened after reading traces from a real session |
 | [`ledger/ledger-simulation.html`](rubric-templates/ledger/ledger-simulation.html) | A simulated Ledger session: a bonus run end to end |
 | [`ledger/ledger-trace.html`](rubric-templates/ledger/ledger-trace.html) | The raw trace behind that simulation, annotated against the v1 rubric |
+| [`mapper/mapper-prd-detailed.md`](rubric-templates/mapper/mapper-prd-detailed.md) | Full PRD for Mapper, a market research agent that returns a ranked, sourced market map ([HTML](rubric-templates/mapper/mapper-prd.html)) |
+| [`mapper/mapper-rubric-v1.html`](rubric-templates/mapper/mapper-rubric-v1.html) | Mapper's v1 rubric: nine lines, written from the PRD before a single trace |
+| [`mapper/mapper-simulation.html`](rubric-templates/mapper/mapper-simulation.html) | A recorded Mapper session: click through what the user saw |
+| [`mapper/mapper-trace.html`](rubric-templates/mapper/mapper-trace.html) | The trace behind that session, tagged by layer, with a reviewer view (press R) |
+| [`mapper/traces/index.html`](rubric-templates/mapper/traces/index.html) | Nine more recorded Mapper sessions to read and annotate. Each page has a notes box, and the index exports the notes as a CSV for `trace-codes` ([data](rubric-templates/mapper/traces/sessions.json)) |
 | [`support-triage/support-triage-prd.md`](rubric-templates/support-triage/support-triage-prd.md) | A lighter sample PRD for a support-ticket triage agent that categorizes tickets by intent, sentiment and urgency |
 
 ### `evaluators/`: code-based evaluators and LLM judges
@@ -145,7 +168,7 @@ All datasets are Braintrust-format CSVs and can be imported directly.
 | `week3-metric-ranking.csv` | 20 | Non-standard ranking criteria (NPS, uptime, GitHub stars). Tests whether the requested metric is used instead of revenue. |
 | `week3-currency.csv` | 20 | Currency mismatch cases across 8 currencies (EUR, GBP, JPY, KRW, CHF, DKK, SEK, INR), all 5 domains and 4 query types. Derived from support ticket TKT-007. |
 | `week3-gap-analysis.md` | — | Which UIG dimensions are still under-covered, with recommended queries to fill them. |
-| `support-tickets.csv` | 10 | Synthetic customer support tickets containing PII. Source material for `/ticket-to-eval`. |
+| `support-tickets.csv` | 10 | Synthetic customer support tickets containing PII. Source material for the `ticket-to-eval` skill. |
 | `regression-dataset.csv` | 10 | PII-stripped regression queries derived from the support tickets, tagged with `failure_mode` and `source_ticket`. |
 
 **Metadata tags** (JSON in the `metadata` column):
@@ -166,7 +189,7 @@ All datasets are Braintrust-format CSVs and can be imported directly.
 
 **The User Input Grid (UIG) is a method for designing AI eval datasets that cover the real diversity of inputs an agent will face in production.** You list the dimensions along which user inputs vary (such as query type, domain, phrasing style and time frame), list the values each dimension can take, and then check that your dataset hits every value several times. It replaces datasets built from engineer intuition, which overfit to what engineers know, or from raw user logs, which overfit to easy, common cases.
 
-- General method: [`skills/uig-skill.md`](skills/uig-skill.md) (or run `/uig`)
+- General method: [`skills/uig/SKILL.md`](skills/uig/SKILL.md) (or run the `uig` skill)
 - Worked example: [`docs/uig-market-map.md`](docs/uig-market-map.md)
 
 **Market Map UIG: 4 dimensions**
@@ -200,7 +223,7 @@ The Week 1 dataset (10 rows) had **zero coverage** of the Financial domain and t
 
 **Judge calibration**
 - False negatives (judge too strict) and false positives (judge too lenient) have different root causes and need different fixes. Read the judge's reasoning for each disagreement before changing the prompt.
-- `/llm-align` automates this for any Braintrust experiment.
+- The `llm-align` skill automates this for any set of judge scores and human labels.
 
 ---
 
@@ -210,13 +233,13 @@ The Week 1 dataset (10 rows) had **zero coverage** of the Financial domain and t
 An AI eval is a repeatable test that scores an AI feature's outputs against defined criteria, so you can tell whether a prompt, model or agent change made the product better or worse. A useful eval setup has three parts: a dataset of realistic inputs, evaluators that score each output, and a loop that reruns them on every change.
 
 ### What is LLM-as-a-judge?
-LLM-as-a-judge means using a language model to grade another model's output against a written criterion. It's for semantic qualities code can't check, such as whether the ranking is correct or whether an ambiguous query was handled well. This repo's judges each test one criterion, give binary PASS/FAIL definitions, include 3 few-shot examples (PASS, FAIL, borderline) and return JSON with a critique before the score. See [`skills/eval-llm-judge-skill.md`](skills/eval-llm-judge-skill.md).
+LLM-as-a-judge means using a language model to grade another model's output against a written criterion. It's for semantic qualities code can't check, such as whether the ranking is correct or whether an ambiguous query was handled well. This repo's judges each test one criterion, give binary PASS/FAIL definitions, include 3 few-shot examples (PASS, FAIL, borderline) and return JSON with a critique before the score. See [`skills/eval-llm-judge/SKILL.md`](skills/eval-llm-judge/SKILL.md).
 
 ### When should I use a code-based evaluator instead of an LLM judge?
-Use code for anything structural and deterministic: counts, required sections, citations, formats. It's fast, free and never drifts. Use an LLM judge for meaning: correctness, relevance, tone, edge-case handling. Most products need both. See [`skills/eval-code-skill.md`](skills/eval-code-skill.md).
+Use code for anything structural and deterministic: counts, required sections, citations, formats. It's fast, free and never drifts. Use an LLM judge for meaning: correctness, relevance, tone, edge-case handling. Most products need both. See [`skills/eval-code/SKILL.md`](skills/eval-code/SKILL.md).
 
 ### How do I know whether my LLM judge is trustworthy?
-Label 20–40 outputs by hand (roughly half PASS, half FAIL), run the judge on the same outputs, and compute TPR (how often the judge agrees when a human said PASS) and TNR (how often it agrees when a human said FAIL). Aim for both above 90%, and treat 80% as the minimum. Track them separately, because a judge with high overall accuracy can still be too lenient. `/llm-align` automates this.
+Label 20–40 outputs by hand (roughly half PASS, half FAIL), run the judge on the same outputs, and compute TPR (how often the judge agrees when a human said PASS) and TNR (how often it agrees when a human said FAIL). Aim for both above 90%, and treat 80% as the minimum. Track them separately, because a judge with high overall accuracy can still be too lenient. The `llm-align` skill automates this.
 
 ### How big should an eval dataset be?
 Coverage matters more than size. 30–80 queries that hit every value of every UIG dimension at least 3 times will usually beat 500 random queries. Start small, tag every row, and add rows where the gap analysis or production failures show you're blind.
@@ -225,29 +248,33 @@ Coverage matters more than size. 30–80 queries that hit every value of every U
 A method for designing eval datasets around the dimensions along which real user inputs vary, so you cover them deliberately instead of by accident. See [The User Input Grid](#the-user-input-grid-uig).
 
 ### What goes in an AI PRD and an eval rubric?
-An AI PRD specifies the agent's *behavior*, not screens. It includes how much autonomy the agent has and the release thresholds that gate a launch. The eval rubric lists the criteria the agent is judged on, with the definition of success and known risks next to the criteria they justify. Write a v1 rubric from the PRD before you read any traces, then sharpen it into v2 after trace analysis. See [`rubric-templates/`](rubric-templates/).
+An AI PRD specifies the agent's *behavior*, not screens. It includes how much autonomy the agent has and the release thresholds that gate a launch. The eval rubric lists the criteria the agent is judged on, with the definition of success and known risks next to the criteria they justify. Write a v1 rubric from the PRD before you read any traces, then sharpen it into v2 after trace analysis. The `eval-rubric` skill drafts both; see [`rubric-templates/`](rubric-templates/) for worked examples.
 
 ### How do I turn production failures into regression tests?
-Take the support ticket or trace, strip the PII, classify the failure mode, map it to your UIG dimensions, and add it to a regression dataset, plus a few generalized variants so you test the failure pattern rather than just the one query. `/ticket-to-eval` does this end to end ([example](datasets/regression-dataset.csv)).
+Take the support ticket or trace, strip the PII, classify the failure mode, map it to your UIG dimensions, and add it to a regression dataset, plus a few generalized variants so you test the failure pattern rather than just the one query. The `ticket-to-eval` skill does this end to end ([example](datasets/regression-dataset.csv)).
 
 ### Do I need Braintrust or Claude to use this?
-No. The methods (UIG, judge design, TPR/TNR, rubrics) work with any eval platform and any model. The datasets and scorers are formatted for [Braintrust](https://braintrust.dev), and the skills run in [Claude Code](https://claude.com/claude-code).
+No. The skills read and write plain files, and the methods (UIG, judge design, TPR/TNR, rubrics) work with any eval platform and any model. The skills run in [Claude Code](https://claude.com/claude-code), with untested Codex support. The example datasets use [Braintrust](https://braintrust.dev)'s CSV layout, which any tool that reads CSV can use.
 
 ---
 
-## The example agent: Market Map
+## Example agents: Mapper and Market Map
 
-The Market Map agent takes a market research query and returns a ranked list of the top 3 players in that market, with supporting metrics and citations.
+**Mapper (fall 2026 cohort)** is a market research agent with five tools that returns a ranked, sourced market map. Its PRD, v1 rubric, a recorded session and ten annotatable traces are in [`rubric-templates/mapper/`](rubric-templates/mapper/).
+
+**Market Map (spring 2026 cohort)** is the simpler version: one prompt, no tools or retrieval, returning the top 3 players in a market with supporting metrics and citations. Its prompt, datasets and evaluators remain here as a complete small example of an eval loop.
 
 - *"team chat"* → ranks Microsoft Teams, Slack, Google Chat
 - *"what AI security startups could Okta acquire in 2026 with its cash?"* → a scoped acquisition-target analysis
 - *"search in 2003"* → a period-accurate historical market map
 
-It is a single-turn prompt with no tools or retrieval, so all its knowledge comes from the model's weights. That makes it a good eval target: the failure modes are predictable and the output format is fixed. Prompt: [`prompts/market-map-prompt.md`](prompts/market-map-prompt.md).
+Because all of Market Map's knowledge comes from the model's weights, its failure modes are predictable and its output format is fixed, which makes it a good first eval target. Prompt: [`prompts/market-map-prompt.md`](prompts/market-map-prompt.md).
 
 ---
 
 ## Course sessions
+
+The spring 2026 cohort's sessions, built on the Market Map agent. For the fall cohort, see the course week for each skill in [The skills](#the-skills).
 
 | Session | Topic | Key files |
 |---------|-------|-----------|

@@ -25,4 +25,4 @@ Eleven evaluators for the Market Map example agent: 4 deterministic code-based c
 | `metric_coverage_judge` | [`llm-judge-metric-coverage.py`](llm-judge-metric-coverage.py) | At least 2 of 3 companies have 2+ quantitative metrics |
 | `metric_scope_judge` | [`llm-judge-metric-scope.py`](llm-judge-metric-scope.py) | Metrics are scoped to the relevant product, not the parent company |
 
-To write evaluators like these for your own product, run `/eval-code` or `/eval-llm-judge` (see [`skills/`](../skills/)). To check whether a judge agrees with human labels, run `/llm-align`.
+To write evaluators like these for your own product, use the [`eval-code`](../skills/eval-code/SKILL.md) or [`eval-llm-judge`](../skills/eval-llm-judge/SKILL.md) skill. To check whether a judge agrees with human labels, use [`llm-align`](../skills/llm-align/SKILL.md).

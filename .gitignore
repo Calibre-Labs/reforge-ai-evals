@@ -14,3 +14,6 @@ venv/
 # OS
 .DS_Store
 .mcp.json
+
+# Build output
+dist/

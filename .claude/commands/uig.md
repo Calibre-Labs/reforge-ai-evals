@@ -1,1 +1,1 @@
-../../skills/uig-skill.md
+../../skills/uig/SKILL.md

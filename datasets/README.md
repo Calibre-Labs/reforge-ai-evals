@@ -19,4 +19,4 @@ Every row is tagged in the `metadata` column with its [User Input Grid](../READM
 | [`support-tickets.csv`](support-tickets.csv) | 10 | Synthetic support tickets (with PII) used as input to `/ticket-to-eval` |
 | [`regression-dataset.csv`](regression-dataset.csv) | 10 | PII-stripped regression queries derived from those tickets |
 
-To design a dataset like this for your own product, run `/uig` (see [`skills/uig-skill.md`](../skills/uig-skill.md)).
+To design a dataset like this for your own product, use the [`uig`](../skills/uig/SKILL.md) skill.

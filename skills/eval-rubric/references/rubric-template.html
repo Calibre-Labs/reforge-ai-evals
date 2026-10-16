@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{PRODUCT}}: eval rubric v{{VERSION}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lexend:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#172a49; --brass:#d4af37; --midnavy:#5a7ba3; --lightblue:#9abcda;
+    --ground:#f5f6fa; --surface:#ffffff; --body:#464e50; --muted:#67707a; --hair:#dfe3ea;
+    --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--ground);color:var(--body);font-family:Lexend,"Helvetica Neue",Arial,sans-serif;font-weight:300;font-size:16px;line-height:1.55;}
+  .page{max-width:920px;margin:0 auto;padding:56px 32px 64px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  h1{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:38px;line-height:1.1;letter-spacing:-.01em;color:var(--navy);}
+  .standfirst{font-size:18px;margin-top:10px;max-width:640px;}
+  .meta{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:18px;}
+  .summary{margin-top:36px;padding-top:20px;border-top:1px solid var(--navy);max-width:720px;}
+  .summary h2,.group h2{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:20px;color:var(--navy);}
+  .summary p{margin-top:8px;}
+  .group{margin-top:44px;}
+  .group .question{color:var(--muted);margin-top:2px;}
+  .line{display:grid;grid-template-columns:52px 1fr 110px;gap:18px;padding:14px 0;border-top:1px solid var(--hair);align-items:baseline;}
+  .group .line:first-of-type{margin-top:14px;border-top:1px solid var(--navy);}
+  .id{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--navy);}
+  .text{font-weight:400;color:var(--navy);}
+  .from,.was{display:block;font-weight:300;font-size:13.5px;color:var(--muted);margin-top:4px;}
+  .check{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;}
+  .change{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-right:8px;}
+  .change::before{content:"";display:inline-block;width:6px;height:6px;background:var(--brass);margin-right:6px;vertical-align:1px;}
+  table{width:100%;border-collapse:collapse;margin-top:14px;}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400;text-align:left;padding:10px 12px 10px 0;border-top:1px solid var(--navy);}
+  td{padding:12px 12px 12px 0;border-top:1px solid var(--hair);vertical-align:top;}
+  td:first-child{color:var(--navy);font-weight:400;}
+  .foot{margin-top:56px;padding-top:16px;border-top:1px solid var(--hair);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  @media (max-width:640px){.line{grid-template-columns:40px 1fr;}.check{grid-column:2;text-align:left;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="eyebrow">Eval rubric</div>
+  <h1>{{PRODUCT}}</h1>
+  <p class="standfirst">{{ONE_LINE_DESCRIPTION}}</p>
+  <div class="meta">Version {{VERSION}} · {{DATE}} · {{LINE_COUNT}} lines</div>
+
+  <!-- v2 and later: what changed and why. Delete this block for v1. -->
+  <div class="summary">
+    <h2>What the traces taught us</h2>
+    <p>{{CHANGE_SUMMARY}}</p>
+  </div>
+
+  <!-- One .group per kind of line, in this order: Outcome, Trajectory, Governance, Experience. -->
+  <div class="group">
+    <h2>Outcome</h2>
+    <p class="question">What it produced, and is it right.</p>
+
+    <!-- One .line per rubric line. -->
+    <div class="line">
+      <div class="id">O1</div>
+      <div class="text">
+        <!-- v2 only, when the line changed: <span class="change">New</span> or <span class="change">Sharpened</span> -->
+        {{LINE_TEXT}}
+        <span class="from">From: {{PRD_SECTION}}</span>
+        <!-- Sharpened lines only: <span class="was">Was: "{{OLD_TEXT}}". Motivated by {{FINDING_ID}}.</span> -->
+      </div>
+      <div class="check">{{Code | LLM judge | Human}}</div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Trajectory</h2>
+    <p class="question">How it got there.</p>
+  </div>
+
+  <div class="group">
+    <h2>Governance</h2>
+    <p class="question">What it must never do, and always do.</p>
+  </div>
+
+  <div class="group">
+    <h2>Experience</h2>
+    <p class="question">How it felt to the user in this channel.</p>
+  </div>
+
+  <div class="group">
+    <h2>Release thresholds</h2>
+    <p class="question">These live in the PRD. They are numbers across many sessions and they gate a launch. A rubric line judges one trace.</p>
+    <table>
+      <tr><th>Metric</th><th>Target</th><th>Why</th></tr>
+      <tr><td>{{METRIC}}</td><td>{{TARGET}}</td><td>{{WHY}}</td></tr>
+    </table>
+  </div>
+
+  <!-- v1 only: what this version cannot know until traces are read. -->
+  <div class="group">
+    <h2>What this version can't know yet</h2>
+    <p class="question">{{UNKNOWN_UNTIL_TRACES}}</p>
+  </div>
+
+  <div class="foot">{{PRODUCT}} · eval rubric v{{VERSION}}</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+interface:
+  display_name: "LLM judge"
+  short_description: "Write an LLM judge for one criterion."
+  default_prompt: "Use $eval-llm-judge to write a judge for this criterion."
+
+policy:
+  allow_implicit_invocation: true

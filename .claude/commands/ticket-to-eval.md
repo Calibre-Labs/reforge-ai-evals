@@ -1,1 +1,1 @@
-../../skills/ticket-to-eval-skill.md
+../../skills/ticket-to-eval/SKILL.md

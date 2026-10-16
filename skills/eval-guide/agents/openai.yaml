@@ -1,0 +1,7 @@
+interface:
+  display_name: "Eval guide"
+  short_description: "Find the right eval skill for where you are."
+  default_prompt: "Use $eval-guide to tell me what to do next on my evals."
+
+policy:
+  allow_implicit_invocation: true
