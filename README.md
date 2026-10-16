@@ -18,6 +18,7 @@ It was built live for the [Reforge AI Evals course](https://www.reforge.com/cour
 - [The example agent: Market Map](#the-example-agent-market-map)
 - [Course sessions](#course-sessions)
 - [About](#about)
+- [License](#license)
 
 ---
 
@@ -259,5 +260,9 @@ It is a single-turn prompt with no tools or retrieval, so all its knowledge come
 ## About
 
 Built by **Sandhya Hegde** and **Justin Bauer**, co-founders of [Calibre](https://calibrelabs.ai), an applied AI research and consulting firm. They teach the [AI Evals course on Reforge](https://www.reforge.com/courses/ai-evals), and Calibre writes about AI product quality at [blog.calibrelabs.ai](https://blog.calibrelabs.ai).
+
+## License
+
+Code (`evaluators/`, `mcp/`, `install-skills.sh`) is released under the [MIT License](LICENSE). Everything else, including the skills, rubric templates, PRDs, datasets, prompts and docs, is released under [Creative Commons Attribution 4.0 (CC BY 4.0)](LICENSE-CONTENT): reuse and adapt it freely, with credit to Calibre.
 
 If you use this toolkit, cite it with GitHub's **"Cite this repository"** button (see [`CITATION.cff`](CITATION.cff)).

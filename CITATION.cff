@@ -3,6 +3,7 @@ message: "If you use this toolkit, please cite it as below."
 title: "AI Evals Toolkit: LLM judges, eval datasets and rubrics (Reforge AI Evals course)"
 abstract: "Open-source toolkit for evaluating AI agents and LLM features: LLM-as-a-judge templates, code-based evaluators, the User Input Grid method for eval dataset design, AI PRD and eval rubric templates, judge alignment (TPR/TNR), and Claude Code skills. Built for the Reforge AI Evals course."
 type: software
+license: [MIT, CC-BY-4.0]
 authors:
   - given-names: Sandhya
     family-names: Hegde
