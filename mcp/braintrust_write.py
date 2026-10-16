@@ -6,8 +6,8 @@ Exposes write tools for Braintrust datasets and prompts — the official
 Braintrust MCP server is read-only, so this fills the gap.
 
 Name resolution: all tools accept either a full Braintrust name
-("Week2 Dataset 53") or a short alias defined in names.json at the repo
-root ("week2"). The project_name parameter can also be omitted if
+("Week2 Dataset 53") or a short alias defined in names.json next to this
+file ("week2"). The project_name parameter can also be omitted if
 names.json defines a default project.
 
 Usage:
@@ -30,7 +30,7 @@ mcp = FastMCP("braintrust-write")
 # ---------------------------------------------------------------------------
 
 def _load_names() -> dict:
-    names_path = Path(__file__).parent.parent / "names.json"
+    names_path = Path(__file__).parent / "names.json"
     if names_path.exists():
         with open(names_path) as f:
             return json.load(f)
@@ -67,7 +67,7 @@ def list_names() -> str:
     """
     names = _load_names()
     if not names:
-        return "names.json not found. Create one at the repo root to enable short-name aliases."
+        return "names.json not found. Create one in mcp/ to enable short-name aliases."
 
     lines = [f"Project: {names.get('project', '(not set)')}", ""]
 

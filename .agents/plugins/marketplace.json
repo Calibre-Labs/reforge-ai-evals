@@ -1,0 +1,20 @@
+{
+  "name": "calibre-labs",
+  "interface": {
+    "displayName": "Calibre Labs"
+  },
+  "plugins": [
+    {
+      "name": "ai-evals",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

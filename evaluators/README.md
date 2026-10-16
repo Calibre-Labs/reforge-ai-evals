@@ -5,6 +5,17 @@ Eleven evaluators for the Market Map example agent: 4 deterministic code-based c
 - [`evaluators.py`](evaluators.py) has every evaluator as a plain Python function, for local runs or as Braintrust scorer functions.
 - Each other file holds a single evaluator written as a Braintrust custom scorer (`handler` function), ready to paste into Braintrust.
 
+## Run locally
+
+The LLM judges in `evaluators.py` need an [Anthropic API key](https://console.anthropic.com) and `pip install anthropic`.
+
+```python
+from evaluators import company_count, ranking_quality_judge
+
+print(company_count("your model output here", "team chat"))          # 0.0, 0.5, or 1.0
+print(ranking_quality_judge("your model output here", "team chat"))  # {"score": 1.0, "metadata": {...}}
+```
+
 ## Code-based evaluators (no LLM call)
 
 | Evaluator | File | Checks |

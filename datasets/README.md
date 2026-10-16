@@ -2,7 +2,7 @@
 
 Eval datasets for the Market Map example agent, showing how to grow an eval set from 10 rows to a tagged, coverage-driven dataset with targeted edge-case sets and a regression set built from support tickets. All files are Braintrust-format CSVs and can be imported directly.
 
-Every row is tagged in the `metadata` column with its [User Input Grid](../README.md#the-user-input-grid-uig) dimensions (`query_type`, `domain`, `style`, `temporal`, `edge_case`), so results can be sliced by dimension to find where the agent fails.
+Every row is tagged in the `metadata` column with its [User Input Grid](../docs/uig-market-map.md) dimensions (`query_type`, `domain`, `style`, `temporal`, `edge_case`), so results can be sliced by dimension to find where the agent fails.
 
 | File | Rows | What it tests |
 |------|------|---------------|
