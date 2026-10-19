@@ -8,6 +8,7 @@ Install in any coding agent with `npx skills add https://github.com/Calibre-Labs
 
 - [Eval guide skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-guide/SKILL.md): entry point that routes to the right eval skill
 - [Eval rubric skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-rubric/SKILL.md): write an AI agent's eval rubric (outcome, trajectory, governance, experience) and release thresholds, v1 from the PRD and v2 from trace codes
+- [Trace review app skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/trace-review-app/SKILL.md): build a one-file trace review app for one AI product, with a review queue, notes, pass/fail labels, trace-code tags and exports
 - [Trace codes skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/trace-codes/SKILL.md): cluster trace-analysis notes into named yes/no failure codes with counts
 - [User Input Grid skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/uig/SKILL.md): design eval datasets that cover the dimensions along which real user inputs vary, audit coverage, fill gaps
 - [LLM-as-a-judge skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-llm-judge/SKILL.md): one criterion per judge, binary PASS/FAIL, 3 few-shot examples, structured JSON output, TPR/TNR validation

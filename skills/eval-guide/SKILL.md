@@ -17,6 +17,7 @@ its workflow. Do not improvise your own version of a step.
 |---|---|
 | Has a product, PRD or prompt, and no written definition of good | `eval-rubric` (v1) |
 | Has a rubric and needs test inputs, or wants to know what a dataset is missing | `uig` |
+| Has traces to review but no good way to read them, or the team isn't reviewing | `trace-review-app` |
 | Has read traces and written notes | `trace-codes` |
 | Has trace codes and a v1 rubric | `eval-rubric` (v2) |
 | Has a rubric line or trace code that a rule can check | `eval-code` |
@@ -28,7 +29,7 @@ its workflow. Do not improvise your own version of a step.
 
 1. `eval-rubric`: write v1 from the PRD.
 2. `uig`: build a diverse set of inputs and run the agent on them.
-3. The user reads the traces and writes notes.
+3. The user reads the traces and writes notes. If the traces are hard to read, `trace-review-app` builds a review page first.
 4. `trace-codes`: cluster the notes into codes, then `eval-rubric` again for v2.
 5. `eval-code` and `eval-llm-judge`: one scorer per rubric line worth automating.
 6. The user labels a sample pass or fail.
