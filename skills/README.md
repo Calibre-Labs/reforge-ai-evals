@@ -7,6 +7,7 @@ Eight skills that guide an AI coding agent through the eval loop for any AI prod
 | [eval-guide](eval-guide/SKILL.md) | Entry point. Routes to the skill that matches where you are |
 | [eval-rubric](eval-rubric/SKILL.md) | Writes the eval rubric and release thresholds: v1 from the PRD, v2 from trace codes, or an audit |
 | [uig](uig/SKILL.md) | Builds a User Input Grid, audits dataset coverage and proposes inputs to fill the gaps |
+| [trace-review-app](trace-review-app/SKILL.md) | Builds a one-file trace review app for your product, with notes, pass/fail labels, trace-code tags and exports (draft) |
 | [trace-codes](trace-codes/SKILL.md) | Clusters trace notes into named yes/no failure codes with counts and a label sheet |
 | [eval-code](eval-code/SKILL.md) | Writes deterministic, code-based evaluators |
 | [eval-llm-judge](eval-llm-judge/SKILL.md) | Writes LLM-as-a-judge prompts with one criterion each |
