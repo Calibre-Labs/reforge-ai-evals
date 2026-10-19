@@ -17,6 +17,7 @@ Start with **[eval-guide](skills/eval-guide/SKILL.md)**. It looks at where you a
 | 1. Define good | [eval-rubric](skills/eval-rubric/SKILL.md) | Writes the eval rubric into your PRD: v1 before traces, v2 after |
 | 2. Build test inputs | [uig](skills/uig/SKILL.md) | Designs a diverse eval dataset with a User Input Grid and finds coverage gaps |
 | 3. Read traces | **You** | Annotate what went wrong, in your own words |
+| Optional, for step 3 | [trace-review-app](skills/trace-review-app/SKILL.md) | Designs and builds a one-file review app for your product's traces, with notes, labels, trace codes and exports (draft) |
 | 4. Find failure modes | [trace-codes](skills/trace-codes/SKILL.md) | Clusters your notes into named yes/no failure codes |
 | 5. Write evaluators | [eval-code](skills/eval-code/SKILL.md), [eval-llm-judge](skills/eval-llm-judge/SKILL.md) | Code checks for objective failures, LLM judges for subjective ones |
 | 6. Label a sample | **You** | Mark outputs pass or fail |
