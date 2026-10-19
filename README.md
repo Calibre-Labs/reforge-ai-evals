@@ -25,6 +25,7 @@ We add skills as the course moves through its sessions, so this repo grows over 
 | Turn tickets and bad traces into dataset rows | Claude | [`ticket-to-eval`](skills/ticket-to-eval/SKILL.md) | Week 3 | Available |
 | Check tool calls and multi-step traces | Claude | `eval-trace` | Week 4 | Coming |
 | Score production on a schedule and report drift | Claude | `eval-monitor` | Week 4 | Coming |
+| Build a trace review app for your product | Claude designs, you review in it | [`trace-review-app`](skills/trace-review-app/SKILL.md) | Week 4 | Draft |
 
 Start with `eval-guide` if you are not sure which one you need. It looks at your situation and loads the right skill.
 

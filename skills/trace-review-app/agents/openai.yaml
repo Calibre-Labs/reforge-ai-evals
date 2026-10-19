@@ -1,0 +1,7 @@
+interface:
+  display_name: "Trace review app"
+  short_description: "Build a trace review app for your product."
+  default_prompt: "Use $trace-review-app to build a review page for my traces."
+
+policy:
+  allow_implicit_invocation: true
