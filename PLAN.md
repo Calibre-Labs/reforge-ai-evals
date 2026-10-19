@@ -14,10 +14,10 @@ A plugin of skills for building, auditing and improving eval loops for AI produc
 | `eval-llm-judge` | Write LLM judge prompts for one criterion each. | Available |
 | `llm-align` | Measure a judge against human labels (TPR/TNR), investigate disagreements, fix the prompt. | Available |
 | `ticket-to-eval` | Convert support tickets or traces into regression and generalized dataset rows. | Available |
-| `trace-review-app` | Design and build a one-file trace review app for one product: queue, notes, pass or fail labels, trace-code tags and exports for the other skills. | Draft (Week 4) |
-| `eval-run` | Run an agent and its scorers over a dataset, save traces and a results report, compare two runs. | To do (Week 2) |
-| `eval-trace` | Evaluate tool calls and multi-step traces: tool choice, arguments, order, task completion. | To do (Week 4) |
-| `eval-monitor` | Sample production sessions on a schedule, score them, report drift, propose dataset rows. | To do (Week 4) |
+| `trace-review-app` | Design and build a one-file trace review app for one product: queue, notes, pass or fail labels, trace-code tags and exports for the other skills. | Draft (Week 5) |
+| `eval-run` | Run an agent and its scorers over a dataset, save traces and a results report, compare two runs. | To do (Week 3) |
+| `eval-trace` | Evaluate tool calls and multi-step traces: tool choice, arguments, order, task completion. | To do (Week 5) |
+| `eval-monitor` | Sample production sessions on a schedule, score them, report drift, propose dataset rows. | To do (Week 5) |
 
 Also to do: a local trace viewer the skills can generate. One HTML file served by a small Python server with no dependencies, for reading traces, writing notes and labeling. Notes save to disk so `trace-codes` and `llm-align` can read them.
 
@@ -40,7 +40,7 @@ The plugin is named `ai-evals`, in the `calibre-labs` marketplace. Open before a
 
 To add: Mapper's v2 rubric, and worked UIG examples for two or three other product types.
 
-To do before the cohort uses them: review the Mapper pages and the Week 1 trace set, and change what we don't like.
+To do before the cohort uses them: review the Mapper pages and the Week 2 trace set, and change what we don't like.
 
 ## Design principles
 

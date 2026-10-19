@@ -12,20 +12,20 @@ We add skills as the course moves through its sessions, so this repo grows over 
 
 | Step | Who does it | Skill | Added in | Status |
 |---|---|---|---|---|
-| Not sure where to start | Claude | [`eval-guide`](skills/eval-guide/SKILL.md) | Week 1 | Available |
-| Write the eval rubric into the PRD, v1 before traces and v2 after | Claude drafts, you decide | [`eval-rubric`](skills/eval-rubric/SKILL.md) | Week 1 | Available |
-| Build a diverse set of test inputs | Claude | [`uig`](skills/uig/SKILL.md) | Week 1 | Available |
-| Read and annotate traces | **You** | | Week 1 | |
-| Cluster your notes into trace codes | Claude | [`trace-codes`](skills/trace-codes/SKILL.md) | Week 1 | Available |
-| Write code-based evals | Claude | [`eval-code`](skills/eval-code/SKILL.md) | Week 2 | Available |
-| Write LLM judges | Claude | [`eval-llm-judge`](skills/eval-llm-judge/SKILL.md) | Week 2 | Available |
-| Run the agent and the scorers over a dataset | Claude | `eval-run` | Week 2 | Coming |
-| Label a sample pass or fail | **You** | | Week 3 | |
-| Measure each judge against your labels and fix it | Claude | [`llm-align`](skills/llm-align/SKILL.md) | Week 3 | Available |
-| Turn tickets and bad traces into dataset rows | Claude | [`ticket-to-eval`](skills/ticket-to-eval/SKILL.md) | Week 3 | Available |
-| Check tool calls and multi-step traces | Claude | `eval-trace` | Week 4 | Coming |
-| Score production on a schedule and report drift | Claude | `eval-monitor` | Week 4 | Coming |
-| Build a trace review app for your product | Claude designs, you review in it | [`trace-review-app`](skills/trace-review-app/SKILL.md) | Week 4 | Draft |
+| Not sure where to start | Claude | [`eval-guide`](skills/eval-guide/SKILL.md) | Week 2 | Available |
+| Write the eval rubric into the PRD, v1 before traces and v2 after | Claude drafts, you decide | [`eval-rubric`](skills/eval-rubric/SKILL.md) | Week 2 | Available |
+| Build a diverse set of test inputs | Claude | [`uig`](skills/uig/SKILL.md) | Week 2 | Available |
+| Read and annotate traces | **You** | | Week 2 | |
+| Cluster your notes into trace codes | Claude | [`trace-codes`](skills/trace-codes/SKILL.md) | Week 2 | Available |
+| Write code-based evals | Claude | [`eval-code`](skills/eval-code/SKILL.md) | Week 3 | Available |
+| Write LLM judges | Claude | [`eval-llm-judge`](skills/eval-llm-judge/SKILL.md) | Week 3 | Available |
+| Run the agent and the scorers over a dataset | Claude | `eval-run` | Week 3 | Coming |
+| Label a sample pass or fail | **You** | | Week 4 | |
+| Measure each judge against your labels and fix it | Claude | [`llm-align`](skills/llm-align/SKILL.md) | Week 4 | Available |
+| Turn tickets and bad traces into dataset rows | Claude | [`ticket-to-eval`](skills/ticket-to-eval/SKILL.md) | Week 4 | Available |
+| Check tool calls and multi-step traces | Claude | `eval-trace` | Week 5 | Coming |
+| Score production on a schedule and report drift | Claude | `eval-monitor` | Week 5 | Coming |
+| Build a trace review app for your product | Claude designs, you review in it | [`trace-review-app`](skills/trace-review-app/SKILL.md) | Week 5 | Draft |
 
 Start with `eval-guide` if you are not sure which one you need. It looks at your situation and loads the right skill.
 
@@ -65,7 +65,7 @@ The skills read and write plain files (markdown, CSV, JSON, HTML). You do not ne
 
 Worked examples of the AI PRD's rubric section. Corner and Ledger were built live during the Eval Rubrics webinar: a consumer shopping agent and an enterprise finance agent, each taken from v1 rubric through a real trace to v2. Support Triage is a lighter-weight sample PRD for a support-ticket classification agent, useful as a quick reference alongside the full worked examples.
 
-Mapper is the course project for the fall 2026 cohort of AI Evals: a market research agent with five tools. Its session was recorded from a real run on Oct 2, 2026, and its trace page tags every step with a layer (context, retrieval, harness, systems). Its v2 rubric gets written in Week 1 of the course.
+Mapper is the course project for the fall 2026 cohort of AI Evals: a market research agent with five tools. Its session was recorded from a real run on Oct 2, 2026, and its trace page tags every step with a layer (context, retrieval, harness, systems). Its v2 rubric gets written in Week 2 of the course.
 
 | File | Description |
 |------|-------------|
@@ -87,7 +87,7 @@ Mapper is the course project for the fall 2026 cohort of AI Evals: a market rese
 | `mapper/mapper-rubric-v1.html` | Mapper's v1 rubric: nine lines, written from the PRD before a single trace |
 | `mapper/mapper-simulation.html` | A recorded Mapper session, click through what the user saw |
 | `mapper/mapper-trace.html` | The trace behind that session, tagged by layer, with a reviewer view (press R) |
-| `mapper/traces/index.html` | Nine more recorded Mapper sessions to read and annotate in Week 1. Each trace page has a notes box, and the index exports the notes as a CSV for `trace-codes` |
+| `mapper/traces/index.html` | Nine more recorded Mapper sessions to read and annotate in Week 2. Each trace page has a notes box, and the index exports the notes as a CSV for `trace-codes` |
 | `mapper/traces/sessions.json` | The same nine sessions as data |
 | `support-triage/support-triage-prd.md` | Sample PRD for a support-ticket triage agent that categorizes tickets by intent, sentiment, and urgency |
 
