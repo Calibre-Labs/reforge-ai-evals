@@ -28,7 +28,7 @@ observations must be theirs.
 
 | Input | Required | Typical form |
 |---|---|---|
-| Notes | Yes | A CSV or JSON with a trace id and a free-text note per trace. Pasted text also works. |
+| Notes | Yes | A CSV or JSON with a trace id and a free-text note per trace, pasted text, or a review page that stores notes (see below). |
 | Traces | Helpful | The files or folder the notes refer to, so examples can quote what happened |
 | Rubric | Helpful | The current eval rubric, to map each code to a line |
 | Existing codes | If any | A previous trace codes file to merge into |
@@ -116,6 +116,31 @@ Save three files in the working folder:
 
 In the reply, give the number of traces and codes, the top three codes with counts, and the one
 question the reviewer should settle first (usually a code with a fuzzy boundary).
+
+## When the notes live in a review page
+
+If the notes are in a published review page with its own database (such as one built with
+`trace-review-app`), read them from the page instead of asking for an export. Then write the
+result back so the team sees it in the page, in one document at `codes/current`:
+
+```json
+{
+  "generated": "2026-10-28T16:40:00Z",
+  "from": "18 notes by 2 reviewers",
+  "codes": [
+    {"name": "Cites a link it never opened",
+     "definition": "Yes if a cited source was not in what search returned, or does not open.",
+     "count": 3, "traces": ["trace-06", "trace-09", "trace-01"],
+     "example": "Trace 6: the Okta press release link is a 404.",
+     "next": "Write a check"}
+  ],
+  "rubric": [{"change": "New", "id": "G5", "line": "Cites only pages it opened in this session."}]
+}
+```
+
+`traces` uses the page's own trace ids. `rubric` is optional; `eval-rubric` in v2 mode can add it
+later. Writing replaces the previous codes, so keep a copy of anything worth keeping first. Still
+save the three files below.
 
 ## Merging new notes into existing codes
 
