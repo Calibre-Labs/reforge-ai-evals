@@ -21,6 +21,19 @@ A plugin of skills for building, auditing and improving eval loops for AI produc
 
 Also to do: a local trace viewer the skills can generate. One HTML file served by a small Python server with no dependencies, for reading traces, writing notes and labeling. Notes save to disk so `trace-codes` and `llm-align` can read them.
 
+## How the fall 2026 course uses the skills on Mapper
+
+The course demos follow two Mapper failures from Week 2 to Week 5. The same plan is in mapper3's `PLAN.md`, which also tracks the app work each step needs.
+
+| Week | Grounding: cites sources it never retrieved (rubric G2) | Governance: publishes a link nobody asked for (rubric G3) | Skills shown |
+|---|---|---|---|
+| 2, Oct 28 | The cohort finds made-up links in nine recorded traces | | eval-rubric, uig, trace-codes |
+| 3, Nov 4 | eval-code writes the check; eval-run runs it over 30 recorded sessions (grounding in `log` mode) | eval-code writes the check; a must-never at 100% | eval-code, eval-llm-judge, eval-run |
+| 4, Nov 11 | llm-align aligns the judge; the harness fix (`SOURCE_GROUNDING=enforce`) is re-run and compared | | llm-align, uig, ticket-to-eval, eval-run |
+| 5, Nov 18 | eval-monitor runs the Week 3 checks and Week 4 judge nightly on the cohort's production sessions | The confirm card live in production | eval-trace, eval-monitor, trace-review-app |
+
+eval-run reads folders of `mapper-trace/1` files written by mapper3's batch runner. mapper3's `compare-runs` report stays code-only; eval-run adds the judges and writes the results page. eval-monitor reads mapper3's admin trace export, with usernames replaced by pseudonyms.
+
 ## Packaging
 
 - `.claude-plugin/plugin.json` and `marketplace.json`: Claude Code plugin. Validated with `claude plugin validate`.
