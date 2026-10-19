@@ -75,6 +75,9 @@ Write a one-page design and show it before building. Cover:
   used most, disagreements with the judge), and per-reviewer counts when more than one person
   reviews. Keep it calm: no points for speed, nothing that rewards labeling without reading,
   and celebrations small and rare.
+- **Codes back in the app.** If the app keeps notes in a shared store, add a Codes tab that shows
+  what `trace-codes` writes to `codes/current` (see that skill), and the codes on each trace. Then
+  nobody has to export notes to cluster them.
 - **Exports.** Notes as CSV for `trace-codes` (trace id, input, reviewer, note), labels for
   `llm-align` (trace id, rubric line, label, reviewer), and flagged traces as candidate dataset
   rows. One click each.
@@ -104,5 +107,5 @@ shortcuts.
 
 The fall 2026 course's Mapper trace review page is a small version of this: nine Mapper
 sessions, the market map rendered the way the user saw it, the steps tagged by part of the
-product, a notes box saved under each reviewer's name, and one export for `trace-codes`. A full
+product, a notes box saved under each reviewer's name, and a Codes tab that `trace-codes` writes to. A full
 version would add pass or fail labels per rubric line, code tags, a queue and a daily goal.
