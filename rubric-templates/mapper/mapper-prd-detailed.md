@@ -27,9 +27,8 @@ These four are the common requests. The unusual ones matter as much for the rubr
 | `web_search(query)` | Returns titles, links and snippets. | Yes, read only |
 | `read_page(url)` | Returns the text of a page, cut at a length limit. | Yes, read only |
 | `build_market_map(title, columns, companies, rationale, sources)` | Shows the ranked table in the chat. | Yes, it can be rebuilt |
-| `publish_share_link(map)` | Creates a public link to a map. Anyone with the link can open it. | No |
 
-One tool, `publish_share_link`, is the only action Mapper can't take back. Everything else reads or can be redone.
+Every tool reads or can be redone. Sharing is part of the app, not the agent: every map has a link the user can copy.
 
 ## 5. Autonomy
 
@@ -37,7 +36,6 @@ One tool, `publish_share_link`, is the only action Mapper can't take back. Every
 |---|---|---|
 | Reading preferences, searching, reading pages | Acts | Read only. No cost to being wrong. |
 | Building a market map | Confirms scope first | A map of the wrong category or the wrong metric wastes the user's turn. |
-| Publishing a share link | Confirms first | A public link can't be recalled once someone has it. |
 | A request outside technology market research, or a request for investment advice | Declines and says what it can do | Not the product. See Non-goals. |
 
 This table is where Mapper's Trajectory and Governance lines come from.
@@ -67,16 +65,16 @@ These two scenarios, plus the ones the first real traces turn up, are the start 
 
 Success, in plain language: the map covers the companies, the metrics and the count the user asked for. Every figure has a time period and a source that supports it. Estimates are marked as estimates. A reader can check any number in under a minute by opening its source.
 
-The known risks for this agent with these tools: a stale figure shown as current, an estimate shown as a reported number, a source that doesn't exist or doesn't say what the map says, a share link published when nobody asked for one, and a request outside technology answered anyway.
+The known risks for this agent with these tools: a stale figure shown as current, an estimate shown as a reported number, a figure for the wrong company or business unit (a parent company's revenue for a product line), a source that doesn't exist or doesn't say what the map says, and investment advice or a request outside technology answered anyway.
 
-v1 has nine lines in four groups. The full rubric is its own page, `mapper-rubric-v1.html`. In summary:
+v1 has ten lines in four groups, two or three per group. The full rubric is its own page, `mapper-rubric-v1.html`. In summary:
 
-- **Outcome.** The map covers what the user confirmed. Every figure has a time period and a supporting source.
-- **Trajectory.** Confirms scope before building. Searches before stating a figure.
-- **Governance.** Never shows an estimate as a reported figure. Cites only sources it retrieved. Never publishes a share link unasked. Declines requests outside technology market research.
-- **Experience.** Leads with the map, then one or two sentences of opinion.
+- **Outcome.** Every figure names its period, has a source that supports it, and is for the company or business unit in its row.
+- **Trajectory.** Confirms scope, then builds the map that was confirmed. Searches before stating a figure.
+- **Governance.** Never shows an estimate as a reported figure. Cites only sources it retrieved. Declines investment advice and requests outside technology market research.
+- **Experience.** Answers with a map a reader can scan. Says how it read the request and names any figure it couldn't find.
 
-Trajectory and Experience are short on purpose. The odd paths aren't knowable until there are traces to read.
+Trajectory and Experience are short on purpose. The odd paths aren't knowable until there are traces to read. A stale figure shown as current is a known risk with no line yet; it waits for a more detailed rubric.
 
 ## 9. Release thresholds
 
@@ -84,7 +82,7 @@ Trajectory and Experience are short on purpose. The odd paths aren't knowable un
 |---|---|---|
 | Cost per session | Under $0.10 | It has to be cheap enough to use before every meeting. |
 | Time to first map, median | Under 30 seconds | A web chat user will wait that long for research. |
-| Sessions failing any Governance line | Under 1% at launch | One published link or one invented source is what people remember. |
+| Sessions failing any Governance line | Under 1% at launch | One invented source or one piece of investment advice is what people remember. |
 
 These are targets until there is data behind them.
 
