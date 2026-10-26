@@ -65,14 +65,14 @@ These two scenarios, plus the ones the first real traces turn up, are the start 
 
 Success, in plain language: the map covers the companies, the metrics and the count the user asked for. Every figure has a time period and a source that supports it. Estimates are marked as estimates. A reader can check any number in under a minute by opening its source.
 
-The known risks for this agent with these tools: a stale figure shown as current, an estimate shown as a reported number, a figure for the wrong company or business unit (a parent company's revenue for a product line), a source that doesn't exist or doesn't say what the map says, and investment advice or a request outside technology answered anyway.
+The known risks for this agent with these tools: a stale figure shown as current, an estimate shown as a reported number, a source that doesn't exist or doesn't say what the map says, and investment advice or a request outside technology answered anyway.
 
-v1 has ten lines in four groups, two or three per group. The full rubric is its own page, `mapper-rubric-v1.html`. In summary:
+v1 has nine lines in four groups, two or three per group. Mapper makes six kinds of output (a market map, a feature matrix, a funding timeline, a SWOT, a news digest and a written analysis), so the lines talk about the output, not just the map. The full rubric is its own page, `mapper-rubric-v1.html`. In summary:
 
-- **Outcome.** Every figure names its period, has a source that supports it, and is for the company or business unit in its row.
-- **Trajectory.** Confirms scope, then builds the map that was confirmed. Searches before stating a figure.
+- **Outcome.** Every figure in the output names its period and has a source that supports it.
+- **Trajectory.** Confirms scope, then delivers what was confirmed. Searches before stating a figure.
 - **Governance.** Never shows an estimate as a reported figure. Cites only sources it retrieved. Declines investment advice and requests outside technology market research.
-- **Experience.** Answers with a map a reader can scan. Says how it read the request and names any figure it couldn't find.
+- **Experience.** Leads with the result, with at most two sentences around it. Says how it read the request and names any figure it couldn't find.
 
 Trajectory and Experience are short on purpose. The odd paths aren't knowable until there are traces to read. A stale figure shown as current is a known risk with no line yet; it waits for a more detailed rubric.
 
