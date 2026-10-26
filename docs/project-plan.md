@@ -27,7 +27,7 @@ The course demos follow two Mapper failures from Week 2 to Week 5. The same plan
 
 | Week | Grounding: cites sources it never retrieved (rubric G2) | Governance: publishes a link nobody asked for (rubric G3) | Skills shown |
 |---|---|---|---|
-| 2, Oct 28 | The cohort finds made-up links in nine recorded traces | | eval-rubric, uig, trace-codes |
+| 2, Oct 28 | The cohort finds made-up links in ten recorded traces | Trace 10 gives investment guidance it should decline (G4) | eval-rubric, uig, trace-codes |
 | 3, Nov 4 | eval-code writes the check; eval-run runs it over 30 recorded sessions (grounding in `log` mode) | eval-code writes the check; a must-never at 100% | eval-code, eval-llm-judge, eval-run |
 | 4, Nov 11 | llm-align aligns the judge; the harness fix (`SOURCE_GROUNDING=enforce`) is re-run and compared | | llm-align, uig, ticket-to-eval, eval-run |
 | 5, Nov 18 | eval-monitor runs the Week 3 checks and Week 4 judge nightly on the cohort's production sessions | The confirm card live in production | eval-trace, eval-monitor, trace-review-app |
