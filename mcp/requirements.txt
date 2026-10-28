@@ -1,2 +1,0 @@
-mcp[cli]>=1.0.0
-braintrust>=0.0.100
