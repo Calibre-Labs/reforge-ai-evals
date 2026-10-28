@@ -54,7 +54,7 @@ Write a v1 eval rubric from my PRD.
 ## Worked examples
 
 - **[Templates](templates/):** an AI PRD template, plus PRDs, v1 and v2 eval rubrics, simulated sessions and annotated traces for three agents: Corner (consumer shopping), Ledger (enterprise finance) and Mapper (market research, with 10 traces to annotate).
-- **Market Map:** a single-prompt agent from the spring 2026 cohort, with its [prompt](prompts/market-map-prompt.md), [tagged datasets](datasets/), [11 evaluators](evaluators/) and a [complete User Input Grid](docs/uig-market-map.md).
+- **[Market Map User Input Grid](docs/uig-market-map.md):** a complete worked UIG for the single-prompt market research agent from the spring 2026 cohort.
 
 ## FAQ
 
@@ -113,7 +113,7 @@ An AI PRD specifies the agent's behavior, not screens, including how much autono
 <details>
 <summary><b>Do I need a particular eval platform or model?</b></summary>
 
-No. The skills work in any coding agent that supports skills, and they read and write plain files. The example datasets use [Braintrust](https://braintrust.dev)'s CSV layout, which any tool that reads CSV can use. `llm-align` and `ticket-to-eval` can also read from platforms such as Braintrust or LangSmith if your data lives there.
+No. The skills work in any coding agent that supports skills, and they read and write plain files. `llm-align` and `ticket-to-eval` can also read from platforms such as Braintrust or LangSmith if your data lives there.
 </details>
 
 ## About
