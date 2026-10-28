@@ -1,10 +1,10 @@
 # Mapper: AI PRD
 
-*A market research agent for technology categories. Prototype. October 2026.*
+*A market research agent for technology categories. Live at mapper.calibrelabs.ai. October 2026.*
 
 ## 1. Product
 
-Mapper is a market research agent. You name a technology category or a company, and it returns a market map: the top three companies, ranked, with the metrics you care about and the sources behind each number. When it works, you have a table you can paste into a doc in under a minute and defend in a meeting.
+Mapper is a market research agent. You name a technology category or a company, and it returns a market map: three to five companies, ranked, with the metrics you care about and the sources behind each number. It can also return a feature matrix, a funding timeline, a SWOT, a news digest or a written analysis. When it works, you have something you can paste into a doc in under a minute and defend in a meeting.
 
 ## 2. User and channel
 
@@ -12,30 +12,33 @@ A product manager, founder or investor getting ready for a meeting. The channel 
 
 ## 3. Jobs to be done
 
-- Map a category I name: "top AI customer support startups".
-- Map the competitors of a company I name: "Reforge competitors".
-- Rank by the metric I care about, and always show the columns I always want.
+- Map a category I name: "ai-native customer support startups".
+- Map the competitors or comparables of a company I name: "databricks public comps".
+- Rank by the metric I care about, and show the columns I ask for.
 - Give me something I can share with my team.
 
-These four are the common requests. The unusual ones matter as much for the rubric: a category that existed in 2003, a company that is a product line inside a bigger company, a request for a market that isn't technology at all. Run a User Input Grid (see `../../skills/uig/SKILL.md`) before locking Non-goals and the rubric.
+These four are the common requests. The unusual ones matter as much for the rubric: a market in a past or future year ("search in 2003", "public ai companies in 2028"), a company that is a product line inside a bigger company, a request for a market that isn't technology at all, and a request for investment advice ("should i buy anthropic stock"). Run a User Input Grid (see `../../skills/uig/SKILL.md`) before locking Non-goals and the rubric.
 
 ## 4. Tool surface
 
+Each session has two turns before the output. On the first turn the harness sends the scoping instructions, today's date and the user's message, with no tools, and Mapper replies with a scoping question. On the second turn it researches and builds the output.
+
 | Tool | What it does | Reversible? |
 |---|---|---|
-| `get_preferences()` | Returns the user's saved preferences: the ranking metric and the columns to always include. | Yes, read only |
-| `web_search(query)` | Returns titles, links and snippets. | Yes, read only |
-| `read_page(url)` | Returns the text of a page, cut at a length limit. | Yes, read only |
-| `build_market_map(title, columns, companies, rationale, sources)` | Shows the ranked table in the chat. | Yes, it can be rebuilt |
+| Research | One Gemini call with Google Search grounding. It searches the web, reads the results, and returns notes and the sources it used. Source links come back as Google redirect links. The course trace pages show this step as `web_search` and `read_page`. | Yes, read only |
+| `build_market_map(title, description, columns, companies, rationale, sources)` | Shows the ranked table in the chat, with a short rationale and the sources. | Yes, it can be rebuilt |
+| Five more output tools | A feature matrix, a funding timeline, a SWOT, a news digest and a written analysis. Today the harness picks the output tool from the wording of the request. | Yes, they can be rebuilt |
 
-Every tool reads or can be redone. Sharing is part of the app, not the agent: every map has a link the user can copy.
+Every tool reads or can be redone. Sharing is part of the app, not the agent: the user can publish a link to any output from the Share button.
+
+Mapper has no saved preferences yet. The user says which metric to rank by and which columns to include, usually in reply to the scoping question. The course trace pages show a `get_preferences` step that returns "No saved preferences" for this reason.
 
 ## 5. Autonomy
 
 | Action | Autonomy | Why |
 |---|---|---|
-| Reading preferences, searching, reading pages | Acts | Read only. No cost to being wrong. |
-| Building a market map | Confirms scope first | A map of the wrong category or the wrong metric wastes the user's turn. |
+| Searching and reading pages | Acts | Read only. No cost to being wrong. |
+| Building an output | Confirms scope first, then delivers what was confirmed | A map of the wrong category, metric or count wastes the user's turn. Today the harness asks a scoping question on every first turn. |
 | A request outside technology market research, or a request for investment advice | Declines and says what it can do | Not the product. See Non-goals. |
 
 This table is where Mapper's Trajectory and Governance lines come from.
@@ -44,13 +47,13 @@ This table is where Mapper's Trajectory and Governance lines come from.
 
 Thursday, 6:40pm, the evening before a board meeting.
 
-1. The user types: "top AI customer support startups".
-2. Mapper reads the saved preferences: rank by revenue, always include customer count.
-3. Mapper confirms the scope in one line.
-4. It searches, reads two or three pages, and builds a map of three companies with revenue, customer count and three sources.
+1. The user types: "ai-native customer support startups".
+2. Mapper replies with one scoping question. It proposes how many companies, the ranking metric and the columns.
+3. The user corrects it: "Top 3 only, ranked by revenue. Include customer count."
+4. Mapper researches and builds a map of three companies with revenue, customer count and the sources behind each figure.
 5. It adds one or two sentences on what stands out.
 
-A second path, which is harder. The user types "Reforge competitors". The category isn't named, the companies are private, and most of the numbers are estimates. Mapper states how it read the request, marks every estimate, and says which figures it could not find instead of filling the cell.
+A second path, which is harder. The user types "databricks public comps". Databricks is private, so the map is of public companies to compare it with, and some figures are for a business unit inside a bigger company. Mapper states how it read the request, marks every estimate, and says which figures it could not find instead of filling the cell.
 
 These two scenarios, plus the ones the first real traces turn up, are the start of Mapper's golden dataset. Keep it in its own file next to the rubric.
 
@@ -59,7 +62,7 @@ These two scenarios, plus the ones the first real traces turn up, are the start 
 - Markets where technology isn't the core of the product.
 - Investment advice. Mapper ranks companies. It does not say what to buy.
 - Private or proprietary data. Mapper only uses what it can find on the public web.
-- Long reports. The output is a table and two sentences.
+- Long reports. The output comes first, with at most two sentences around it.
 
 ## 8. Eval rubric
 
@@ -94,7 +97,9 @@ These are targets until there is data behind them.
 
 ## 11. Open questions
 
+- Should Mapper ask a scoping question on every first turn, or only when the request is unclear?
+- Should the model pick the output type, instead of the harness matching words in the request?
 - What counts as "current"? The last twelve months, or the last fiscal year?
-- Should Mapper be able to change saved preferences, or only read them?
+- Should Mapper remember a user's ranking metric and columns across sessions?
 - Which sources are good enough to cite for a private company's revenue?
 - Owner: Sandhya. Needed before the cohort beta.
