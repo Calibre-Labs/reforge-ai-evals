@@ -53,7 +53,7 @@ Write a v1 eval rubric from my PRD.
 
 ## Worked examples
 
-- **[Rubric templates](rubric-templates/):** an AI PRD template, plus PRDs, v1 and v2 eval rubrics, simulated sessions and annotated traces for three agents: Corner (consumer shopping), Ledger (enterprise finance) and Mapper (market research, with 9 traces to annotate).
+- **[Rubric templates](rubric-templates/):** an AI PRD template, plus PRDs, v1 and v2 eval rubrics, simulated sessions and annotated traces for three agents: Corner (consumer shopping), Ledger (enterprise finance) and Mapper (market research, with 10 traces to annotate).
 - **Market Map:** a single-prompt agent from the spring 2026 cohort, with its [prompt](prompts/market-map-prompt.md), [tagged datasets](datasets/), [11 evaluators](evaluators/) and a [complete User Input Grid](docs/uig-market-map.md).
 
 ## FAQ

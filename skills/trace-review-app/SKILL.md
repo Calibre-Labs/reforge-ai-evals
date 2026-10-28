@@ -105,7 +105,8 @@ shortcuts.
 
 ## Example
 
-The fall 2026 course's Mapper trace review page is a small version of this: nine Mapper
+The fall 2026 course's Mapper trace review page is a small version of this: ten Mapper
 sessions, the market map rendered the way the user saw it, the steps tagged by part of the
-product, a notes box saved under each reviewer's name, and a Codes tab that `trace-codes` writes to. A full
+product, a notes box saved under each reviewer's name, a Cluster button that runs the
+`trace-codes` method on Claude and fills a Codes tab, and an instructor key only editors see. A full
 version would add pass or fail labels per rubric line, code tags, a queue and a daily goal.
