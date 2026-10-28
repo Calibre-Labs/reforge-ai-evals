@@ -163,7 +163,7 @@ A 4-dimension grid with these values gives ~360 theoretical combinations. The pr
 
 ## Recommended Queries to Add (Wk2 Dataset)
 
-Organized by gap filled. See `Wk2 Dataset.csv` for the full 50-row set with metadata tags.
+Organized by gap filled.
 
 ### Financial Domain (not represented)
 - `"personal finance apps"` — well-specified, current
