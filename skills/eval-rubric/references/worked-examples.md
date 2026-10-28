@@ -1,6 +1,6 @@
 # Worked examples: two rubrics from v1 to v2
 
-Both examples are in the repo as full pages under `rubric-templates/`, with the PRD, a simulated
+Both examples are in the repo as full pages under `templates/`, with the PRD, a simulated
 session and its trace. Read these summaries to calibrate length, wording and what changes between
 versions.
 

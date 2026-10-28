@@ -18,11 +18,11 @@ Install in any coding agent with `npx skills add https://github.com/Calibre-Labs
 
 ## Templates and worked examples
 
-- [AI PRD template](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/ai-prd-template.md): PRD for agents, with autonomy, eval rubric and release thresholds
-- [Corner (consumer shopping agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/corner/corner-prd-detailed.md) with v1 and v2 eval rubrics and an annotated trace
-- [Ledger (enterprise finance agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/ledger/ledger-prd-detailed.md) with v1 and v2 eval rubrics and an annotated trace
-- [Mapper (market research agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/mapper/mapper-prd-detailed.md) with v1 eval rubric, a recorded session and ten annotatable traces
-- [Support triage agent PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/rubric-templates/support-triage/support-triage-prd.md)
+- [AI PRD template](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/templates/ai-prd-template.md): PRD for agents, with autonomy, eval rubric and release thresholds
+- [Corner (consumer shopping agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/templates/corner/corner-prd-detailed.md) with v1 and v2 eval rubrics and an annotated trace
+- [Ledger (enterprise finance agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/templates/ledger/ledger-prd-detailed.md) with v1 and v2 eval rubrics and an annotated trace
+- [Mapper (market research agent) PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/templates/mapper/mapper-prd-detailed.md) with v1 eval rubric, a recorded session and ten annotatable traces
+- [Support triage agent PRD](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/templates/support-triage/support-triage-prd.md)
 - [Market Map User Input Grid](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/docs/uig-market-map.md): complete worked UIG
 
 ## Code and data

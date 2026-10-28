@@ -1,6 +1,6 @@
 # The PRD sections a rubric derives from
 
-The full template is `rubric-templates/ai-prd-template.md` in the repo. These are the parts the
+The full template is `templates/ai-prd-template.md` in the repo. These are the parts the
 rubric depends on. If a PRD is missing one, draft it and confirm it before writing rubric lines.
 
 ## Definition of success

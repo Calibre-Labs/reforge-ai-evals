@@ -47,7 +47,7 @@ The plugin is named `ai-evals`, in the `calibre-labs` marketplace. Open before a
 
 | Path | What it is |
 |---|---|
-| `rubric-templates/` | AI PRD template, and Corner, Ledger, Mapper and Support Triage as worked examples |
+| `templates/` | AI PRD template, and Corner, Ledger, Mapper and Support Triage as worked examples |
 | `docs/uig-market-map.md` | Worked UIG for the Market Map agent |
 | `prompts/`, `datasets/`, `evaluators/`, `mcp/` | The spring 2026 single-prompt Market Map example |
 
