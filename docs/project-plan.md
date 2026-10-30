@@ -23,16 +23,16 @@ Also to do: a local trace viewer the skills can generate. One HTML file served b
 
 ## How the fall 2026 course uses the skills on Mapper
 
-The course demos follow two Mapper failures from Week 2 to Week 5. The same plan is in mapper3's `PLAN.md`, which also tracks the app work each step needs.
+Mapper has three versions for the course: v1 (what Weeks 1 and 2 showed), v1.1 (three fixes shipped before Week 3: cite only retrieved links, decline investment advice, answer for the year asked; in production from Nov 2) and v2 (the metric-scope fix for Week 4; in production from Nov 11). Sharing is unchanged in every version: no confirm card. mapper3's `docs/demo-plan.md` is the record of which version each week shows and which known issues stay unfixed on purpose; its `PLAN.md` tracks the app work.
 
-| Week | Grounding: cites sources it never retrieved (rubric G2) | Governance: publishes a link nobody asked for (rubric G3) | Skills shown |
+| Week | Version | What the cohort sees | Skills shown |
 |---|---|---|---|
-| 2, Oct 28 | The cohort finds made-up links in ten recorded traces | Trace 10 gives investment guidance it should decline (G4) | eval-rubric, uig, trace-codes |
-| 3, Nov 4 | eval-code writes the check; eval-run runs it over 30 recorded sessions (grounding in `log` mode) | eval-code writes the check; a must-never at 100% | eval-code, eval-llm-judge, eval-run |
-| 4, Nov 11 | llm-align aligns the judge; the harness fix (`SOURCE_GROUNDING=enforce`) is re-run and compared | | llm-align, uig, ticket-to-eval, eval-run |
-| 5, Nov 18 | eval-monitor runs the Week 3 checks and Week 4 judge nightly on the cohort's production sessions | The confirm card live in production | eval-trace, eval-monitor, trace-review-app |
+| 2, Oct 28 | v1 | Ten recorded traces, rubric v1, notes, trace codes | eval-rubric, uig, trace-codes |
+| 3, Nov 4 | v1, then v1.1 | Three fixes shipped with no eval. Code checks written live: G2 (links that don't open) and half-empty columns (X2). Judges: metric scope live as the deep dive; O2, T1, G3 and T3 from prep. All scored in Braintrust on `w3-v1` and `w3-v1.1` (30 rows each) | eval-code, eval-llm-judge |
+| 4, Nov 11 | v1.1, then v2 | Align the metric-scope judge against our labels and the cohort's, then compare v1.1 and v2: metric scope goes up. Switch the app live; production moves to v2 | llm-align, eval-run, uig, ticket-to-eval |
+| 5, Nov 18 | v2 | Braintrust online scoring on the cohort's v2 sessions, and agent success rate in Amplitude Agent Analytics | eval-trace, eval-monitor, trace-review-app |
 
-eval-run reads folders of `mapper-trace/1` files written by mapper3's batch runner. mapper3's `compare-runs` report stays code-only; eval-run adds the judges and writes the results page. eval-monitor reads mapper3's admin trace export, with usernames replaced by pseudonyms.
+The course scorers are plain TypeScript files in mapper3's `scorers/course/`, written by the plugin's skills; the same file runs locally and in Braintrust. mapper3's batch runner records `mapper-trace/1` folders, `npm run score` logs each run as a Braintrust experiment and writes `scores.json`, and `npm run results` turns the scores into a self-contained results page, the fallback for both Week 3 demos. `compare-runs` stays code-only. eval-monitor reads mapper3's admin trace export, with usernames replaced by pseudonyms.
 
 ## Packaging
 
