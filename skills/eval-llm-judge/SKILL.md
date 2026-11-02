@@ -5,7 +5,8 @@ description: >
   evaluate semantic properties of AI outputs that cannot be checked programmatically —
   output quality, tone, factual accuracy, edge case handling, reference alignment. Also use
   when auditing existing judge prompts for bias, vagueness, or compound criteria. Output is a
-  judge prompt string and a Python runner function, saved to the project's evaluators file.
+  judge prompt and a runner in the project's own scorer format (a Python runner when the project
+  has none), saved where the project keeps its evaluators.
 ---
 
 # LLM Judge Evaluator Skill
@@ -35,7 +36,32 @@ Do NOT write an LLM judge for:
 
 ## Workflow
 
-### Step 1 — Define exactly ONE criterion
+### Step 1 — Find the project's scorer contract and judge helper
+
+Before drafting, look for where the project already keeps its evaluators: a `scorers/` or `evals/`
+folder, a types or contract file, existing judges, a README that says how they run. If there is
+one, write the judge in that language and follow the contract exactly: the function signature,
+the return shape, the file name and folder. If the project has a helper that calls the judge
+model, use it rather than the runner template below, so every judge shares one model, one output
+schema and one way of handling errors.
+
+For example, Mapper's course scorers live in `scorers/course/`, one TypeScript file per scorer.
+Each judge exports its `PROMPT_TEMPLATE` and default-exports a function that fills the template
+and calls `judge(name, prompt)` from `scorers/course/types.ts`. That helper asks Gemini 3.5
+Flash-Lite, at temperature 0, for `{critique, score}` and returns
+`{ name, score: 0 | 1, metadata: { reason } }`, with the critique as the reason.
+
+If the project's judge model is weaker than the guidance under Working Notes, keep it for
+consistency with the other judges, say so, and lean harder on Step 7: a weaker judge needs
+alignment more.
+
+In JavaScript or TypeScript, fill the prompt's slots with a replacer function
+(`template.replace("{session}", () => text)`). A plain string replacement reads `$&`, `` $` `` and
+`$'` in the session text as patterns, and sessions full of dollar figures will hit that.
+
+Use the Python runner template below only when the project has no contract of its own.
+
+### Step 2 — Define exactly ONE criterion
 
 The most common failure in judge design is compound criteria: "Is the output accurate, well-formatted,
 and appropriately hedged?" This produces judges that are hard to calibrate and whose scores are
@@ -49,7 +75,7 @@ Bad: "A good output is accurate, well-cited, and appropriately hedged." (three c
 
 If you're tempted to write a compound criterion, split it into two judges.
 
-### Step 2 — Write binary pass/fail definitions
+### Step 3 — Write binary pass/fail definitions
 
 **Binary (PASS/FAIL)** forces the judge to commit and produces clean metrics.
 
@@ -61,7 +87,7 @@ Write definitions for each level that are:
 - **Mutually exclusive**: a judge should not reasonably assign two levels to the same output
 - **Grounded**: name what counts as evidence, not just "good" vs "bad"
 
-### Step 3 — Write 3 few-shot examples
+### Step 4 — Write 3 few-shot examples
 
 The examples are the most important part of the prompt. They calibrate the judge's interpretation
 of the criterion and tell it what evidence to look for.
@@ -80,7 +106,7 @@ Rules for good examples:
    patterns, same vocabulary. Don't use generic QA examples; the judge will pattern-match to the
    wrong signals.
 
-### Step 4 — Require structured output
+### Step 5 — Require structured output
 
 The judge's output should be a JSON object, with the critique *before* the score:
 
@@ -91,7 +117,29 @@ The judge's output should be a JSON object, with the critique *before* the score
 Critique-first ordering matters: it forces the judge to reason before committing to a score,
 which produces more reliable results than score-first or score-only formats.
 
-### Step 5 — Validate the judge against human labels
+### Step 6 — Gate the judge, and give it the evidence it needs
+
+**Gate first.** If the criterion can't apply to a session, don't call the judge. Check that in
+code and return a pass whose reason says why. Mapper's judges do this: "delivers what was
+confirmed" skips sessions where nothing was proposed before the first output, "answers for the
+year asked" skips sessions that name no other year, and "metric scope" skips sessions with no
+table. If the project's contract supports skipping a row (a null score), use that instead. The
+gate saves judge calls, and the reason lets a reader tell "passed" from "had nothing to check".
+
+**Then give the judge what it needs to decide.** A judge can only judge what is in its prompt. If
+the criterion needs evidence the trace doesn't hold, the scorer has to fetch it. Mapper's "a
+source supports each figure" judge downloads each cited page and passes only the passages that
+mention the companies or figures shown. When you do this:
+- Save what you fetched, so a re-score reads the same text even if the page changes later.
+- Mark evidence you couldn't get ("could not be read: 403") instead of dropping it, and decide
+  how it counts. Mapper counts a figure backed only by unreadable pages as unsupported.
+- Tell the judge to decide only from the evidence given, not from what it knows.
+
+### Step 7 — Validate the judge against human labels
+
+**Read verdicts before you label.** Run the judge on the recorded runs you'll report and read
+about ten verdicts, passes and fails, against the outputs. This catches a criterion the judge
+misreads before you spend an hour labeling.
 
 Before using a judge in production evals, validate it:
 
@@ -104,6 +152,12 @@ Before using a judge in production evals, validate it:
 
 If a judge consistently fails on a specific sub-type of output, add a few-shot example covering
 that sub-type. If the criterion itself is ambiguous, rewrite it before adding more examples.
+
+**Score borderline cases twice.** Temperature 0 doesn't make a judge deterministic. Mapper's
+"answers for the year asked" judge gave the same output a FAIL and then a PASS. Run the judge
+twice over the labeled set. A row whose verdict flips is a borderline case: treat it as a
+disagreement to read, add a few-shot example near it or tighten the definition, and don't report
+a single run of it as the verdict.
 
 ---
 
@@ -150,8 +204,8 @@ Output: {output}
 
 ## Runner Function Template
 
-The runner uses structured outputs, so the response is always schema-valid JSON — no
-fence-stripping or parse-failure path. `critique` is declared before `score` so it is written first.
+Use the project's own judge helper if it has one (Step 1). Otherwise, this runner uses structured
+outputs, so the response is always schema-valid JSON — no fence-stripping or parse-failure path. `critique` is declared before `score` so it is written first.
 
 ```python
 from typing import Literal
@@ -191,6 +245,10 @@ def my_judge(output: str, input: str, expected: str = None) -> dict:
 ---
 
 ## Working Notes
+
+- **Name the rubric line and trace codes.** Put the rubric line and the trace code numbers the judge
+  checks in the scorer's header comment and in its name where results are shown, so anyone reading
+  a score can trace it back to the failure that motivated it.
 
 - **One criterion per judge, always.** This is the rule most often violated. A judge that checks
   two things at once cannot be improved — you don't know which criterion is failing. Split compound
