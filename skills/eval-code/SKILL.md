@@ -35,10 +35,31 @@ Do NOT write a code-based evaluator for:
 
 ## Workflow
 
-### Step 1 — Identify the property to check
+### Step 1 — Find the project's scorer contract
+
+Before writing anything, look for where the project already keeps its evaluators: a `scorers/` or
+`evals/` folder, a types or contract file, existing scorers, a README that says how they run. If
+there is one, write in that language and follow it exactly: the function signature, the return
+shape, how the file is named, and where it goes. A new check should look like its neighbors.
+
+For example, Mapper's course scorers live in `scorers/course/`, one TypeScript file per scorer.
+`scorers/course/types.ts` defines the contract: each file default-exports a function that takes a
+recorded session and returns `{ name, score: 0 | 1, metadata: { reason } }`, and the file name is
+the scorer's id.
+
+Use the Python signature and templates below only when the project has no contract of its own.
+
+### Step 2 — Identify the property to check
 
 Start from the product's output requirements, not from what seems easy to check. Ask:
 *"What must always be true in a valid output, regardless of the input?"*
+
+When the check comes from a rubric line and a trace code, read both. The rubric line defines what
+passes; the trace code names the failure you saw in traces. They can differ in scope. For
+example, Mapper's trace code 10 is "writes an essay instead of a map", but rubric line X1 also
+counts an analysis card as an output and limits the commentary around it to two sentences. When
+they differ, the rubric line wins. Put the rubric line and the trace code numbers in the
+scorer's header comment, so anyone reading results can trace a score back to what was found.
 
 For each property, write one sentence: **"A valid output must [verb] [object]."**
 
@@ -51,9 +72,19 @@ Examples:
 If the sentence requires words like "correctly" or "appropriate" or "relevant", stop —
 that property needs an LLM judge, not a code check.
 
-### Step 2 — Write the function signature
+### Step 3 — Decide what happens when the check doesn't apply
 
-The standard signature works across most eval platforms (Braintrust, LangSmith, custom runners):
+Some rows have nothing to check: a request the agent should decline has no map to inspect, and a
+session with no table has no columns to count. Decide up front what those rows score, and put it
+in the reason. Usually that's a pass whose reason says why ("Row should be declined; no research
+answer to check"). If the project's contract supports skipping a row (a null score), use that
+instead. Never let a not-applicable row pass silently: the reason is how a reader tells "passed
+the check" from "had nothing to check".
+
+### Step 4 — Write the function signature
+
+Use the project's contract from Step 1. Without one, this signature works across most eval
+platforms (Braintrust, LangSmith, custom runners):
 
 ```python
 def evaluator_name(output: str, input: str, expected: str = None) -> float | dict:
@@ -68,7 +99,7 @@ Return a `float` between 0.0 and 1.0, or a `dict` with at least a `score` key:
 Return metadata whenever partial credit is possible — it tells you *why* a score is 0.5,
 not just *that* it is.
 
-### Step 3 — Write the check, then find its failure modes
+### Step 5 — Write the check, then find its failure modes
 
 After writing the initial check, systematically ask:
 1. **False positive**: what valid output would this check incorrectly score 1.0?
@@ -81,7 +112,7 @@ After writing the initial check, systematically ask:
 Fix the top 1–2 failure modes. Don't over-engineer — accept that code-based checks
 have limits, and cover the rest with LLM judges.
 
-### Step 4 — Add partial credit where it makes sense
+### Step 6 — Add partial credit where it makes sense
 
 Binary (0/1) scoring is fine when the property is binary (either you have 3 companies or you don't).
 Add partial credit when:
@@ -89,8 +120,10 @@ Add partial credit when:
 - You want to distinguish "completely missing" from "partially present"
 
 Don't add partial credit just because it feels nicer — it complicates threshold-setting.
+If the project's contract is binary (a score of 0 or 1, like Mapper's), stay binary and put the
+detail in the reason.
 
-### Step 5 — Test the evaluator on known examples before committing
+### Step 7 — Test on known examples, then on recorded runs
 
 Run the evaluator on at least:
 - 1 clearly valid output (should score 1.0)
@@ -100,12 +133,22 @@ Run the evaluator on at least:
 If the evaluator scores an obviously valid output below 0.8, the check is too strict.
 If it scores an obviously invalid output above 0.2, the check is too loose.
 
+Then run it on the recorded runs you'll report, and read every failing row's reason against the
+output. A check you haven't read failures for is a check you don't know.
+
+If it never fails on any run, say so when you report it. A check that passes everything isn't
+measuring a current problem; it's a regression guard that will catch the problem if a later
+change brings it back. That's useful, but it's a different claim from "this is fixed".
+
 ---
 
 ## Output Format
 
-Write evaluators as a Python file with one function per evaluator. Each function:
-- Has a clear docstring stating what it checks and what counts as pass/fail
+Write each evaluator in the project's own format (Step 1): its language, its folder, one file per
+scorer if that's the convention. Without a project format, write a Python file with one function
+per evaluator. Either way, each function:
+- Has a clear docstring stating what it checks and what counts as pass/fail, plus the rubric line
+  and trace code numbers it comes from
 - Returns a float or dict (not print statements)
 - Is independently testable (no global state, no side effects)
 
