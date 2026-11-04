@@ -180,6 +180,7 @@ $("chips").innerHTML = (PAGE.chips || []).map(c => `<span class="chip">${esc(c)}
 const rate = run => { const p = run.rows.filter(r => r.score === 1).length; return {p, pct: Math.round(100 * p / run.rows.length)}; };
 $("resNote").textContent = PAGE.resultsNote || "";
 if (!PAGE.resultsNote) $("resNote").remove();
+if (RUNS.length === 1) $("res").style.gridTemplateColumns = "1fr";
 $("res").innerHTML = RUNS.map(run => {
   const {p, pct} = rate(run), f = run.rows.filter(r => r.score === 0), thr = SC.threshold;
   return `<div class="rcard"><div class="lab">${esc(run.label)}</div><div class="big">${pct}%<small> · ${p} of ${run.rows.length}</small></div>
