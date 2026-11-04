@@ -22,7 +22,7 @@ python3 build_page.py scorer examples/mapper-o3-judge.json --out o3.html
 
 The examples come from Mapper, the course's market research agent:
 
-- **Results page:** a 10-row sample of Mapper's 30-row course dataset, scored on v1 and v1.1.
+- **Results page:** a 10-row sample of Mapper's 30-row Mapper Dev Dataset, scored on v1 and v1.1.
 - **Code check example:** the half-empty columns check (TC-8, rubric line X2).
 - **Judge example:** the metric scope judge (TC-4, rubric line O3).
 
