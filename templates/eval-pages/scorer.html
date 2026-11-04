@@ -76,6 +76,12 @@ summary{cursor:pointer;font:500 12px var(--mono);letter-spacing:.06em;text-trans
 .s{background:var(--surface);padding:16px 18px;border:1px solid var(--hair)}
 .s.agree{border-color:var(--pass)} .s.disagree{border-color:var(--fail)}
 .shead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;align-items:baseline}
+details.s{padding:12px 18px} details.s > summary{cursor:pointer;list-style:none;font:300 15px var(--text);text-transform:none;letter-spacing:0;color:var(--body)} details.s > summary::-webkit-details-marker{display:none}
+details.s[open] > summary{padding-bottom:8px;border-bottom:1px solid var(--hair);margin-bottom:8px}
+.shead .right{display:inline-flex;gap:8px;align-items:center}
+.mycall{font:400 11px var(--mono);text-transform:uppercase;letter-spacing:.06em} .mycall.agree{color:var(--pass)} .mycall.disagree{color:var(--fail)}
+.samples{gap:8px!important}
+.tally .t{display:flex;flex-wrap:wrap;gap:6px 22px}
 .sid{font:500 13px var(--mono);color:var(--ink);margin-right:8px}
 .sin{color:var(--ink);font-weight:400}
 .sg{font:400 11px var(--mono);color:var(--muted);margin-left:8px;text-transform:uppercase;letter-spacing:.06em}
@@ -113,6 +119,8 @@ button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
 .notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px}
 .notes div{font-size:14px;padding:10px 12px;background:var(--surface);border-top:3px solid var(--hair)}
 .notes b{color:var(--ink);font-weight:500}
+.notes ul{margin:6px 0 0;padding-left:18px}
+.notes li{margin-top:4px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .chip{font:400 11px var(--mono);letter-spacing:.04em;padding:4px 8px;border:1px solid var(--hair);background:var(--surface);color:var(--ink)}
 .ln .tx{white-space:pre-wrap;word-break:break-word}
@@ -150,7 +158,7 @@ button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
 <section class="step"><div class="num">3</div><div>
   <h2 id="sessHead"></h2>
   <p id="sessNote"></p>
-  <div class="tally"><span class="t" id="tally"></span><button class="btn" id="reset">Clear</button></div>
+  <div class="tally"><span class="t" id="tally"></span><button class="btn" id="reset">Clear my calls</button></div>
   <div class="samples" id="samples"></div>
 </div></section>
 
@@ -185,7 +193,7 @@ PARTS.forEach((p, i) => (p.lines || []).forEach(n => partOf[n] = i + 1));
 $("docHead").textContent = D.heading || "The scorer";
 $("docNote").textContent = D.note || ""; if (!D.note) $("docNote").remove();
 $("keys").innerHTML = PARTS.map((p, i) => `<button class="key" data-i="${i+1}" aria-pressed="false"><i>${i+1}</i>${esc(p.label)}</button>`).join("");
-$("notes").innerHTML = PARTS.map((p, i) => `<div class="m${i+1}"><b>${esc(p.label)}.</b> ${esc(p.note)}</div>`).join("");
+$("notes").innerHTML = PARTS.map((p, i) => `<div class="m${i+1}"><b>${esc(p.label)}.</b> ${esc(p.note)}${(p.bullets || []).length ? `<ul>${p.bullets.map(b => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}</div>`).join("");
 if (!PARTS.length) { $("keys").remove(); $("notes").remove(); }
 const isComment = l => D.lang === "code" && /^\s*(\/\*\*|\*|\/\/|#)/.test(l);
 const lineHtml = (l, n, m, first) => `<div class="ln ${m ? "m" + m : ""}" data-i="${m || ""}"><span class="no">${n}</span><span class="mk">${first ? m : ""}</span><span class="tx">${isComment(l) ? `<span class="cm">${esc(l)}</span>` : (esc(l) || " ")}</span></div>`;
@@ -217,15 +225,23 @@ function mini(c){
     c.rows.map((r, ri) => `<tr>${r.map((v, i) => `<td class="${i && cells.has(ri + ":" + (i-1)) ? "e" : ""}">${esc(v || "(blank)")}</td>`).join("")}</tr>`).join("")}</table></div>`;
 }
 function render(){
+  const open = new Set([...document.querySelectorAll("#samples details.s[open]")].map(d => d.dataset.id));
   $("samples").innerHTML = ROWS.map(r => { const c = store[r.id] || "", pass = r.score === 1;
     const said = (r.said || []).length ? `<details class="file"><summary>The conversation</summary><div class="said">${r.said.map(t => `<span class="u">${esc(t.user)}</span>${t.text ? `<span class="a">${esc(t.text)}</span>` : ""}`).join("")}</div></details>` : "";
-    return `<div class="s ${c}" data-id="${esc(r.id)}"><div class="shead"><div><span class="sid">${esc(r.id)}</span><span class="sin">${esc(r.input)}</span><span class="sg">${esc(r.group || "")}</span></div>
-    <span class="verdict ${pass ? "p" : "f"}">${pass ? "Pass" : "Fail"}</span></div>
+    const mine = c ? `<span class="mycall ${c}">${c === "agree" ? "Agreed" : "Disagreed"}</span>` : "";
+    return `<details class="s ${c}" data-id="${esc(r.id)}"${open.has(r.id) ? " open" : ""}><summary class="shead"><div><span class="sid">${esc(r.id)}</span><span class="sin">${esc(r.input)}</span><span class="sg">${esc(r.group || "")}</span></div>
+    <span class="right">${mine}<span class="verdict ${pass ? "p" : "f"}">${pass ? "Pass" : "Fail"}</span></span></summary>
     <div class="why">${esc(r.reason)}</div>${said}
     ${(r.cards || []).length ? r.cards.map(mini).join("") : `<div class="nomap">No output card.</div>`}
-    <div class="calls"><button data-c="agree" aria-pressed="${c === "agree"}">Agree</button><button data-c="disagree" aria-pressed="${c === "disagree"}">Disagree</button></div></div>`; }).join("");
-  const ids = Object.keys(store).filter(i => ROWS.some(r => r.id === i)), a = ids.filter(i => store[i] === "agree").length;
-  $("tally").innerHTML = `Reviewed <b>${ids.length}</b> of ${ROWS.length} · agree <b>${a}</b> · disagree <b>${ids.length - a}</b>`;
+    <div class="calls"><button data-c="agree" aria-pressed="${c === "agree"}">Agree</button><button data-c="disagree" aria-pressed="${c === "disagree"}">Disagree</button></div></details>`; }).join("");
+  // summary: the scorer's pass and fail, then your review, split by the scorer's call
+  const passes = ROWS.filter(r => r.score === 1), fails = ROWS.filter(r => r.score === 0);
+  const tallyOf = rs => { const ids = rs.filter(r => store[r.id]).map(r => r.id), a = ids.filter(i => store[i] === "agree").length; return {n: ids.length, a, d: ids.length - a}; };
+  const all = tallyOf(ROWS), tp = tallyOf(passes), tf = tallyOf(fails);
+  const pct = t => t.n ? ` (${Math.round(100 * t.a / t.n)}%)` : "";
+  $("tally").innerHTML = `<span><b>${passes.length}</b> pass · <b>${fails.length}</b> fail</span>` +
+    `<span>Reviewed <b>${all.n}</b> of ${ROWS.length} · agree <b>${all.a}</b>${pct(all)} · disagree <b>${all.d}</b></span>` +
+    `<span>On fails: agree <b>${tf.a}</b>, disagree <b>${tf.d}</b></span><span>On passes: agree <b>${tp.a}</b>, disagree <b>${tp.d}</b></span>`;
 }
 $("samples").onclick = e => { const b = e.target.closest("button[data-c]"); if (!b) return; const id = b.closest(".s").dataset.id;
   store[id] = store[id] === b.dataset.c ? undefined : b.dataset.c; if (!store[id]) delete store[id]; save(); render(); };
