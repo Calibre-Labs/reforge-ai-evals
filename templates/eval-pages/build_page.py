@@ -1,10 +1,10 @@
 """Fill one of the eval page templates with your data and write a self-contained HTML page.
 
     python3 build_page.py results examples/mapper-results.json --out results.html
-    python3 build_page.py code-check my-check.json --out my-check.html --title "TC-8 code check"
-    python3 build_page.py judge my-judge.json --out my-judge.html
+    python3 build_page.py scorer my-check.json --out my-check.html --title "TC-8 half-empty columns"
+    python3 build_page.py scorer my-judge.json --out my-judge.html
 
-The template is results, code-check or judge. The JSON follows the schema in README.md.
+The template is results or scorer (one layout for code checks and LLM judges). The JSON follows the schema in README.md.
 No dependencies beyond the standard library.
 """
 import argparse
@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).parent
-TEMPLATES = ("results", "code-check", "judge")
+TEMPLATES = ("results", "scorer")
 
 
 def build(template: str, data: dict, title: str | None = None) -> str:

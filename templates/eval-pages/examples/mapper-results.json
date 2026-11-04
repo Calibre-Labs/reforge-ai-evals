@@ -8,7 +8,7 @@
    "key": "w3-v1",
    "label": "v1",
    "note": "Week3 v1 production baseline",
-   "scored_at": "2026-11-04T06:11:36.554Z",
+   "scored_at": "2026-11-04T15:01:55.346Z",
    "rows": [
     {
      "id": "01",
@@ -38,7 +38,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 3 column(s) are at least half filled."
+       "reason": "All 3 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -91,11 +91,16 @@
         {
          "scorer": "x2",
          "cols": [],
-         "cells": [],
+         "cells": [
+          [
+           2,
+           1
+          ]
+         ],
          "note": "half empty",
          "colNotes": {
           "0": "0 of 5 empty",
-          "1": "0 of 5 empty",
+          "1": "1 of 5 empty",
           "2": "0 of 5 empty"
          }
         }
@@ -141,7 +146,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 2 column(s) are at least half filled."
+       "reason": "All 2 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -227,7 +232,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 3 column(s) are at least half filled."
+       "reason": "All 3 column(s) are more than half filled."
       },
       "o3": {
        "score": 1,
@@ -440,7 +445,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 3 column(s) are at least half filled."
+       "reason": "All 3 column(s) are more than half filled."
       },
       "o3": {
        "score": 1,
@@ -531,7 +536,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 2 column(s) are at least half filled."
+       "reason": "All 2 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -652,7 +657,7 @@
       },
       "x2": {
        "score": 0,
-       "reason": "Half-empty column(s): \"Content Budget\" (4 of 6 empty)."
+       "reason": "Half-empty column(s): \"Content Budget\" (5 of 6 empty)."
       },
       "o3": {
        "score": 0,
@@ -722,6 +727,10 @@
          ],
          "cells": [
           [
+           1,
+           2
+          ],
+          [
            2,
            2
           ],
@@ -742,7 +751,7 @@
          "colNotes": {
           "0": "0 of 6 empty",
           "1": "0 of 6 empty",
-          "2": "4 of 6 empty",
+          "2": "5 of 6 empty",
           "3": "0 of 6 empty"
          }
         }
@@ -788,7 +797,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 3 column(s) are at least half filled."
+       "reason": "All 3 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -929,8 +938,8 @@
        "reason": "The user's request for top cloud companies in 2010 falls directly under technology market research and is not investment advice or off-topic. Mapper correctly understood the scope, offered to generate an appropriate market map, and delivered a clean historical breakdown of the cloud market without providing buy, sell, or hold recommendations."
       },
       "x2": {
-       "score": 1,
-       "reason": "All 3 column(s) are at least half filled."
+       "score": 0,
+       "reason": "Half-empty column(s): \"Estimated Revenue / Scale\" (3 of 5 empty)."
       },
       "o3": {
        "score": 0,
@@ -982,11 +991,26 @@
        "flags": [
         {
          "scorer": "x2",
-         "cols": [],
-         "cells": [],
+         "cols": [
+          0
+         ],
+         "cells": [
+          [
+           2,
+           0
+          ],
+          [
+           3,
+           0
+          ],
+          [
+           4,
+           0
+          ]
+         ],
          "note": "half empty",
          "colNotes": {
-          "0": "0 of 5 empty",
+          "0": "3 of 5 empty",
           "1": "0 of 5 empty",
           "2": "0 of 5 empty"
          }
@@ -1011,7 +1035,7 @@
    "key": "w3-v1.1",
    "label": "v1.1",
    "note": "Week3 v1.1 three quick fixes",
-   "scored_at": "2026-11-04T06:11:28.715Z",
+   "scored_at": "2026-11-04T15:01:55.689Z",
    "rows": [
     {
      "id": "01",
@@ -1041,7 +1065,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 2 column(s) are at least half filled."
+       "reason": "All 2 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -1171,7 +1195,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 3 column(s) are at least half filled."
+       "reason": "All 3 column(s) are more than half filled."
       },
       "o3": {
        "score": 1,
@@ -1262,7 +1286,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 4 column(s) are at least half filled."
+       "reason": "All 4 column(s) are more than half filled."
       },
       "o3": {
        "score": 1,
@@ -1372,7 +1396,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 3 column(s) are at least half filled."
+       "reason": "All 3 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -1585,7 +1609,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 3 column(s) are at least half filled."
+       "reason": "All 3 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -1688,7 +1712,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 2 column(s) are at least half filled."
+       "reason": "All 2 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -1809,7 +1833,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 2 column(s) are at least half filled."
+       "reason": "All 2 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -2123,7 +2147,7 @@
       },
       "x2": {
        "score": 1,
-       "reason": "All 2 column(s) are at least half filled."
+       "reason": "All 2 column(s) are more than half filled."
       },
       "o3": {
        "score": 0,
@@ -2175,10 +2199,15 @@
         {
          "scorer": "x2",
          "cols": [],
-         "cells": [],
+         "cells": [
+          [
+           5,
+           0
+          ]
+         ],
          "note": "half empty",
          "colNotes": {
-          "0": "0 of 6 empty",
+          "0": "1 of 6 empty",
           "1": "0 of 6 empty"
          }
         }

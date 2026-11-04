@@ -14,6 +14,6 @@ Corner and Ledger were built live during the [Eval Rubrics that Drive AI Product
 
 To write a rubric like these for your own agent, use the [`eval-rubric`](../skills/eval-rubric/SKILL.md) skill.
 
-- [`eval-pages/`](eval-pages/): three one-file HTML templates for showing evals: a results page for every scorer run by run, and a page each for one code check or LLM judge, word for word, with sessions to agree or disagree with. Filled from your scored runs; Mapper's Week 3 pages are the examples
+- [`eval-pages/`](eval-pages/): two one-file HTML templates for showing evals: a results page for every scorer run by run, and a scorer page (one layout for code checks and LLM judges) with the scorer word for word, its results and the sessions it scored. Filled from your scored runs; Mapper's Week 3 pages are the examples
 - [`ai-prd-template.md`](ai-prd-template.md): the generic AI PRD template both examples start from, with sections for autonomy, the eval rubric and release thresholds
 - [`support-triage/support-triage-prd.md`](support-triage/support-triage-prd.md): a lighter sample PRD for a support-ticket triage agent
