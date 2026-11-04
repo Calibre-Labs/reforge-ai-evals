@@ -4264,5 +4264,6 @@
  "sessionsNote": "Failures first. Cells the check counts as empty are marked.",
  "storageKey": "calls-x2",
  "footLeft": "Reforge AI Evals, fall 2026",
- "footRight": "_x2.ts on w3-v1 and w3-v1.1, scored 2026-11-04"
+ "footRight": "_x2.ts on w3-v1 and w3-v1.1, scored 2026-11-04",
+ "reasonLabel": "Check Reasoning"
 }

@@ -3844,8 +3844,9 @@
   "n15"
  ],
  "sessionsHeading": "All 30 sessions on v1.1",
- "sessionsNote": "Failures first, each with the judge's critique.",
+ "sessionsNote": "Failures first.",
  "storageKey": "calls-o3",
  "footLeft": "Reforge AI Evals, fall 2026",
- "footRight": "_o3.ts on w3-v1 and w3-v1.1, scored 2026-11-04"
+ "footRight": "_o3.ts on w3-v1 and w3-v1.1, scored 2026-11-04",
+ "reasonLabel": "Judge Reasoning"
 }

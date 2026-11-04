@@ -228,11 +228,11 @@ function mini(c){
 function render(){
   const open = new Set([...document.querySelectorAll("#samples details.s[open]")].map(d => d.dataset.id));
   $("samples").innerHTML = ROWS.map(r => { const c = store[r.id] || "", pass = r.score === 1;
-    const said = (r.said || []).length ? `<details class="file"><summary>The conversation</summary><div class="said">${r.said.map(t => `<span class="u">${esc(t.user)}</span>${t.text ? `<span class="a">${esc(t.text)}</span>` : ""}`).join("")}</div></details>` : "";
+    const said = (r.said || []).length ? `<details class="file"><summary>Session Input</summary><div class="said">${r.said.map(t => `<span class="u">${esc(t.user)}</span>${t.text ? `<span class="a">${esc(t.text)}</span>` : ""}`).join("")}</div></details>` : "";
     const mine = c ? `<span class="mycall ${c}">${c === "agree" ? "Agreed" : "Disagreed"}</span>` : "";
     return `<details class="s ${c}" data-id="${esc(r.id)}"${open.has(r.id) ? " open" : ""}><summary class="shead"><div><span class="sid">${esc(r.id)}</span><span class="sin">${esc(r.input)}</span><span class="sg">${esc(r.group || "")}</span></div>
     <span class="right">${mine}<span class="verdict ${pass ? "p" : "f"}">${pass ? "Pass" : "Fail"}</span></span></summary>
-    <div class="why">${esc(r.reason)}</div>${said}
+    ${said}<details class="file"><summary>${esc(PAGE.reasonLabel || "Reasoning")}</summary><div class="why">${esc(r.reason)}</div></details>
     ${(r.cards || []).length ? r.cards.map(mini).join("") : `<div class="nomap">No output card.</div>`}
     <div class="calls"><button data-c="agree" aria-pressed="${c === "agree"}">Agree</button><button data-c="disagree" aria-pressed="${c === "disagree"}">Disagree</button></div></details>`; }).join("");
   // summary: the scorer's pass and fail, then your review, split by the scorer's call

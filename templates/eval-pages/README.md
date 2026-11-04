@@ -95,7 +95,7 @@ A row is one session in one run, as the user saw it.
            "parts": [{ "id": "empty", "label": "What counts as empty", "note": "A cell is empty if it is any of these:",
                        "bullets": ["Blank, or a dash", "Starts with N/A or Not disclosed"], "lines": [18, 19] }] },
   "files": [{ "file": "_pages.ts", "note": "fetches each cited page", "lines": ["…"] }],
-  "sessions": ["04", "g3", "n06", "n11", "n18", "01", "…"], "sessionsHeading": "All 30 sessions on v1.1", "sessionsNote": "Failures first.",
+  "sessions": ["04", "g3", "n06", "n11", "n18", "01", "…"], "sessionsHeading": "All 30 sessions on v1.1", "sessionsNote": "Failures first.", "reasonLabel": "Check Reasoning",
   "footLeft": "…", "footRight": "…"
 }
 ```
@@ -108,6 +108,6 @@ A row is one session in one run, as the user saw it.
   - A judge prompt has seven: context, one question, what passes, what fails, examples, critique then verdict, and input.
 - **`files`** (optional) are extra files shown collapsed under the doc, such as the judge's whole file or a helper it imports.
 - **`parts`** can include `bullets`, a list shown under the part's note.
-- **`sessions`** are the row ids to show from the latest run, in order, usually all of them with failures first. Each one is a collapsible row. The summary above the rows counts pass and fail, and how many the reader has reviewed, agreed and disagreed with, split by the scorer's fails and passes.
+- **`sessions`** are the row ids to show from the latest run, in order, usually all of them with failures first. Each one is a collapsible row, with its `reason` under a collapsible `reasonLabel` ("Judge Reasoning", say) and the conversation under "Session Input". The summary above the rows counts pass and fail, and how many the reader has reviewed, agreed and disagreed with, split by the scorer's fails and passes.
 
 On the scorer page, a reader's agree or disagree calls are saved in their own browser only (under `storageKey`, if you set one). They aren't a labeling store. For labels that feed alignment, export them from your trace review app.
