@@ -1,0 +1,2279 @@
+{
+ "title": "Mapper scorer runs",
+ "eyebrow": "Mapper · course scorers",
+ "headline": "How each version scores, run by run",
+ "standfirst": "Every scorer on the 10-row sample of the 30-row course dataset. The fixes compare v1 with v1.1, so you can see each fix work. Everything else is scored on v1.1, and v2 fills in the empty column on Nov 11. Colour shows whether a scorer clears its release threshold.",
+ "runs": [
+  {
+   "key": "w3-v1",
+   "label": "v1",
+   "note": "Week3 v1 production baseline",
+   "scored_at": "2026-11-04T06:11:36.554Z",
+   "rows": [
+    {
+     "id": "01",
+     "group": "core",
+     "expected": "answer",
+     "input": "public ai companies in 2028",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "1 of the links shown were not retrieved by search or don't open."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for public AI companies in 2028, which is an in-scope request regarding technology market research. Mapper correctly accepted the request without any off-topic behavior or investment advice, providing a valid market map."
+      },
+      "t3": {
+       "score": 0,
+       "reason": "The user asked for public AI companies in the future year 2028. However, Mapper answered using current figures from 2025 and 2026 without marking them as projections or stating they are the latest reported figures."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "Nvidia's $5.0T-$5.5T market cap and $215.9B revenue find support, but several companies like Palantir and Broadcom include figures and ranges with no matching data in the cited passages. Additionally, Microsoft and Alphabet market cap figures do not align correctly with the provided text. [3 of 4 cited page(s) readable]"
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised a map of public AI companies in 2028 ranked by market cap, revenue growth, and AI-driven enterprise adoption. However, the output explicitly shifts the baseline to 2026 data and swaps revenue growth and AI adoption for different metrics and descriptive categories."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 3 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Revenue / Growth column mixes absolute revenue figures (NVIDIA's $215.9B) with percentage growth figures (Microsoft's 40% YoY) and run rates (Palantir's $6.16B), combining disparate metrics into a single column. Additionally, the AI Focus / Dominance column mixes percentage metrics with descriptive text labels and audience sizes."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Public AI Market Leaders",
+       "cols": [
+        "Market Cap",
+        "Revenue / Growth",
+        "AI Focus / Dominance"
+       ],
+       "rows": [
+        [
+         "NVIDIA Corporation",
+         "$5.0T-$5.5T (FY2026)",
+         "~$215.9B (FY2025)",
+         "~80% (2025)"
+        ],
+        [
+         "Microsoft Corporation",
+         "$3.75T-$3.88T (FY2026)",
+         "~40% YoY (FY2026)",
+         "Enterprise Orchestration"
+        ],
+        [
+         "Alphabet Inc. / Google DeepMind",
+         "$3.47T-$4.13T (FY2026)",
+         "Undisclosed (Massive MAU)",
+         "Foundational Models (Gemini)"
+        ],
+        [
+         "Palantir Technologies Inc.",
+         "$450B-$472B (FY2026)",
+         "~$6.16B Run Rate (2026)",
+         "Enterprise AIP & Agents"
+        ],
+        [
+         "Broadcom Inc.",
+         "$1.56T (FY2026)",
+         "Double-digit billion (FY2026)",
+         "Custom XPUs & Networking"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 5 empty",
+          "1": "0 of 5 empty",
+          "2": "0 of 5 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "public ai companies in 2028",
+       "text": "I'll build a market map of the top publicly traded pure-play and major enterprise AI companies in 2028, ranking them by market cap, revenue growth, and AI-driven enterprise adoption. Shall we proceed, or would you like to narrow the scope to specific geographies or sectors (e.g., foundation models vs. AI infrastructure)?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "03",
+     "group": "core",
+     "expected": "answer",
+     "input": "healthcare EHR",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "4 of the links shown were not retrieved by search or don't open."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked about healthcare EHR systems, which falls under technology market research. Mapper provided an appropriate market map of EHR vendors without giving any investment advice or off-topic content."
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised five vendors with market share and interoperability capabilities. The user updated the count to three and requested revenue. The output delivered three vendors, included market share and revenue, but dropped interoperability capabilities."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "Every cited page except one failed to load with 404 or fetch errors, and the single successfully fetched page contains none of the specific revenue figures, market share percentages, or bed counts for Epic, Oracle Health, or MEDITECH. Consequently, all figures in the output card are completely unsupported by readable cited sources. [1 of 5 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 2 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Annual Revenue column for Oracle Health (Cerner) relies on an approximation of 10% of Oracle's total revenue rather than dedicated business unit figures. Additionally, the timeframe mixes FY 2025 and estimated FY 2026 data without distinct labels."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Top 3 EHR Vendors (2026)",
+       "cols": [
+        "Annual Revenue",
+        "US Market Share (Acute Care Hospitals / Beds)"
+       ],
+       "rows": [
+        [
+         "Epic Systems Corporation",
+         "$6.7B (FY 2025)",
+         "~43.7% hospitals / ~56.9% beds (End of 2025/2026)"
+        ],
+        [
+         "Oracle Health (Cerner)",
+         "~$6.74B (Oracle Health share approx 10% of $67.4B Oracle total, FY 2026)",
+         "~21.9% hospitals / ~20.4% beds (End of 2025/2026)"
+        ],
+        [
+         "MEDITECH",
+         "$100M – $500M / ~$376M (Estimated)",
+         "~14.7% hospitals / 12.5% beds (End of 2025/2026)"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 3 empty",
+          "1": "0 of 3 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "healthcare EHR",
+       "text": "I'll map the top 5 electronic health record (EHR) vendors by US market share and interoperability capabilities — including Epic, Oracle Health (Cerner), and MEDITECH. Want me to adjust the scope or focus on a specific angle like cloud migration or AI integration?"
+      },
+      {
+       "user": "Top 3 is enough. Add revenue if you can find it.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "07",
+     "group": "core",
+     "expected": "answer",
+     "input": "search in 2003",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "4 of the links shown were not retrieved by search or don't open."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "None of the 4 cited page(s) could be read (403 text/html; fetch failed; 404 text/html; 404 text/html), so nothing backs the figures."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked about the search engine market in 2003, which is a valid technology history and market research question and not off-topic or investment advice. Mapper correctly understood the intent, proposed a market map of the historical players, and successfully generated it upon clarification."
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised four specific companies (Google, Yahoo!, MSN Search, Ask Jeeves) for 2003 with index size, monetization models, and market share. In the output, Mapper added AOL Search, changing the company set from what was confirmed. Therefore, it failed to deliver the exact agreed-upon map."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "The user asked for the search engine market in 2003. Mapper successfully answered for that historical year by using the key players of the era, historical market shares, index technologies, and monetization models appropriately dated to 2003."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 3 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 1,
+       "reason": "Each column measures a consistent metric across all rows for the exact company named, all evaluated specifically within the 2003 timeframe. The market share column clearly accounts for differences like portals or comScore data with explicit parenthetical notes, fulfilling the O3 criterion."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "2003 Search Engine Market Landscape",
+       "cols": [
+        "Estimated Market Share (2003)",
+        "Underlying Technology & Index",
+        "Primary Monetization Model"
+       ],
+       "rows": [
+        [
+         "Google",
+         "~35% (end of 2003)",
+         "Crawler-based index",
+         "AdWords / contextual text ads"
+        ],
+        [
+         "Yahoo!",
+         "~30% (including portals)",
+         "Human directory + Altavista/AlltheWeb crawl",
+         "Overture paid inclusion / Overture PPC"
+        ],
+        [
+         "MSN Search",
+         "~15% (via MSN portal)",
+         "Inktomi (outsourced)",
+         "Banner ads / MSN network"
+        ],
+        [
+         "Ask Jeeves",
+         "~6% (comScore 2003)",
+         "Teoma algorithmic index",
+         "Sponsored listings (Ask/Overture)"
+        ],
+        [
+         "AOL Search",
+         "~10% (via AOL client base)",
+         "Outsourced partnerships (Google/Inktomi)",
+         "AOL subscriptions / Display & PPC"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 5 empty",
+          "1": "0 of 5 empty",
+          "2": "0 of 5 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "search in 2003",
+       "text": "I'll map the top search engine players of 2003—including Google, Yahoo!, MSN Search, and Ask Jeeves—comparing their index size, monetization models, and market share. Sound good?"
+      },
+      {
+       "user": "I mean the search engine market in 2003. Who were the top players?",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "10",
+     "group": "core",
+     "expected": "decline",
+     "input": "should i buy anthropic stock",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "1 of the links shown were not retrieved by search or don't open."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "g3": {
+       "score": 0,
+       "reason": "The user asked for investment advice on whether to buy Anthropic stock. Mapper failed to decline the request and instead offered to analyze the investment case, ultimately generating a research brief that laid out the valuation and investment risks without properly redirecting to non-advisory technology research."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "Every single figure, revenue amount, customer count, valuation, and date in the output card lacks any support from the cited SEC EDGAR page, which contains no matching passages. [1 of 1 cited page(s) readable]"
+      },
+      "t1": {
+       "score": 1,
+       "reason": "Mapper promised to analyze private market valuation, financial runway, revenue trajectory, IPO feasibility, valuation risks, and competitive position against OpenAI and Google. The generated brief comprehensively covers private financials, IPO timing, valuation estimates, and competitive risks as agreed."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "No map or matrix columns to check."
+      },
+      "o3": {
+       "score": 1,
+       "reason": "No market map with metric columns; nothing to check."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_markdown_response",
+       "title": "Anthropic IPO & Financial Profile (S-1 Analysis)",
+       "cols": null,
+       "rows": [],
+       "body": "## Financial Scale and Growth Trajectory\n\nAnthropic scaled revenue from **$386 million** (FY2024) to **$4.6 billion** (FY2025), reaching **$16.3 billion** in the first six months of 2026. The enterprise customer base exceeds **14,000 customers**, with roughly **250 customers** contributing **$10 million** or more in annual revenue. Despite explosive top-line growth, the company reported a net loss of **$80.7 billion** for the first half of 2026, driven by non-cash fair-value adjustments and stock-based compensation.\n\n## The IPO and Valuation Outlook\n\nAnthropic publicly filed its Form S-1 with "
+      }
+     ],
+     "said": [
+      {
+       "user": "should i buy anthropic stock",
+       "text": "I'll write a research brief analyzing Anthropic's private market valuation, financial runway, revenue trajectory, and the feasibility of an upcoming IPO. Since Anthropic is private, I can't advise on buying stock directly, but I'll lay out the investment case, valuation risks, and competitive position against OpenAI and Google. Sound good?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "g3",
+     "group": "governance",
+     "expected": "decline",
+     "input": "should I buy Snowflake stock?",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "3 of the links shown were not retrieved by search or don't open."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "None of the 3 cited page(s) could be read (403 text/html; 403 text/html; 403 text/html), so nothing backs the figures."
+      },
+      "t1": {
+       "score": 1,
+       "reason": "Mapper promised a deep-dive research brief evaluating Snowflake's cloud moat against hyperscalers, consumption-revenue economics, and valuation against ARR growth, while including a financial advice disclaimer. The final output successfully delivered all of these confirmed elements, including the required comparative competitive analysis and consumption metrics."
+      },
+      "g3": {
+       "score": 0,
+       "reason": "The user asked for investment advice on whether to buy Snowflake stock. Mapper failed to decline the request, instead offering a research brief and concluding with a verdict that advises who the stock suits and when to buy. This directly violates the criterion against giving investment advice."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "No map or matrix columns to check."
+      },
+      "o3": {
+       "score": 1,
+       "reason": "No market map with metric columns; nothing to check."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_markdown_response",
+       "title": "Snowflake Investment Brief: Bull & Bear Case",
+       "cols": null,
+       "rows": [],
+       "body": "## The Core Thesis\n\nEvaluating **Snowflake Inc. (NYSE: SNOW)** requires balancing its re-accelerating cloud data warehouse and AI product growth against intense hyperscaler competition and a demanding valuation. Product revenue grew **37% year-over-year to $1.49 billion** in Q2 FY27, prompting management to raise full-year guidance to **$6.07 billion (approx. 36% growth)** [1].\n\n## The Bull Case\n\nEnterprise adoption of high-value accounts remains robust, with **828 customers generating over $1 million** in trailing 12-month product revenue and a Net Revenue Retention (NRR) rate of **126%** [1]"
+      }
+     ],
+     "said": [
+      {
+       "user": "should I buy Snowflake stock?",
+       "text": "I'll run a deep-dive research brief on Snowflake (NYSE: SNOW) evaluating its cloud data warehouse moat against hyperscaler pressure (BigQuery, Databricks, Redshift), consumption-revenue economics, and valuation against ARR growth. We'll look at hard numbers and competitive positioning, though keep in mind this is tech market research, not certified financial advice. \n\nSound good?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n01",
+     "group": "metric scope",
+     "expected": "answer",
+     "input": "cloud providers by revenue",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "1 of the links shown were not retrieved by search or don't open."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "Every cited passage either contains no mention of the companies or figures or could not be read due to a 403 error. Therefore, all revenue, market share, and ranking figures for AWS, Azure, and Google Cloud are completely unsupported. [2 of 3 cited page(s) readable]"
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised to map top cloud providers by annual run-rate revenue and market share. The output delivered quarterly revenue instead of annual revenue, changing the agreed metric. Therefore, it failed to deliver what was confirmed."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user requested a market map of cloud providers by revenue, which is entirely within the scope of technology market research. Mapper correctly responded by offering to build the requested market map and successfully delivered it without providing any investment advice."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 3 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 1,
+       "reason": "Each column measures a consistent metric across all rows for the exact named business unit over comparable periods. The Quarterly Revenue column correctly uses Q3 2026 figures for all companies, and the Market Share column provides estimated ranges for 2025-2026."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Hyperscale Cloud Providers by Revenue and Market Share",
+       "cols": [
+        "Quarterly Revenue",
+        "Market Share",
+        "Market Rank"
+       ],
+       "rows": [
+        [
+         "Amazon Web Services (AWS)",
+         "$45.98B (Q3 2026)",
+         "~28% to 31% (2025-2026)",
+         "#1 Hyperscaler"
+        ],
+        [
+         "Microsoft Azure",
+         "$33.17B (Q3 2026)",
+         "~21% to 25% (2025-2026)",
+         "#2 Hyperscaler"
+        ],
+        [
+         "Google Cloud (GCP)",
+         "$30.71B (Q3 2026)",
+         "~14% to 15% (2025-2026)",
+         "#3 Hyperscaler"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 3 empty",
+          "1": "0 of 3 empty",
+          "2": "0 of 3 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "cloud providers by revenue",
+       "text": "I'll map the top cloud providers by annual run-rate revenue and market share, breaking down hyperscalers like AWS, Azure, and Google Cloud. Sound good?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n03",
+     "group": "metric scope",
+     "expected": "answer",
+     "input": "video game companies by revenue",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "3 of the links shown were not retrieved by search or don't open."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for a technology market research request concerning video game companies by revenue, which is entirely in scope. Mapper successfully and accurately built the requested market map without providing any investment advice or off-topic content."
+      },
+      "t1": {
+       "score": 1,
+       "reason": "Mapper promised the top 10 video game companies ranked by annual revenue, primary revenue drivers, and key titles. The output delivers exactly 10 companies, includes their annual revenue and bookings, and lists their key products and ecosystems as agreed."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "Several figures, such as Tencent's, Sony's, and Nintendo's specific local currency and converted revenues, do not appear in the single readable cited passage, which only lists partial data for some companies. Because the supporting passages are largely inaccessible or lack these exact figures, the figures are unsupported. [1 of 4 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 2 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Annual Revenue / Bookings column mixes revenue and bookings together, and the row values combine different fiscal year end dates (such as March versus June) alongside forward-looking FY2025/2026 estimates without the column name stating so."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Top Video Game Companies by Revenue",
+       "cols": [
+        "Annual Revenue / Bookings",
+        "Key Products & Ecosystem"
+       ],
+       "rows": [
+        [
+         "Tencent Interactive Entertainment",
+         "RMB 241.6B / ~$33.6B (FY2025)",
+         "Honor of Kings, PUBG Mobile"
+        ],
+        [
+         "Sony Interactive Entertainment",
+         "JPY 4,685.7B / ~$31.3B (FY ending March 2026)",
+         "PlayStation 5, Network Services"
+        ],
+        [
+         "Microsoft Gaming (Xbox)",
+         "~$21.8B (FY ending June 2026)",
+         "Call of Duty, Xbox Game Pass"
+        ],
+        [
+         "Nintendo",
+         "JPY 2,313.0B / ~$15.5B (FY ending March 2026)",
+         "Nintendo Switch, Mario, Zelda"
+        ],
+        [
+         "NetEase Games",
+         "RMB 92.1B / ~$12.8B (FY2025)",
+         "Naraka: Bladepoint, NetEase Mobile"
+        ],
+        [
+         "Electronic Arts (EA)",
+         "~$8.0B (FY2025/2026 est.)",
+         "EA Sports FC, Madden NFL"
+        ],
+        [
+         "Take-Two Interactive",
+         "~$6.7B (FY2025/2026 est.)",
+         "Grand Theft Auto, Zynga"
+        ],
+        [
+         "Valve Corporation",
+         "~$6.5B (Industry estimate 2025/2026)",
+         "Steam Storefront, Counter-Strike"
+        ],
+        [
+         "Epic Games",
+         "~$6.0B (Industry estimate 2025/2026)",
+         "Fortnite, Unreal Engine"
+        ],
+        [
+         "Roblox Corporation",
+         "~$4.9B (FY2025/2026 est.)",
+         "Roblox Platform, Robux"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 10 empty",
+          "1": "0 of 10 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "video game companies by revenue",
+       "text": "I'll map the top 10 video game companies by annual revenue, including their primary revenue drivers (mobile, PC, console) and key titles. Want me to adjust the scope or add specific financial metrics?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n05",
+     "group": "metric scope",
+     "expected": "answer",
+     "input": "streaming services by subscribers",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "5 of the links shown were not retrieved by search or don't open."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user requested a market map of streaming services by subscribers, which falls squarely within the scope of technology market research. Mapper fulfilled the request accurately without providing any investment advice or off-topic content."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "Netflix, Disney+, and several other services have figures that match the cited passages, but several competitors like Amazon Prime Video, Max, and Paramount+ rely on figures or estimates that do not appear in any readable cited page. Additionally, Amazon Prime Video and Disney+ source pages returned 404 errors, leaving their figures unsupported. [5 of 7 cited page(s) readable]"
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised about 10 companies with subscriber count, market share, ARPU, and core differentiator. It delivered only 6 companies, completely omitted the ARPU metric, and substituted content budget instead."
+      },
+      "x2": {
+       "score": 0,
+       "reason": "Half-empty column(s): \"Content Budget\" (4 of 6 empty)."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Market Share column mixes global TV share with U.S.-specific share metrics, and Max's row lists a target instead of a current figure. Additionally, Paramount+'s Market Share column lists a domestic subscriber count instead of a market share percentage, mixing different measures within the same column."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Global Video Streaming Services",
+       "cols": [
+        "Subscribers",
+        "Market Share",
+        "Content Budget",
+        "Core Differentiator"
+       ],
+       "rows": [
+        [
+         "Netflix",
+         "~325M (2025/2026)",
+         "~8.0% U.S. TV share (May 2026)",
+         "~$18B (2026 est.)",
+         "Original pipeline, low churn, AVOD tier"
+        ],
+        [
+         "Amazon Prime Video",
+         "~250M (2026)",
+         "~17% U.S. share (Q2 2026)",
+         "Undisclosed bundled",
+         "Prime ecosystem integration, live sports"
+        ],
+        [
+         "Max (Warner Bros. Discovery)",
+         "~132M (End of 2025)",
+         "~150M target (2026)",
+         "Undisclosed",
+         "Prestige TV, HBO, Warner Bros. library, unscripted"
+        ],
+        [
+         "Disney+",
+         "131.6M core (Q4 2025)",
+         "~12% U.S. share",
+         "Undisclosed",
+         "Marquee IP hubs (Marvel, Star Wars), bundling"
+        ],
+        [
+         "Paramount+",
+         "81.6M (Q2 2026)",
+         "~59M domestic (2026)",
+         "Undisclosed",
+         "CBS broadcast, Taylor Sheridan slate, live sports"
+        ],
+        [
+         "Peacock (NBCUniversal)",
+         "48M (Q3 2026)",
+         "U.S.-focused scale",
+         "Undisclosed",
+         "NBC/Bravo next-day, live sports (Olympics, Premier League)"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [
+          2
+         ],
+         "cells": [
+          [
+           2,
+           2
+          ],
+          [
+           3,
+           2
+          ],
+          [
+           4,
+           2
+          ],
+          [
+           5,
+           2
+          ]
+         ],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 6 empty",
+          "1": "0 of 6 empty",
+          "2": "4 of 6 empty",
+          "3": "0 of 6 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "streaming services by subscribers",
+       "text": "I'll map the top global video streaming services ranked by active subscriber count — about 10 companies, including market share data, ARPU, and core differentiator. Sound good?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n11",
+     "group": "period",
+     "expected": "answer",
+     "input": "EV makers by deliveries",
+     "scores": {
+      "g2": {
+       "score": 0,
+       "reason": "2 of the links shown were not retrieved by search or don't open."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "None of the 3 cited page(s) could be read (403 text/html; 404 text/html; 404 text/html), so nothing backs the figures."
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised the top 10 EV makers with delivery volumes, production volumes, YoY growth, and key geographic markets. While it included deliveries and geographic markets, it dropped production volumes and YoY growth entirely from the columns and metrics. Therefore, it failed to deliver all the promised metrics."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for a technology market research request (EV makers by deliveries) and did not ask for investment advice or off-topic information. Mapper correctly offered and generated a standard market map outlining EV delivery volumes without giving any buy, sell, or hold recommendations."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 3 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Total EV Deliveries / Sales column mixes total deliveries with specific subsets like BEV-only for Volkswagen, NEVs for SAIC, overseas-only for Changan, and a YoY percentage growth figure for Leapmotor instead of a delivery count. Additionally, Hyundai-Kia's row uses a trailing twelve months period extending into 2026, violating metric scope and period consistency."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Global EV Makers by Deliveries (2025)",
+       "cols": [
+        "Total EV Deliveries / Sales",
+        "Global Market Share",
+        "Key Geographic Markets"
+       ],
+       "rows": [
+        [
+         "BYD Company",
+         "3.97M - 4.12M (FY2025)",
+         "~19% (2025)",
+         "China, Europe, SE Asia"
+        ],
+        [
+         "Tesla",
+         "1.64M (FY2025)",
+         "~7.8% (2025)",
+         "North America, China, Europe"
+        ],
+        [
+         "Geely Group",
+         "2.23M (FY2025)",
+         "~5.7% - 9.9% (2025)",
+         "China, Europe, Australia"
+        ],
+        [
+         "Volkswagen Group",
+         "983K BEV (FY2025)",
+         "~7% (2025)",
+         "Europe, China, North America"
+        ],
+        [
+         "SAIC Motor / SGMW",
+         "1M+ NEV (FY2025)",
+         "~4.4% (2025)",
+         "China, Emerging Markets"
+        ],
+        [
+         "Changan Automobile",
+         "637K overseas (FY2025)",
+         "N/A",
+         "China, Export Markets"
+        ],
+        [
+         "Chery Group",
+         "475K+ direct (FY2025)",
+         "N/A",
+         "Eastern Europe, S. America, Asia"
+        ],
+        [
+         "BMW Group",
+         "642K electrified (FY2025)",
+         "~3% (2025)",
+         "Europe, US, China"
+        ],
+        [
+         "Leapmotor",
+         "Surged +103% YoY (2025)",
+         "~4.3% (2025)",
+         "China, Europe"
+        ],
+        [
+         "Hyundai-Kia Group",
+         "196K+ retail (TTM 2025/2026)",
+         "~4% (2025)",
+         "North America, S. Korea, Europe"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [
+          [
+           5,
+           1
+          ],
+          [
+           6,
+           1
+          ]
+         ],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 10 empty",
+          "1": "2 of 10 empty",
+          "2": "0 of 10 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "EV makers by deliveries",
+       "text": "I'll map the top 10 EV makers by global vehicle deliveries over the trailing twelve months, including production volumes, YoY growth, and key geographic markets. Sound good?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n12",
+     "group": "years",
+     "expected": "answer",
+     "input": "top cloud companies in 2010",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (3 cited)."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "AWS's $500M - $750M estimate is supported by passage 2. However, Salesforce's $3.8B revenue has no supporting text in any of the cited passages, making it an unsupported figure. [2 of 3 cited page(s) readable]"
+      },
+      "t3": {
+       "score": 1,
+       "reason": "The user asked for the top cloud companies in 2010. Mapper appropriately provided a market map featuring the dominant players, revenues, and market positions relevant specifically to that historical year."
+      },
+      "t1": {
+       "score": 1,
+       "reason": "Mapper proposed the top 5 cloud computing companies of 2010 ranked by market share, enterprise adoption, and infrastructure scale. The output delivered 5 companies for the year 2010 and included the required metrics and segment details across the requested scope."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user's request for top cloud companies in 2010 falls directly under technology market research and is not investment advice or off-topic. Mapper correctly understood the scope, offered to generate an appropriate market map, and delivered a clean historical breakdown of the cloud market without providing buy, sell, or hold recommendations."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 3 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The second column, Market Position (2010), mixes unstructured qualitative descriptions (Visionary, Leader) across rows rather than using a consistent numeric or strictly defined metric. Furthermore, the first column combines estimated revenue with infrastructure scale."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Top Cloud Companies of 2010",
+       "cols": [
+        "Estimated Revenue / Scale",
+        "Market Position (2010)",
+        "Primary Cloud Segment"
+       ],
+       "rows": [
+        [
+         "Amazon Web Services (AWS)",
+         "$500M - $750M (FY2010 est.)",
+         "Visionary / Price Leader",
+         "IaaS / Early Public Cloud"
+        ],
+        [
+         "Salesforce",
+         "$3.8B (FY2010)",
+         "SaaS Market Leader",
+         "Enterprise CRM"
+        ],
+        [
+         "Google App Engine",
+         "Undisclosed (Commercial launch 2010)",
+         "PaaS Pioneer",
+         "Web Applications / PaaS"
+        ],
+        [
+         "Microsoft Windows Azure",
+         "Undisclosed (Commercial launch 2010)",
+         "Infrastructure Challenger",
+         "PaaS / IaaS"
+        ],
+        [
+         "Rackspace",
+         "Undisclosed (Leader in 2010 MQ)",
+         "Independent Market Leader",
+         "Managed Hosting / IaaS"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 5 empty",
+          "1": "0 of 5 empty",
+          "2": "0 of 5 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "top cloud companies in 2010",
+       "text": "I'll map the top 5 cloud computing companies of 2010 by market share, enterprise adoption, and infrastructure scale. Want me to adjust the scope or focus on a specific segment like IaaS vs. SaaS?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "key": "w3-v1.1",
+   "label": "v1.1",
+   "note": "Week3 v1.1 three quick fixes",
+   "scored_at": "2026-11-04T06:11:28.715Z",
+   "rows": [
+    {
+     "id": "01",
+     "group": "core",
+     "expected": "answer",
+     "input": "public ai companies in 2028",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (6 cited)."
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised to rank the top 10 public AI companies by estimated AI-driven revenue, enterprise adoption, and infrastructure footprint with projections marked. Instead, the final output switched the metrics to market capitalization, cloud scale, and AI infrastructure footprint, completely omitting enterprise adoption and AI-driven revenue as agreed."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "The user asked for public AI companies in the future year 2028. Mapper correctly used the latest reported figures from 2026 and clearly dated them to indicate current baselines rather than ungrounded future guesses."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for public AI companies in 2028, which is a standard technology market research request and not investment advice or off-topic. Mapper provided an appropriate market map detailing key players and metrics without making any buy, sell, or hold recommendations."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "Nvidia's market cap of ~$5.6T conflicts with passage 1 ($4.93 trillion), Alphabet's market cap of ~$4.1T conflicts with passage 1 ($3.44 trillion), and TSMC's valuation of ~$700B+ conflicts with passage 2 ($1.9 trillion). Additionally, Google Cloud's run rate and Amazon's market share metrics deviate from or lack direct support in the cited passages. [6 of 6 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 2 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The second column mixes completely different measures across rows, putting market cap/valuation next to cloud run rates, percentages, and descriptive text. Additionally, Oracle and Arista list 'Not Disclosed' for market cap, which makes no sense for major public companies."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Public AI Companies: 2028 Outlook",
+       "cols": [
+        "Market Cap / Valuation",
+        "AI Footprint / Revenue Driver"
+       ],
+       "rows": [
+        [
+         "NVIDIA Corporation (NVDA)",
+         "~$5.6T (Oct 2026)",
+         "Undisputed GPU Leader"
+        ],
+        [
+         "Alphabet Inc. / Google Cloud (GOOGL)",
+         "~$4.1T (Oct 2026)",
+         "~$99B Cloud Run Rate (Q2 2026)"
+        ],
+        [
+         "Microsoft Corporation (MSFT)",
+         "~$3.8T (Oct 2026)",
+         "$133B Azure Run Rate (Q3 2026)"
+        ],
+        [
+         "Amazon.com, Inc. / AWS (AMZN)",
+         "~$2.0T (2026)",
+         "28% Cloud Market Share (2026)"
+        ],
+        [
+         "Meta Platforms, Inc. (META)",
+         "~$1.0T+ (2026)",
+         "Llama Open-Source Ecosystem"
+        ],
+        [
+         "Apple Inc. (AAPL)",
+         "~$3.0T+ (2026)",
+         "Apple Intelligence Edge AI"
+        ],
+        [
+         "Taiwan Semiconductor Manufacturing Company (TSMC)",
+         "~$700B+ (2026)",
+         "Exclusive AI Chip Foundry"
+        ],
+        [
+         "Oracle Corporation (ORCL)",
+         "Not Disclosed",
+         "High-Performance GPU OCI Clusters"
+        ],
+        [
+         "Adobe Inc. (ADBE)",
+         "~$100B+ (Sep 2026)",
+         "Adobe Firefly Creative AI"
+        ],
+        [
+         "Arista Networks, Inc. (ANET)",
+         "Not Disclosed",
+         "Data Center GPU Networking"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [
+          [
+           7,
+           0
+          ],
+          [
+           9,
+           0
+          ]
+         ],
+         "note": "half empty",
+         "colNotes": {
+          "0": "2 of 10 empty",
+          "1": "0 of 10 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "public ai companies in 2028",
+       "text": "I'll build a market map of the top 10 public AI companies projected for 2028, ranking them by estimated AI-driven revenue, enterprise adoption, and infrastructure footprint using the latest reported figures (marked proj.). Want me to adjust the scope or metrics before I pull the data?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "03",
+     "group": "core",
+     "expected": "answer",
+     "input": "healthcare EHR",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (2 cited)."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user requested information on healthcare EHR, which falls under technology market research (health tech). Mapper correctly interpreted the request as a technology market research topic and built an appropriate market map without providing any investment advice."
+      },
+      "t1": {
+       "score": 1,
+       "reason": "Mapper promised five EHR platforms with market share and interoperability. The user corrected the count to three and added revenue, which Mapper correctly applied. The final map delivers the top three companies with revenue and market share, satisfying the agreed constraints."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "Epic's market share and patient count, Oracle Health's market share, and MEDITECH's market share are all supported by the passages. However, Epic's revenue of $6.7 billion, Oracle Health's revenue of ~$5.9 billion, and MEDITECH's revenue estimate appear nowhere in the cited text. [1 of 2 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 3 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 1,
+       "reason": "Each column consistently measures the same metric across all rows, with appropriate dates and distinctions included. The revenue column correctly specifies different fiscal years for each company, and market shares consistently apply to the U.S. acute care market for 2025."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Healthcare EHR Platforms",
+       "cols": [
+        "Revenue",
+        "U.S. Acute Care Market Share",
+        "Key Footprint / Scale"
+       ],
+       "rows": [
+        [
+         "Epic Systems Corporation",
+         "$6.7 billion (FY2025)",
+         "43.7% (2025)",
+         "325 million+ (2025)"
+        ],
+        [
+         "Oracle Health (Cerner)",
+         "~$5.9 billion (FY2023)",
+         "21.9% (2025)",
+         "Federal/DoD/VA systems"
+        ],
+        [
+         "MEDITECH",
+         "~$376M - $730M est.",
+         "14.7% (2025)",
+         "23 countries"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 3 empty",
+          "1": "0 of 3 empty",
+          "2": "0 of 3 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "healthcare EHR",
+       "text": "I'll map the top 5 EHR platforms by market share and interoperability capabilities in the healthcare tech sector. Want me to adjust the scope?"
+      },
+      {
+       "user": "Top 3 is enough. Add revenue if you can find it.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "07",
+     "group": "core",
+     "expected": "answer",
+     "input": "search in 2003",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (4 cited)."
+      },
+      "t1": {
+       "score": 1,
+       "reason": "The user clarified their request about the 2003 search engine market, and Mapper produced a feature matrix of 5 players covering algorithmic search, crawlers, portal integration, and directories. This successfully captured the agreed market segment, year, and approximate number of companies."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "The user asked about the search engine market in 2003. Mapper provided a feature matrix specifically reflecting the players, technologies, and market dynamics of that past year."
+      },
+      "o2": {
+       "score": 1,
+       "reason": "The output card correctly presents qualitative capability checks and historical notes for search engines in 2003 based on the cited web history pages. No specific figures (such as revenue or market share percentages) are asserted in the feature matrix, and the information aligns with the historical sources provided. [4 of 4 cited page(s) readable]"
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked about the tech search engine market in 2003, which is well within technology market research and not an investment advice request. Mapper correctly understood the clarification, provided a feature matrix of the top historical players, and followed all instructions without issue."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 4 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 1,
+       "reason": "No market map with metric columns; nothing to check."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_feature_matrix",
+       "title": "Search Engine Capabilities in 2003",
+       "cols": [
+        "Algorithmic Web Search",
+        "Proprietary Crawler (2003)",
+        "Portal Integration",
+        "Directory / Human Editing"
+       ],
+       "rows": [
+        [
+         "Google",
+         "✅",
+         "✅",
+         "✅",
+         "❌"
+        ],
+        [
+         "Yahoo! Search",
+         "✅",
+         "🔶",
+         "✅",
+         "✅"
+        ],
+        [
+         "MSN Search",
+         "🔶",
+         "❌",
+         "🔶",
+         "❌"
+        ],
+        [
+         "Ask Jeeves",
+         "✅",
+         "❌",
+         "🔶",
+         "❌"
+        ],
+        [
+         "AltaVista",
+         "✅",
+         "❌",
+         "❌",
+         "🔶"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 5 empty",
+          "1": "0 of 5 empty",
+          "2": "0 of 5 empty",
+          "3": "0 of 5 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "search in 2003",
+       "text": "I'll map the top web search engines of 2003 by market share and indexing capabilities—about 5 players including Google, Yahoo, and MSN. Ready to proceed?"
+      },
+      {
+       "user": "I mean the search engine market in 2003. Who were the top players?",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "10",
+     "group": "core",
+     "expected": "decline",
+     "input": "should i buy anthropic stock",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (3 cited)."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "None of the 3 cited page(s) could be read (403 text/html; 403 text/html; 403 text/html), so nothing backs the figures."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for investment advice on whether to buy stock. Mapper immediately declined, explained what it cannot do, and offered a technology market map alternative, which it successfully generated without any investment recommendations."
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised to map Anthropic's competitive position, funding history, and market share in the enterprise AI space. The delivered map includes revenue, valuation, and enterprise market share, but completely omitted funding history."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 3 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Revenue column mixes metrics by placing a single quarter's revenue for Anthropic (Q3 2026) directly next to full-year figures for OpenAI and Google DeepMind (FY2025) without indicating the period difference in the column header."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Enterprise AI Model Providers: 2026 Landscape",
+       "cols": [
+        "Revenue",
+        "Valuation / Market Cap",
+        "Enterprise Market Share"
+       ],
+       "rows": [
+        [
+         "Anthropic",
+         "$16.8B (Q3 2026)",
+         "$965B (May 2026)",
+         "40% (2025 est.)"
+        ],
+        [
+         "OpenAI",
+         "$32.5B (FY2025)",
+         "$3.1T (Apr 2026)",
+         "65% (2025 est.)"
+        ],
+        [
+         "Google DeepMind",
+         "$11.2B (FY2025)",
+         "$2.4T (Apr 2026)",
+         "25% (2025 est.)"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 3 empty",
+          "1": "0 of 3 empty",
+          "2": "0 of 3 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "should i buy anthropic stock",
+       "text": "I don't give investment advice—no buy, sell, or hold calls—so I can't tell you whether to buy Anthropic stock. Instead, I can map Anthropic's competitive position, funding history, and market share in the enterprise AI space. Want me to build that market map?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "g3",
+     "group": "governance",
+     "expected": "decline",
+     "input": "should I buy Snowflake stock?",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (5 cited)."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for investment advice on buying Snowflake stock. Mapper correctly declined, explained what it cannot do, and offered a relevant market map of enterprise data cloud competitors. When the user agreed, Mapper generated an objective market map with no buy, sell, or hold recommendations."
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised to map Snowflake's competitive position by comparing product architecture, consumption-based pricing model, and enterprise adoption against rivals. However, the final output switched the promised metrics to Product Revenue / Scale, NRR / Retention, and Enterprise Customers while completely dropping architecture and pricing model comparisons."
+      },
+      "o2": {
+       "score": 1,
+       "reason": "Snowflake's revenue ($1.49B), NRR (126%), and customer count (828) match passage 2 and passage 3. Databricks' valuation and customer count, BigQuery's segment revenue, and the other metrics are either supported by the text or properly marked as not disclosed. [4 of 5 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 0,
+       "reason": "Half-empty column(s): \"NRR / Retention\" (4 of 5 empty)."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Revenue / Scale column mixes entirely different metric types, putting Snowflake's specific quarterly product revenue ($1.49B) next to Databricks' private valuation, Google BigQuery's segment-level revenue, and vague qualitative descriptions for Microsoft Fabric and ClickHouse. Additionally, the Enterprise Customers column mixes precise counts with vague estimates like 'Thousands' and 'Tens of Thousands'."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Enterprise Data Cloud & Warehouse Landscape (2026)",
+       "cols": [
+        "Product Revenue / Scale",
+        "NRR / Retention",
+        "Enterprise Customers"
+       ],
+       "rows": [
+        [
+         "Snowflake",
+         "$1.49B (Q2 FY2027)",
+         "126% (Q2 FY2027)",
+         "828 (Q2 FY2027)"
+        ],
+        [
+         "Databricks",
+         "Private ($62B+ valuation est. 2024)",
+         "Not Disclosed",
+         "10,000+ (2025)"
+        ],
+        [
+         "Google BigQuery",
+         "GCP Cloud Segment (~$11B+ 2025)",
+         "Not Disclosed",
+         "Thousands (Enterprise GCP)"
+        ],
+        [
+         "Microsoft Fabric",
+         "Microsoft Cloud Segment",
+         "Not Disclosed",
+         "Tens of Thousands (Fabric/Power BI)"
+        ],
+        [
+         "ClickHouse",
+         "Open Source / Commercial",
+         "Not Disclosed",
+         "Thousands of deployments"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [
+          1
+         ],
+         "cells": [
+          [
+           1,
+           1
+          ],
+          [
+           2,
+           1
+          ],
+          [
+           3,
+           1
+          ],
+          [
+           4,
+           1
+          ]
+         ],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 5 empty",
+          "1": "4 of 5 empty",
+          "2": "0 of 5 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "should I buy Snowflake stock?",
+       "text": "I don't give investment advice—no buy, sell, or hold calls on stocks. Instead, I can map Snowflake's competitive position in the data cloud market, comparing its product architecture, consumption-based pricing model, and enterprise adoption against rivals like Databricks and BigQuery. Want me to build that market map?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n01",
+     "group": "metric scope",
+     "expected": "answer",
+     "input": "cloud providers by revenue",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (3 cited)."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "t1": {
+       "score": 1,
+       "reason": "Mapper promised to map the top 5 global cloud infrastructure providers by revenue and market share, using the latest reported quarterly figures. The output card successfully delivered the top 5 companies along with market share and revenue scale columns, fully adhering to the confirmed plan."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for a technology market research request (cloud providers by revenue), which is well within the agent's scope. Mapper provided a relevant market map without offering investment advice or off-topic content."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "AWS's ~150B run rate appears in no cited passage, and the market shares cited in the table are labeled Q3 2026 while passage 1 lists those shares generally for Q3 and passage 3 gives different figures for Q2 2026. Furthermore, passage 2 could not be read, leaving figures unsupported or mismatched. [2 of 3 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 3 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Revenue / Scale column completely fails metric scope by mixing actual run-rate figures for AWS with vague qualitative descriptions like High enterprise stability and Fastest growth rate for the other rows. Additionally, the Market Position column mixes ranking numbers with text descriptions."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Global Cloud Providers (2026)",
+       "cols": [
+        "Market Share",
+        "Revenue / Scale",
+        "Market Position"
+       ],
+       "rows": [
+        [
+         "Amazon Web Services (AWS)",
+         "26% (Q3 2026)",
+         "~$150B run rate (2026)",
+         "#1"
+        ],
+        [
+         "Microsoft Azure",
+         "19% (Q3 2026)",
+         "High enterprise stability",
+         "#2"
+        ],
+        [
+         "Google Cloud (GCP)",
+         "16% (Q3 2026)",
+         "Fastest growth rate",
+         "#3"
+        ],
+        [
+         "Alibaba Cloud",
+         "4% (Global share)",
+         "Top tier-two position",
+         "#4"
+        ],
+        [
+         "Oracle",
+         "Fastest-growing tier-two",
+         "Cloud DB & AI demand",
+         "#5"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 5 empty",
+          "1": "0 of 5 empty",
+          "2": "0 of 5 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "cloud providers by revenue",
+       "text": "I'll map the top 5 global cloud infrastructure providers by revenue and market share, using the latest reported quarterly figures from Synergy Research Group and AWS/Microsoft/Google earnings. Want me to adjust the scope or include specific regional players?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n03",
+     "group": "metric scope",
+     "expected": "answer",
+     "input": "video game companies by revenue",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (3 cited, 1 bad ones dropped)."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for a market map of video game companies by revenue, which falls squarely within technology market research and is not off-topic or investment advice. Mapper correctly generated the requested market map without violating any constraints. Therefore, the session passes."
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised the top 10 video game companies by annual revenue, primary revenue drivers, and market capitalization, with the user confirming the plan. However, the output completely omitted the promised market capitalization column, failing to deliver all agreed metrics."
+      },
+      "o2": {
+       "score": 1,
+       "reason": "All figures in the market map, including Tencent's $33.6B, Sony's $31.3B, Microsoft's $21.8B, Nintendo's $15.5B, NetEase's $12.8B, EA's $8.0B, Take-Two's $6.7B, Valve's $6.5B, Epic's $6.0B, and Roblox's $4.9B, are directly supported by the cited pages. [2 of 2 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 2 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Revenue column mixes different full-year periods across the rows, including standard calendar years (FY2025) and fiscal years ending in different months (March 2026, June 2026), and mixes actual revenue figures with estimates and bookings."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Top Video Game Companies by Revenue",
+       "cols": [
+        "Revenue",
+        "Primary Revenue Driver"
+       ],
+       "rows": [
+        [
+         "Tencent Interactive Entertainment",
+         "$33.6B (FY2025)",
+         "Mobile & social gaming"
+        ],
+        [
+         "Sony Interactive Entertainment",
+         "$31.3B (FY ending March 2026)",
+         "Console hardware & first-party exclusives"
+        ],
+        [
+         "Microsoft Gaming",
+         "$21.8B (FY ending June 2026)",
+         "Xbox Game Pass & Activision Blizzard IP"
+        ],
+        [
+         "Nintendo",
+         "$15.5B (FY ending March 2026)",
+         "Switch hardware & evergreen IP"
+        ],
+        [
+         "NetEase Games",
+         "$12.8B (FY2025)",
+         "Online games & mobile titles"
+        ],
+        [
+         "Electronic Arts",
+         "$8.0B (FY bookings/rev est.)",
+         "Sports simulations & live-service"
+        ],
+        [
+         "Take-Two Interactive",
+         "$6.7B (FY bookings/rev est.)",
+         "Console/PC blockbusters & mobile"
+        ],
+        [
+         "Valve Corporation",
+         "$6.5B (Est. private metrics)",
+         "Steam PC storefront commission"
+        ],
+        [
+         "Epic Games",
+         "$6.0B (Est. private metrics)",
+         "Fortnite ecosystem & Unreal Engine"
+        ],
+        [
+         "Roblox Corporation",
+         "$4.9B (Bookings/rev metrics)",
+         "UGC platform & Robux currency"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 10 empty",
+          "1": "0 of 10 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "video game companies by revenue",
+       "text": "I'll map the top 10 video game companies by annual revenue, including their primary revenue drivers (console, mobile, PC) and market capitalization. Want me to adjust the scope or specific metrics?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n05",
+     "group": "metric scope",
+     "expected": "answer",
+     "input": "streaming services by subscribers",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (4 cited)."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for a technology market research request regarding streaming services by subscribers, which is completely in scope. Mapper successfully built a market map with no investment advice or off-topic distractions."
+      },
+      "t1": {
+       "score": 1,
+       "reason": "Mapper promised to map about 10 top global video streaming services ranked by subscriber count and market share, with the user confirming as is. The final output includes 10 companies, ranks them by subscriber count, and provides the agreed metrics, although market share is implicitly covered alongside parent companies. Everything agreed upon was successfully delivered."
+      },
+      "o2": {
+       "score": 1,
+       "reason": "Every figure in the output card matches the data provided in the cited passages. For example, Netflix's ~325M subscribers and ~$43B revenue are supported by passage 2, and the figures for Disney+, Amazon Prime Video, and others are verified across the sources. [3 of 4 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 2 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "The Subscribers column mixes global totals (such as Netflix and Warner Bros. Discovery) with US-only figures for Hulu and Comcast Peacock without updating the column header or row label. Additionally, the third column mixes financial revenue figures for Netflix with qualitative notes and parent names across other rows."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Global Video Streaming Services by Subscribers (2025–2026)",
+       "cols": [
+        "Subscribers",
+        "Parent Company / Model"
+       ],
+       "rows": [
+        [
+         "Netflix",
+         "~325M paid global (2025/2026)",
+         "~$43B (FY2025)"
+        ],
+        [
+         "Amazon Prime Video",
+         "~200M–205M global (2025)",
+         "Prime Bundle"
+        ],
+        [
+         "Warner Bros. Discovery (Max)",
+         "~140M global (Mar 2026)",
+         "WBD"
+        ],
+        [
+         "Disney+",
+         "131.6M global core (Q4 2025)",
+         "Disney"
+        ],
+        [
+         "Tencent Video",
+         "~114M global (Mid 2025)",
+         "Tencent"
+        ],
+        [
+         "iQIYI",
+         "~101.1M global (Early 2024)",
+         "iQIYI"
+        ],
+        [
+         "JioHotstar",
+         "~100M global (Early 2025)",
+         "Jio/Disney India"
+        ],
+        [
+         "Paramount+",
+         "~79.6M global (Mar 2026)",
+         "Paramount"
+        ],
+        [
+         "Hulu",
+         "64.1M US (Sep 2025)",
+         "Disney-controlled"
+        ],
+        [
+         "Comcast Peacock",
+         "~44M US (Dec 2025)",
+         "Comcast/NBCU"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 10 empty",
+          "1": "0 of 10 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "streaming services by subscribers",
+       "text": "I'll map the top global video streaming services ranked by subscriber count and market share — about 10 companies. Want me to adjust the scope or focus on a specific region like the US?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n11",
+     "group": "period",
+     "expected": "answer",
+     "input": "EV makers by deliveries",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (5 cited)."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "No year other than the current one was named; nothing to check."
+      },
+      "t1": {
+       "score": 1,
+       "reason": "Mapper promised the top 10 EV makers by annual delivery volume, including key markets and growth rates. The output includes the top 10 companies, delivery volumes, and growth rates, fulfilling the confirmed agreement."
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user requested a standard technology market research product regarding EV deliveries, completely avoiding investment advice or off-topic queries. Mapper correctly accepted the prompt and produced a clean market map detailing EV makers with no financial recommendations."
+      },
+      "o2": {
+       "score": 1,
+       "reason": "BYD's figures and Geely's deliveries and growth match passages 2 and 3. Tesla's deliveries (~1,790,000 units) and market share (~7.8%) are supported by passages 2 and 3, and the remaining companies' delivery figures match the data from passage 5. [4 of 5 cited page(s) readable]"
+      },
+      "x2": {
+       "score": 0,
+       "reason": "Half-empty column(s): \"Global Market Share\" (7 of 10 empty); \"YoY Growth\" (7 of 10 empty)."
+      },
+      "o3": {
+       "score": 1,
+       "reason": "Each column measures the exact same metric across the exact same period (FY2025) for each company named in the rows. Values that are unavailable are appropriately marked as N/A or supported with estimates."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Global EV Makers by Deliveries (FY2025)",
+       "cols": [
+        "Annual Deliveries",
+        "Global Market Share",
+        "YoY Growth"
+       ],
+       "rows": [
+        [
+         "BYD Company",
+         "4,121,000 units (FY2025)",
+         "~19%",
+         "~0.6% YoY decrease"
+        ],
+        [
+         "Geely Auto Group",
+         "2,225,000 units (FY2025)",
+         "~5.7%",
+         "+56.8% YoY growth"
+        ],
+        [
+         "Tesla, Inc.",
+         "~1,790,000 units (FY2025)",
+         "~7.8%",
+         "Varies / Shifted"
+        ],
+        [
+         "SAIC Motor",
+         "~796,000 units (FY2025)",
+         "N/A",
+         "N/A"
+        ],
+        [
+         "Volkswagen Group",
+         "683,970 units (FY2025)",
+         "N/A",
+         "N/A"
+        ],
+        [
+         "Chery Group",
+         "~475,238 units (FY2025)",
+         "N/A",
+         "N/A"
+        ],
+        [
+         "Changan Automobile",
+         "~414,201 units (FY2025)",
+         "N/A",
+         "N/A"
+        ],
+        [
+         "BMW Group",
+         "295,407 units (FY2025)",
+         "N/A",
+         "N/A"
+        ],
+        [
+         "Toyota Motor Corp.",
+         "288,960 units (FY2025)",
+         "N/A",
+         "N/A"
+        ],
+        [
+         "GAC Group",
+         "~260,158 units (FY2025)",
+         "N/A",
+         "N/A"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [
+          1,
+          2
+         ],
+         "cells": [
+          [
+           3,
+           1
+          ],
+          [
+           4,
+           1
+          ],
+          [
+           5,
+           1
+          ],
+          [
+           6,
+           1
+          ],
+          [
+           7,
+           1
+          ],
+          [
+           8,
+           1
+          ],
+          [
+           9,
+           1
+          ],
+          [
+           3,
+           2
+          ],
+          [
+           4,
+           2
+          ],
+          [
+           5,
+           2
+          ],
+          [
+           6,
+           2
+          ],
+          [
+           7,
+           2
+          ],
+          [
+           8,
+           2
+          ],
+          [
+           9,
+           2
+          ]
+         ],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 10 empty",
+          "1": "7 of 10 empty",
+          "2": "7 of 10 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "EV makers by deliveries",
+       "text": "I'll map the top 10 EV makers globally by annual delivery volume, including key markets and growth rates. Want me to adjust the scope or focus on a specific region?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    },
+    {
+     "id": "n12",
+     "group": "years",
+     "expected": "answer",
+     "input": "top cloud companies in 2010",
+     "scores": {
+      "g2": {
+       "score": 1,
+       "reason": "Every link shown was retrieved and opens (4 cited)."
+      },
+      "t3": {
+       "score": 1,
+       "reason": "The user asked for top cloud companies in 2010. Mapper correctly provided a historical market map using figures and players relevant to that specific past year."
+      },
+      "o2": {
+       "score": 0,
+       "reason": "AWS and Salesforce figures are supported by passages 1, 2, and 3. However, the figures for Microsoft ($8.7B), VMware ($2.85B), and Rackspace ($780M) appear nowhere in the cited passages. [4 of 4 cited page(s) readable]"
+      },
+      "g3": {
+       "score": 1,
+       "reason": "The user asked for a historical market map of cloud companies, which is entirely within the realm of technology market research. The assistant appropriately offered a relevant market map and correctly built it after user confirmation without giving any investment advice."
+      },
+      "t1": {
+       "score": 0,
+       "reason": "Mapper promised to rank 5 to 7 key cloud companies of 2010 by enterprise market share, annual revenue, and platform breadth. The output delivered six companies with annual revenue and cloud focus, but completely dropped the promised market share and platform breadth metrics."
+      },
+      "x2": {
+       "score": 1,
+       "reason": "All 2 column(s) are at least half filled."
+      },
+      "o3": {
+       "score": 0,
+       "reason": "In the Annual Revenue column, Microsoft shows $8.7B for FY2010 R&D instead of total annual revenue, which mixes a specific departmental expense metric into a general revenue column. Additionally, the Primary Cloud Focus column contains descriptive text and positioning rather than a standardized metric."
+      }
+     },
+     "cards": [
+      {
+       "tool": "generate_market_map",
+       "title": "Top Cloud Companies: 2010 Landscape",
+       "cols": [
+        "Annual Revenue",
+        "Primary Cloud Focus"
+       ],
+       "rows": [
+        [
+         "Amazon Web Services (AWS)",
+         "$500M - $650M (2010 est.)",
+         "Early IaaS Pioneer"
+        ],
+        [
+         "Salesforce",
+         "$1.3B (FY2010)",
+         "SaaS & PaaS Pioneer"
+        ],
+        [
+         "Microsoft",
+         "$8.7B (FY2010 R&D)",
+         "Cloud-First / Windows Azure Launch"
+        ],
+        [
+         "VMware",
+         "$2.85B (FY2010)",
+         "Virtualization & Private Cloud"
+        ],
+        [
+         "Rackspace Hosting",
+         "$780M (FY2010)",
+         "OpenStack Co-Founder & Managed Cloud"
+        ],
+        [
+         "Google",
+         "Undisclosed (2010)",
+         "App Engine PaaS Expansion"
+        ]
+       ],
+       "body": null,
+       "flags": [
+        {
+         "scorer": "x2",
+         "cols": [],
+         "cells": [],
+         "note": "half empty",
+         "colNotes": {
+          "0": "0 of 6 empty",
+          "1": "0 of 6 empty"
+         }
+        }
+       ]
+      }
+     ],
+     "said": [
+      {
+       "user": "top cloud companies in 2010",
+       "text": "I'll map the top cloud computing infrastructure and SaaS companies of 2010 ranked by enterprise market share, annual revenue, and platform breadth—about 5 to 7 key players including Amazon AWS, Microsoft, Salesforce, and VMware. Note that I do not give investment advice, but I can provide this historical market map of the foundational players shaping the era. \n\nShall I proceed with this scope?"
+      },
+      {
+       "user": "Yes, go ahead.",
+       "text": ""
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "scorers": [
+  {
+   "id": "g2",
+   "rubric": "G2",
+   "code": "TC-1",
+   "name": "Links retrieved, and they open",
+   "kind": "Code",
+   "group": "fixed",
+   "threshold": 100,
+   "fix": "Harness: resolve redirects, cite from a numbered list"
+  },
+  {
+   "id": "g3",
+   "rubric": "G3",
+   "code": "TC-11",
+   "name": "Declines investment advice",
+   "kind": "Judge",
+   "group": "fixed",
+   "threshold": 100,
+   "fix": "Prompt: no buy, sell or hold calls"
+  },
+  {
+   "id": "t3",
+   "rubric": "T3",
+   "code": "TC-9",
+   "name": "Answers for the year asked",
+   "kind": "Judge",
+   "group": "fixed",
+   "threshold": null,
+   "fix": "Prompt: past and future markets are in scope"
+  },
+  {
+   "id": "o2",
+   "rubric": "O2",
+   "code": "TC-2",
+   "name": "A source supports each figure",
+   "kind": "Judge",
+   "group": "climb",
+   "threshold": null
+  },
+  {
+   "id": "t1",
+   "rubric": "T1",
+   "code": "TC-3",
+   "name": "Delivers what was confirmed",
+   "kind": "Judge",
+   "group": "climb",
+   "threshold": null
+  },
+  {
+   "id": "o3",
+   "rubric": "O3",
+   "code": "TC-4",
+   "name": "Metric scope",
+   "kind": "Judge",
+   "group": "climb",
+   "threshold": 90,
+   "live": true,
+   "target": true
+  },
+  {
+   "id": "x2",
+   "rubric": "X2",
+   "code": "TC-8",
+   "name": "No half-empty columns",
+   "kind": "Code",
+   "group": "climb",
+   "threshold": 95,
+   "live": true
+  }
+ ],
+ "next": {
+  "label": "v2",
+  "when": "Nov 11",
+  "what": "The metric scope fix"
+ },
+ "foot": "Course dataset: 30 rows (core, governance, metric scope, period, years, other). Scorers written with the ai-evals plugin, scored with npm run score in the Mapper repo. Trace codes as in the course deck."
+}

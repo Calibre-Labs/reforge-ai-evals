@@ -1,0 +1,928 @@
+{
+ "kind": "judge",
+ "title": "Metric scope judge",
+ "eyebrow": "ai-evals · eval-llm-judge · Mapper · still to hill-climb",
+ "headline": "Metric scope",
+ "stand": "The LLM judge for TC-4, “mixes metrics in one column”. O3: Each column uses one metric, for the company or business unit named, over the same kind of period, and says which. Click a part on the right, or press 1 to 7, to light it up in the prompt. Press 0 to see everything again.",
+ "question": "Does every column use one metric, for the company or business unit named, over one kind of period?",
+ "chips": [
+  "TC-4",
+  "Rubric v2 · O3",
+  "Binary · pass or fail",
+  "Gemini, like the production scorers"
+ ],
+ "scorerId": "o3",
+ "file": "scorers/course/_o3.ts",
+ "code": [
+  "/**",
+  " * O3, metric scope (prep backup; the live version is written in Week 3 with",
+  " * eval-llm-judge): each column uses one metric, for the exact company or",
+  " * business unit in the row, over the same kind of period, and says which.",
+  " * LLM judge (Gemini, via judge()). Trace code 4, \"Mixes metrics in one column\".",
+  " *",
+  " * Broad definition, from the demo plan: a map fails if a figure is for a",
+  " * parent company or a different business unit than the one named, or if one",
+  " * column mixes measures (users and customers) or periods (a quarter next to a",
+  " * full year, 2024 next to 2026) without saying so.",
+  " *",
+  " * Code gate first: a session with no market map (no metric columns) passes",
+  " * without a judge call. The leading underscore keeps it out of",
+  " * `--scorers all`; run it with `--scorers _o3`, or rename it to o3.ts.",
+  " */",
+  "import { renderSession } from \"./_render\";",
+  "import { judge, type CourseScorer } from \"./types\";",
+  "",
+  "export const PROMPT_TEMPLATE = `You are evaluating Mapper, a technology market research agent. Mapper builds market maps: a table of companies with metric columns such as revenue, users, market share or valuation, each value usually dated.",
+  "",
+  "## Evaluation Criterion",
+  "**O3, metric scope**: Each column uses one metric, for the exact company or business unit named in the row, over the same kind of period, and the column name or the value says which.",
+  "",
+  "## Scoring",
+  "- **PASS**: In every column, each value measures the same thing (the same metric over the same kind of period, such as full-year revenue or a single quarter) for the company or unit named in its row. Small differences in as-of dates within the same kind of period are fine when each value is dated. A value marked \"not disclosed\" is fine.",
+  "- **FAIL**: Any of these: a value is for a parent company or a different business unit than the one named in the row (even when labeled \"parent\"); one column mixes measures (users next to customers, revenue next to bookings or ARR); or one column mixes periods (a quarter next to a full year, 2024 next to 2026) without the column saying so. Name the column and row in the critique.",
+  "",
+  "## Few-Shot Examples",
+  "",
+  "### Example 1 (PASS)",
+  "Session:",
+  "--- Turn 1 ---",
+  "User: design collaboration tools",
+  "Assistant: I'll map the top design collaboration tools by annual revenue and paying customers. Sound good?",
+  "--- Turn 2 ---",
+  "User: yes",
+  "Output card:",
+  "[generate_market_map] Design Collaboration Tools",
+  "Columns: Company | Annual Revenue | Paying Customers",
+  "- Figma | $749M (FY2024) | 450K (FY2024)",
+  "- Canva | $2.3B (FY2024) | 21M (FY2024)",
+  "- Miro | $500M ARR est. (FY2024) | Not disclosed",
+  "Result: {\"critique\": \"Each column holds one measure for the company named, all for full-year 2024. Miro's figure is marked as estimated ARR rather than reported revenue, so the difference is stated, and its missing customer count is marked not disclosed.\", \"score\": \"PASS\"}",
+  "",
+  "### Example 2 (FAIL)",
+  "Session:",
+  "--- Turn 1 ---",
+  "User: CAD software vendors by revenue",
+  "Assistant: I'll map the top CAD software vendors by revenue and growth. Sound good?",
+  "--- Turn 2 ---",
+  "User: go ahead",
+  "Output card:",
+  "[generate_market_map] CAD Software Vendors",
+  "Columns: Company | Revenue (FY2025) | Growth",
+  "- Autodesk | $6.1B | 11%",
+  "- Siemens Digital Industries Software | €78.9B (Parent) | 2%",
+  "- PTC | $2.3B | 9%",
+  "Result: {\"critique\": \"The Revenue row for Siemens Digital Industries Software shows €78.9B, which is all of Siemens AG, and its 2% growth is the parent's too. Labeling it parent doesn't fix the comparison: the column no longer measures CAD software revenue for that row.\", \"score\": \"FAIL\"}",
+  "",
+  "### Example 3 (FAIL)",
+  "Session:",
+  "--- Turn 1 ---",
+  "User: email marketing platforms by size",
+  "Assistant: I'll map the top email marketing platforms by customers and revenue. Sound good?",
+  "--- Turn 2 ---",
+  "User: yes",
+  "Output card:",
+  "[generate_market_map] Email Marketing Platforms",
+  "Columns: Company | Customers | Revenue",
+  "- Klaviyo | 167K (Q2 2026) | $310M (Q2 2026)",
+  "- Mailchimp | 13M users (2023) | $1.1B (FY2023)",
+  "- Brevo | 500K (2025) | $200M ARR (2025)",
+  "Result: {\"critique\": \"The Customers column mixes paying customers with Mailchimp's 13M users, a different measure. The Revenue column puts a single quarter (Klaviyo, Q2 2026) next to full years and ARR, and spans 2023 to 2026 without saying so.\", \"score\": \"FAIL\"}",
+  "",
+  "---",
+  "",
+  "Now evaluate this session. Reply with a critique of two or three sentences, then the score.",
+  "",
+  "Session:",
+  "{session}",
+  "`;",
+  "",
+  "const o3: CourseScorer = ({ output }) => {",
+  "  const maps = output.cards.filter((c) => Array.isArray((c.args as { metric_columns?: unknown }).metric_columns));",
+  "  if (!maps.length) return { name: \"o3\", score: 1, metadata: { reason: \"No market map with metric columns; nothing to check.\" } };",
+  "  return judge(\"o3\", PROMPT_TEMPLATE.replace(\"{session}\", () => renderSession(output)));",
+  "};",
+  "",
+  "export default o3;"
+ ],
+ "prep": "cp -R runs/w3-v1 runs/w3-v1-o3\nnpm run score -- runs/w3-v1-o3 --local --scorers _o3\ncp -R runs/w3-v1.1 runs/w3-v1.1-o3\nnpm run score -- runs/w3-v1.1-o3 --local --scorers _o3",
+ "storageKey": "calls-o3",
+ "prompt": {
+  "text": "Use the eval-llm-judge skill to write a judge for TC-4, mixes metrics in one column (rubric line O3). Each column should use one metric, for the company or business unit named in the row, over the same kind of period. A parent company's figure fails, even when it's labeled parent, and so does a column that mixes measures or periods without saying so. Use the Oracle Health row from Week 2 trace 3 as a fail example. Pass or fail, with a short critique first, on Gemini like the other judges. Save it as scorers/course/o3.ts. Don't run it yet.",
+  "note": "Typed into Claude, with the Mapper repo open. The skill is eval-llm-judge from the ai-evals plugin. What it drafts should land close to the judge below."
+ },
+ "parts": [
+  {
+   "id": "context",
+   "name": "Context",
+   "why": "What the product is and what it outputs. The judge hasn’t read your PRD.",
+   "text": "You are evaluating Mapper, a technology market research agent. Mapper builds market maps: a table of companies with metric columns such as revenue, users, market share or valuation, each value usually dated."
+  },
+  {
+   "id": "question",
+   "name": "One question",
+   "why": "One rubric line, one trace code. If the question needs an “and”, it needs two judges.",
+   "text": "## Evaluation Criterion\n**O3, metric scope**: Each column uses one metric, for the exact company or business unit named in the row, over the same kind of period, and the column name or the value says which."
+  },
+  {
+   "id": "pass",
+   "name": "What counts as a pass",
+   "why": "Written so two people would agree. Say what’s fine, so edge cases don’t fail.",
+   "text": "## Scoring\n- **PASS**: In every column, each value measures the same thing (the same metric over the same kind of period, such as full-year revenue or a single quarter) for the company or unit named in its row. Small differences in as-of dates within the same kind of period are fine when each value is dated. A value marked \"not disclosed\" is fine."
+  },
+  {
+   "id": "fail",
+   "name": "What counts as a fail",
+   "why": "The concrete ways to fail, taken from real traces. Ask it to name what failed, so you can check it.",
+   "text": "- **FAIL**: Any of these: a value is for a parent company or a different business unit than the one named in the row (even when labeled \"parent\"); one column mixes measures (users next to customers, revenue next to bookings or ARR); or one column mixes periods (a quarter next to a full year, 2024 next to 2026) without the column saying so. Name the column and row in the critique."
+  },
+  {
+   "id": "examples",
+   "name": "Examples",
+   "why": "At least one pass and one fail, close to the line. Example 2 teaches the hard call: “labeled parent” still fails.",
+   "text": "## Few-Shot Examples"
+  },
+  {
+   "id": "output",
+   "name": "Reason, then verdict",
+   "why": "A short critique before the score. It makes the score better, and gives you something specific to disagree with.",
+   "text": "Now evaluate this session. Reply with a critique of two or three sentences, then the score."
+  },
+  {
+   "id": "input",
+   "name": "Only what it needs",
+   "why": "The session as the user saw it, and nothing else. A code gate skips sessions it can't fail, so they cost no judge call.",
+   "text": "Session:\n{session}\n\n// Code gate, before any judge call: A session with no market map passes without a judge call."
+  }
+ ],
+ "examples": [
+  {
+   "n": 1,
+   "verdict": "PASS",
+   "text": "Session:\n--- Turn 1 ---\nUser: design collaboration tools\nAssistant: I'll map the top design collaboration tools by annual revenue and paying customers. Sound good?\n--- Turn 2 ---\nUser: yes\nOutput card:\n[generate_market_map] Design Collaboration Tools\nColumns: Company | Annual Revenue | Paying Customers\n- Figma | $749M (FY2024) | 450K (FY2024)\n- Canva | $2.3B (FY2024) | 21M (FY2024)\n- Miro | $500M ARR est. (FY2024) | Not disclosed\nResult: {\"critique\": \"Each column holds one measure for the company named, all for full-year 2024. Miro's figure is marked as estimated ARR rather than reported revenue, so the difference is stated, and its missing customer count is marked not disclosed.\", \"score\": \"PASS\"}"
+  },
+  {
+   "n": 2,
+   "verdict": "FAIL",
+   "text": "Session:\n--- Turn 1 ---\nUser: CAD software vendors by revenue\nAssistant: I'll map the top CAD software vendors by revenue and growth. Sound good?\n--- Turn 2 ---\nUser: go ahead\nOutput card:\n[generate_market_map] CAD Software Vendors\nColumns: Company | Revenue (FY2025) | Growth\n- Autodesk | $6.1B | 11%\n- Siemens Digital Industries Software | €78.9B (Parent) | 2%\n- PTC | $2.3B | 9%\nResult: {\"critique\": \"The Revenue row for Siemens Digital Industries Software shows €78.9B, which is all of Siemens AG, and its 2% growth is the parent's too. Labeling it parent doesn't fix the comparison: the column no longer measures CAD software revenue for that row.\", \"score\": \"FAIL\"}"
+  },
+  {
+   "n": 3,
+   "verdict": "FAIL",
+   "text": "Session:\n--- Turn 1 ---\nUser: email marketing platforms by size\nAssistant: I'll map the top email marketing platforms by customers and revenue. Sound good?\n--- Turn 2 ---\nUser: yes\nOutput card:\n[generate_market_map] Email Marketing Platforms\nColumns: Company | Customers | Revenue\n- Klaviyo | 167K (Q2 2026) | $310M (Q2 2026)\n- Mailchimp | 13M users (2023) | $1.1B (FY2023)\n- Brevo | 500K (2025) | $200M ARR (2025)\nResult: {\"critique\": \"The Customers column mixes paying customers with Mailchimp's 13M users, a different measure. The Revenue column puts a single quarter (Klaviyo, Q2 2026) next to full years and ARR, and spans 2023 to 2026 without saying so.\", \"score\": \"FAIL\"}"
+  }
+ ],
+ "weak": {
+  "segments": [
+   [
+    "You are an expert analyst.",
+    1
+   ],
+   [
+    " Rate the ",
+    0
+   ],
+   [
+    "quality, accuracy and consistency",
+    2
+   ],
+   [
+    " of this market map ",
+    0
+   ],
+   [
+    "on a scale of 1 to 5",
+    3
+   ],
+   [
+    ", where ",
+    0
+   ],
+   [
+    "5 is excellent",
+    4
+   ],
+   [
+    ".",
+    0
+   ],
+   [
+    " ",
+    5
+   ],
+   [
+    "\n\nMarket map:\n{session}\n\n",
+    0
+   ],
+   [
+    "Score:",
+    6
+   ]
+  ],
+  "flags": [
+   [
+    "No product context",
+    "The judge doesn’t know what a market map is or what Mapper is for."
+   ],
+   [
+    "Three questions in one",
+    "“Quality, accuracy and consistency” is three judges. A fail won’t tell you which."
+   ],
+   [
+    "A 1 to 5 score",
+    "You can’t count agreement with your labels, and a 3 means nothing to act on."
+   ],
+   [
+    "No definition of pass",
+    "“Excellent” is whatever the model thinks it is today."
+   ],
+   [
+    "No examples",
+    "Nothing shows it where the line is."
+   ],
+   [
+    "Score with no reason",
+    "When it’s wrong, there’s nothing to read to see why."
+   ]
+  ]
+ },
+ "rows": [
+  {
+   "id": "n01",
+   "group": "metric scope",
+   "input": "cloud providers by revenue",
+   "said": [
+    {
+     "user": "cloud providers by revenue",
+     "text": "I'll map the top 5 global cloud infrastructure providers by revenue and market share, using the latest reported quarterly figures from Synergy Research Group and AWS/Microsoft/Google earnings. Want me to adjust the scope or include specific regional players?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Global Cloud Providers (2026)",
+     "cols": [
+      "Market Share",
+      "Revenue / Scale",
+      "Market Position"
+     ],
+     "rows": [
+      [
+       "Amazon Web Services (AWS)",
+       "26% (Q3 2026)",
+       "~$150B run rate (2026)",
+       "#1"
+      ],
+      [
+       "Microsoft Azure",
+       "19% (Q3 2026)",
+       "High enterprise stability",
+       "#2"
+      ],
+      [
+       "Google Cloud (GCP)",
+       "16% (Q3 2026)",
+       "Fastest growth rate",
+       "#3"
+      ],
+      [
+       "Alibaba Cloud",
+       "4% (Global share)",
+       "Top tier-two position",
+       "#4"
+      ],
+      [
+       "Oracle",
+       "Fastest-growing tier-two",
+       "Cloud DB & AI demand",
+       "#5"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n02",
+   "group": "metric scope",
+   "input": "AI chip companies by data center revenue",
+   "said": [
+    {
+     "user": "AI chip companies by data center revenue",
+     "text": "I'll build a market map ranking the top AI chip companies by data center revenue, featuring roughly 5 to 6 major players with their latest reported figures and market share context. Want me to adjust the scope or include specific metrics like gross margins?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "AI Chip Companies by Data Center Revenue",
+     "cols": [
+      "Data Center / AI Revenue",
+      "Market Share",
+      "Gross Margin"
+     ],
+     "rows": [
+      [
+       "Nvidia",
+       "$89.0B (Q2 FY2027)",
+       "80%-85% (2026)",
+       "~75% (Non-GAAP Q2 FY2027)"
+      ],
+      [
+       "Broadcom",
+       "$16.7B (Q3 FY2026)",
+       "Custom ASIC Leader",
+       "~73%-78%"
+      ],
+      [
+       "AMD",
+       "$6.72B (Q2 2026)",
+       "5%-7% (2026)",
+       "56% (Non-GAAP Q2 2026)"
+      ],
+      [
+       "Intel",
+       "$7.32B (Q3 2026)",
+       "1%-2% (2026)",
+       "Not Disclosed"
+      ],
+      [
+       "Hyperscaler In-House Silicon",
+       "Internal Cloud Only",
+       "6%-8% (Google TPUs)",
+       "N/A (Captive)"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n03",
+   "group": "metric scope",
+   "input": "video game companies by revenue",
+   "said": [
+    {
+     "user": "video game companies by revenue",
+     "text": "I'll map the top 10 video game companies by annual revenue, including their primary revenue drivers (console, mobile, PC) and market capitalization. Want me to adjust the scope or specific metrics?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Top Video Game Companies by Revenue",
+     "cols": [
+      "Revenue",
+      "Primary Revenue Driver"
+     ],
+     "rows": [
+      [
+       "Tencent Interactive Entertainment",
+       "$33.6B (FY2025)",
+       "Mobile & social gaming"
+      ],
+      [
+       "Sony Interactive Entertainment",
+       "$31.3B (FY ending March 2026)",
+       "Console hardware & first-party exclusives"
+      ],
+      [
+       "Microsoft Gaming",
+       "$21.8B (FY ending June 2026)",
+       "Xbox Game Pass & Activision Blizzard IP"
+      ],
+      [
+       "Nintendo",
+       "$15.5B (FY ending March 2026)",
+       "Switch hardware & evergreen IP"
+      ],
+      [
+       "NetEase Games",
+       "$12.8B (FY2025)",
+       "Online games & mobile titles"
+      ],
+      [
+       "Electronic Arts",
+       "$8.0B (FY bookings/rev est.)",
+       "Sports simulations & live-service"
+      ],
+      [
+       "Take-Two Interactive",
+       "$6.7B (FY bookings/rev est.)",
+       "Console/PC blockbusters & mobile"
+      ],
+      [
+       "Valve Corporation",
+       "$6.5B (Est. private metrics)",
+       "Steam PC storefront commission"
+      ],
+      [
+       "Epic Games",
+       "$6.0B (Est. private metrics)",
+       "Fortnite ecosystem & Unreal Engine"
+      ],
+      [
+       "Roblox Corporation",
+       "$4.9B (Bookings/rev metrics)",
+       "UGC platform & Robux currency"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n04",
+   "group": "metric scope",
+   "input": "robotaxi companies",
+   "said": [
+    {
+     "user": "robotaxi companies",
+     "text": "I'll map the top 6 global robotaxi operators by commercial scale, geographic footprint, and regulatory status. Want me to adjust the scope or focus on a specific region?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Global Robotaxi Operators 2026",
+     "cols": [
+      "Weekly Rides / Fleet Scale",
+      "Geographic Footprint",
+      "Autonomy Level"
+     ],
+     "rows": [
+      [
+       "Waymo",
+       "150,000+ (2025)",
+       "US (SF, Phoenix, LA, Austin)",
+       "Fully Autonomous (L4)"
+      ],
+      [
+       "Baidu Apollo Go",
+       "~50,000+ (2025)",
+       "China (Wuhan, Beijing, etc.)",
+       "Fully Autonomous (L4)"
+      ],
+      [
+       "Tesla Robotaxi",
+       "Pilot / Testing phase",
+       "US (Austin, San Francisco)",
+       "Supervised Autonomous / Testing (L2/L4)"
+      ],
+      [
+       "Zoox",
+       "Testing / Limited deployment",
+       "US (Las Vegas, SF)",
+       "Fully Autonomous Custom Pod (L4)"
+      ],
+      [
+       "Cruise",
+       "Active commercial service",
+       "US (Phoenix, Austin)",
+       "Fully Autonomous (L4)"
+      ],
+      [
+       "Pony.ai",
+       "Commercial deployment",
+       "China (Guangzhou, Shenzhen)",
+       "Fully Autonomous (L4)"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n05",
+   "group": "metric scope",
+   "input": "streaming services by subscribers",
+   "said": [
+    {
+     "user": "streaming services by subscribers",
+     "text": "I'll map the top global video streaming services ranked by subscriber count and market share — about 10 companies. Want me to adjust the scope or focus on a specific region like the US?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Global Video Streaming Services by Subscribers (2025–2026)",
+     "cols": [
+      "Subscribers",
+      "Parent Company / Model"
+     ],
+     "rows": [
+      [
+       "Netflix",
+       "~325M paid global (2025/2026)",
+       "~$43B (FY2025)"
+      ],
+      [
+       "Amazon Prime Video",
+       "~200M–205M global (2025)",
+       "Prime Bundle"
+      ],
+      [
+       "Warner Bros. Discovery (Max)",
+       "~140M global (Mar 2026)",
+       "WBD"
+      ],
+      [
+       "Disney+",
+       "131.6M global core (Q4 2025)",
+       "Disney"
+      ],
+      [
+       "Tencent Video",
+       "~114M global (Mid 2025)",
+       "Tencent"
+      ],
+      [
+       "iQIYI",
+       "~101.1M global (Early 2024)",
+       "iQIYI"
+      ],
+      [
+       "JioHotstar",
+       "~100M global (Early 2025)",
+       "Jio/Disney India"
+      ],
+      [
+       "Paramount+",
+       "~79.6M global (Mar 2026)",
+       "Paramount"
+      ],
+      [
+       "Hulu",
+       "64.1M US (Sep 2025)",
+       "Disney-controlled"
+      ],
+      [
+       "Comcast Peacock",
+       "~44M US (Dec 2025)",
+       "Comcast/NBCU"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n06",
+   "group": "metric scope",
+   "input": "consumer payment apps by users",
+   "said": [
+    {
+     "user": "consumer payment apps by users",
+     "text": "I'll map the top 5 consumer payment apps by monthly active users and transaction volume globally. Sound good?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Top Consumer Payment Apps by Users (2026)",
+     "cols": [
+      "Monthly Active Users",
+      "Total Registered / Ecosystem Users",
+      "Transaction Volume Scale"
+     ],
+     "rows": [
+      [
+       "Alipay",
+       "~970M MAU (2026)",
+       "~1.3B registered (2026)",
+       "Trillions (2026)"
+      ],
+      [
+       "WeChat Pay",
+       "~900M+ active (2026)",
+       "~1.43B WeChat total (Q1 2026)",
+       "Billions daily (2026)"
+      ],
+      [
+       "Apple Pay",
+       "785M active (2026)",
+       "~54% U.S. NFC share (2026)",
+       "Not publicly disclosed"
+      ],
+      [
+       "Google Wallet / Google Pay",
+       "800M+ active (2026)",
+       "Android default (2026)",
+       "Not publicly disclosed"
+      ],
+      [
+       "PayPal",
+       "400M+ active (2026)",
+       "186M U.S. adults (2026)",
+       "Not publicly disclosed"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n07",
+   "group": "period",
+   "input": "top SaaS companies by ARR",
+   "said": [
+    {
+     "user": "top SaaS companies by ARR",
+     "text": "I'll map the top 5 publicly traded SaaS companies by ARR/revenue run-rate, detailing their growth rates, gross margins, and market positioning. Want me to adjust the scope or include private players?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Top SaaS Companies by Revenue / ARR",
+     "cols": [
+      "Revenue / Run-Rate",
+      "Key Growth Driver / Segment",
+      "Core Positioning"
+     ],
+     "rows": [
+      [
+       "Microsoft",
+       "$331.8B (FY2026)",
+       "Microsoft Cloud segment $214.4B, up 27% (FY2026)",
+       "Enterprise Cloud/SaaS Ecosystem"
+      ],
+      [
+       "Oracle",
+       "$67.4B (FY2026)",
+       "Cloud Database & SaaS Footprint",
+       "Enterprise Infrastructure & Apps"
+      ],
+      [
+       "SAP",
+       "$41.6B (€36.8B, FY2025)",
+       "Cloud Subscription Accelerating",
+       "ERP & Enterprise Software"
+      ],
+      [
+       "Salesforce",
+       "$41.5B (FY2026)",
+       "Agentforce & Agentic AI workflows",
+       "Pure-Play Enterprise SaaS"
+      ],
+      [
+       "Adobe",
+       "$23.8B (FY2025)",
+       "Digital Media & Experience segments",
+       "Creative & Document Cloud"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n08",
+   "group": "period",
+   "input": "smartphone makers by market share",
+   "said": [
+    {
+     "user": "smartphone makers by market share",
+     "text": "I'll build a market map ranking the top 5 smartphone manufacturers by global unit shipments and market share, using the latest full-year data from IDC and Counterpoint Research. Sound good?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Smartphone Makers Market Share (2025-2026)",
+     "cols": [
+      "Global Market Share",
+      "Q3 2026 Shipments"
+     ],
+     "rows": [
+      [
+       "Apple",
+       "20.0% (Full Year 2025)",
+       "57.3 million (Q3 2026)"
+      ],
+      [
+       "Samsung",
+       "19.0% (Full Year 2025)",
+       "57.8 million (Q3 2026)"
+      ],
+      [
+       "Xiaomi",
+       "13.0% (Full Year 2025)",
+       "30.7 million (Q3 2026)"
+      ],
+      [
+       "OPPO",
+       "8.0%-10.0% (2025-2026)",
+       "25.6 million (Q3 2026)"
+      ],
+      [
+       "vivo",
+       "Top 5 standing (Full Year 2025)",
+       "19.1 million (Q3 2026)"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n09",
+   "group": "period",
+   "input": "AI chatbots by users",
+   "said": [
+    {
+     "user": "AI chatbots by users",
+     "text": "I'll map the top AI chatbots by active users and market share — about 6 leading platforms. Sound good?"
+    },
+    {
+     "user": "Yes, go ahead.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Top AI Chatbots by User Base and Market Share (2026)",
+     "cols": [
+      "Active Users / Traffic",
+      "Web Traffic Market Share",
+      "Key Metrics"
+     ],
+     "rows": [
+      [
+       "ChatGPT (OpenAI)",
+       "1.2B (Sept 2026)",
+       "56.4% (Sept 2026)",
+       "50M consumer / 9M business (2026)"
+      ],
+      [
+       "Google Gemini (Google)",
+       "1B monthly (Aug 2026)",
+       "25.0% (Sept 2026)",
+       "2.5B via AI Overviews (2026)"
+      ],
+      [
+       "Claude (Anthropic)",
+       "Not reported",
+       "9.6% (Sept 2026)",
+       "300K+ business customers (2026)"
+      ],
+      [
+       "Microsoft Copilot (Microsoft)",
+       "218M active users (2026)",
+       "1.5% - 2.0% (Sept 2026)",
+       "30M+ paid M365 seats (FY2026)"
+      ],
+      [
+       "Grok (xAI)",
+       "117M MAU (Mar 2026)",
+       "2.3% (Sept 2026)",
+       "189.9M monthly web visits (June 2026)"
+      ],
+      [
+       "Perplexity AI",
+       "45M+ MAU (2026)",
+       "0.9% - 1.3% (Sept 2026)",
+       "N/A"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  },
+  {
+   "id": "n10",
+   "group": "period",
+   "input": "video conferencing apps",
+   "said": [
+    {
+     "user": "video conferencing apps",
+     "text": "I'll map the top 5 video conferencing platforms by market share, enterprise adoption, and AI features (such as automated note-taking and translation). Want me to adjust the scope or focus on a specific segment like remote-first startups or healthcare compliance?"
+    },
+    {
+     "user": "Rank by users.",
+     "text": ""
+    }
+   ],
+   "cards": [
+    {
+     "tool": "generate_market_map",
+     "title": "Video Conferencing Platforms",
+     "cols": [
+      "Users / Scale",
+      "Market Share",
+      "Revenue / Commercial Reach"
+     ],
+     "rows": [
+      [
+       "Zoom",
+       "~300M DAU / ~500M total users (2026)",
+       "55.4%–56% (2026)",
+       "$4.869B (FY2026)"
+      ],
+      [
+       "Microsoft Teams",
+       "320M MAU (2026)",
+       "32% (2026)",
+       "$450M+ commercial seats (2026)"
+      ],
+      [
+       "Google Meet",
+       "3B+ Workspace MAU (2026)",
+       "17% (2026)",
+       "Integrated in Workspace"
+      ],
+      [
+       "Cisco Webex",
+       "Enterprise / Govt focus",
+       "5% (2026)",
+       "Enterprise / Regulated"
+      ],
+      [
+       "GoTo (GoToMeeting)",
+       "SMB / Client focus",
+       "N/A",
+       "SMB & Mid-Market"
+      ]
+     ],
+     "body": null
+    }
+   ]
+  }
+ ],
+ "verdicts": {
+  "n01": {
+   "score": 0,
+   "critique": "The Revenue / Scale column completely fails metric scope by mixing actual run-rate figures for AWS with vague qualitative descriptions like High enterprise stability and Fastest growth rate for the other rows. Additionally, the Market Position column mixes ranking numbers with text descriptions."
+  },
+  "n02": {
+   "score": 1,
+   "critique": "The market map maintains consistent metrics across the rows, with columns specifying the exact financial and market share figures for the companies and segments named. Although the timeframes vary slightly by fiscal calendar quarter, each value is explicitly dated to provide clarity on the exact period measured."
+  },
+  "n03": {
+   "score": 0,
+   "critique": "The Revenue column mixes different full-year periods across the rows, including standard calendar years (FY2025) and fiscal years ending in different months (March 2026, June 2026), and mixes actual revenue figures with estimates and bookings."
+  },
+  "n04": {
+   "score": 0,
+   "critique": "The Weekly Rides / Fleet Scale column mixes quantitative trip counts (Waymo, Baidu) with qualitative descriptions (Tesla, Zoox, Cruise, Pony.ai), resulting in inconsistent metrics within the same column."
+  },
+  "n05": {
+   "score": 0,
+   "critique": "The Subscribers column mixes global totals (such as Netflix and Warner Bros. Discovery) with US-only figures for Hulu and Comcast Peacock without updating the column header or row label. Additionally, the third column mixes financial revenue figures for Netflix with qualitative notes and parent names across other rows."
+  },
+  "n06": {
+   "score": 0,
+   "critique": "The second column, Total Registered / Ecosystem Users, mixes total registered users for Alipay and WeChat Pay with U.S. NFC market share for Apple Pay, Android default status for Google, and U.S. adult user counts for PayPal. This represents completely different metrics across the rows."
+  },
+  "n07": {
+   "score": 0,
+   "critique": "In the Revenue / Run-Rate column, Microsoft's entry lists $331.8B which is total company revenue, but its detail notes a segment revenue of $214.4B, violating the requirement to measure the exact business unit named over the same metric. Additionally, the column mixes fiscal years 2025 and 2026 without clarifying the difference."
+  },
+  "n08": {
+   "score": 0,
+   "critique": "The Global Market Share column mixes full-year 2025 figures with a multi-year range for OPPO and a qualitative ranking for vivo, making the column inconsistent. Additionally, mixing full-year market share percentages with specific third-quarter shipment figures across the columns combines different time periods without clear alignment."
+  },
+  "n09": {
+   "score": 0,
+   "critique": "In the Active Users / Traffic column, ChatGPT displays weekly active users while Google Gemini uses monthly active users, mixing different definitions. Furthermore, the as-of dates in the Web Traffic Market Share column are clustered around September 2026, but the values for active users span different measurement frequencies."
+  },
+  "n10": {
+   "score": 0,
+   "critique": "The Users / Scale column mixes Daily Active Users, Monthly Active Users, and Google's entire Workspace MAU. Additionally, Google Meet, Cisco Webex, and GoTo lack actual user metrics or revenue figures in their respective columns, violating the metric consistency and scope requirements."
+  }
+ },
+ "verdictsHeading": "10 verdicts on v1.1",
+ "foot": "Prompt: _o3.ts in the Mapper repo, word for word. Verdicts: the judge on w3-v1.1, scored 2026-11-04; 10 of 30 sessions pass overall."
+}
