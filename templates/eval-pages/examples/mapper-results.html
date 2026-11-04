@@ -168,15 +168,20 @@ $('runchips').innerHTML = runs.map(r => `<span class="chip"><b>${esc(r.label)}</
   (NEXT ? `<span class="chip" style="opacity:.6"><b>${esc(NEXT.label)}</b> · ${esc(NEXT.when)} · ${esc(NEXT.what)}</span>` : '');
 
 (function tiles(){
+  // Three numbers: the fixes (first run to latest), how many scorers ran, and the average pass rate of the other new evals.
   const scored = SCORERS.filter(s => stat(LAST, s.id));
-  const allPass = LAST.rows.filter(r => scored.every(s => !r.scores[s.id] || r.scores[s.id].score === 1)).length;
   const fx = fixed.filter(s => stat(LAST, s.id)), held = fx.filter(s => stat(LAST, s.id).pct === 100);
-  const withThr = scored.filter(s => s.threshold != null), below = withThr.filter(s => stat(LAST, s.id).pct < s.threshold);
+  const evals = climb.filter(s => stat(LAST, s.id));
   const t = [];
-  if (fx.length) t.push([`${held.length}<small> of ${fx.length}</small>`, 'Fixes that held', held.length === fx.length ? `${fx.map(s => s.rubric).join(', ')} pass every session on ${LAST.label}.` : `${fx.filter(s => !held.includes(s)).map(s => s.rubric).join(', ')} still fail somewhere on ${LAST.label}.`]);
-  t.push([`${allPass}<small> of ${LAST.rows.length}</small>`, 'Sessions passing every scorer', `On ${LAST.label}, across the ${scored.length} scorers run so far.`]);
-  if (withThr.length) t.push([`${below.length}<small> of ${withThr.length}</small>`, 'Scorers below threshold', below.length ? below.map(s => `${s.rubric} (${s.code})`).join(', ') + (below.length > 1 ? ' miss their bar.' : ' misses its bar.') : 'Every scorer with a bar clears it.']);
-  if (NEXT) t.push([esc(NEXT.label), `Next, ${esc(NEXT.when)}`, `${NEXT.what}. The empty column below fills in then.`]);
+  if (fx.length) {
+    const moves = fx.map(s => { const a = stat(FIRST, s.id), b = stat(LAST, s.id); return `${s.rubric} ${a && FIRST !== LAST ? a.pct + '% → ' : ''}${b.pct}%`; }).join(', ');
+    t.push([`${held.length}<small> of ${fx.length}</small>`, `Fixes at 100% on ${LAST.label}`, `${moves}.`]);
+  }
+  t.push([`${scored.length}`, 'Scorers run', `${fx.length} keep a shipped fix fixed, ${evals.length} new evals on codes still open.`]);
+  if (evals.length) {
+    const avg = Math.round(evals.reduce((n, s) => n + stat(LAST, s.id).pct, 0) / evals.length);
+    t.push([`${avg}%`, `Average of the ${evals.length} new evals on ${LAST.label}`, evals.map(s => `${s.rubric} ${stat(LAST, s.id).pct}%`).join(', ') + '.']);
+  }
   $('tiles').innerHTML = t.map(([big, lab, p]) => `<div class="tile"><span class="lab">${lab}</span><span class="big">${big}</span><p>${esc(p)}</p></div>`).join('');
 })();
 
