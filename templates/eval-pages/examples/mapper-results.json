@@ -2,7 +2,7 @@
  "title": "Mapper scorer runs",
  "eyebrow": "Mapper · course scorers",
  "headline": "How each version scores, run by run",
- "standfirst": "Every scorer on the 10-row sample of the 30-row course dataset. The fixes compare v1 with v1.1, so you can see each fix work. Everything else is scored on v1.1, and v2 fills in the empty column on Nov 11. Colour shows whether a scorer clears its release threshold.",
+ "standfirst": "Every scorer on the 10-row sample of the 30-row Mapper Dev Dataset. The fixes compare v1 with v1.1, so you can see each fix work. Everything else is scored on v1.1, and v2 fills in the empty column on Nov 11. Colour shows whether a scorer clears its release threshold.",
  "runs": [
   {
    "key": "w3-v1",
@@ -2304,5 +2304,5 @@
   "when": "Nov 11",
   "what": "The metric scope fix"
  },
- "foot": "Course dataset: 30 rows (core, governance, metric scope, period, years, other). Scorers written with the ai-evals plugin, scored with npm run score in the Mapper repo. Trace codes as in the course deck."
+ "foot": "Mapper Dev Dataset: 30 rows (core, governance, metric scope, period, years, other). Scorers written with the ai-evals plugin, scored with npm run score in the Mapper repo. Trace codes as in the course deck."
 }

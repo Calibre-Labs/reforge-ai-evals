@@ -63,7 +63,7 @@ A row is one session in one run, as the user saw it.
 ```json
 {
   "title": "Mapper scorer runs", "eyebrow": "Mapper · course scorers", "headline": "How each version scores, run by run",
-  "standfirst": "Every scorer on the 30-row course dataset…", "foot": "…",
+  "standfirst": "Every scorer on the 30-row Mapper Dev Dataset…", "foot": "…",
   "runs": [{ "key": "w3-v1", "label": "v1", "note": "Week3 v1 production baseline", "scored_at": "2026-11-04T06:11:36Z", "rows": [] }],
   "scorers": [{ "id": "g2", "rubric": "G2", "code": "TC-1", "name": "Links retrieved, and they open", "kind": "Code",
                 "group": "fixed", "threshold": 100, "fix": "Harness: resolve redirects, cite from a numbered list" },
