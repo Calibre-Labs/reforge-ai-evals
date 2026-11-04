@@ -185,7 +185,7 @@ $("res").innerHTML = RUNS.map(run => {
   const {p, pct} = rate(run), f = run.rows.filter(r => r.score === 0), thr = SC.threshold;
   return `<div class="rcard"><div class="lab">${esc(run.label)}</div><div class="big">${pct}%<small> · ${p} of ${run.rows.length}</small></div>
   ${thr != null ? `<div class="thr ${pct >= thr ? "ok" : "miss"}">${pct >= thr ? "Clears" : "Misses"} the ${thr}% threshold</div>` : ""}
-  <div class="fails">${f.map(r => `<div><span class="id">${esc(r.id)}</span>${esc(r.input)}<div class="muted">${esc(r.reason)}</div></div>`).join("") || '<div class="muted">No session fails.</div>'}</div></div>`;
+  ${f.length ? `<details class="file"><summary>${f.length} failing session${f.length > 1 ? "s" : ""}</summary><div class="fails">${f.map(r => `<div><span class="id">${esc(r.id)}</span>${esc(r.input)}<div class="muted">${esc(r.reason)}</div></div>`).join("")}</div></details>` : '<div class="fails"><div class="muted">No session fails.</div></div>'}</div>`;
 }).join("");
 
 // 2. the scorer, word for word, with its parts marked
