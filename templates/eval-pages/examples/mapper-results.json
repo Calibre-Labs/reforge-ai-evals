@@ -2,7 +2,7 @@
  "title": "Mapper scorer runs",
  "eyebrow": "Mapper · course scorers",
  "headline": "How each version scores, run by run",
- "standfirst": "Every scorer on the 10-row sample of the 30-row Mapper Dev Dataset. The fixes compare v1 with v1.1, so you can see each fix work. Everything else is scored on v1.1, and v2 fills in the empty column on Nov 11. Colour shows whether a scorer clears its release threshold.",
+ "standfirst": "Every scorer on the 10-row sample of the 30-row Mapper Dev Dataset. The fixes compare v1 with v1.1, so you can see each fix work. Everything else is scored on v1.1, and v1.5 fills in the empty column on Nov 11. Colour shows whether a scorer clears its release threshold.",
  "runs": [
   {
    "key": "w3-v1",
@@ -2266,7 +2266,8 @@
    "name": "A source supports each figure",
    "kind": "Judge",
    "group": "climb",
-   "threshold": null
+   "threshold": null,
+   "target": true
   },
   {
    "id": "t1",
@@ -2275,7 +2276,8 @@
    "name": "Delivers what was confirmed",
    "kind": "Judge",
    "group": "climb",
-   "threshold": null
+   "threshold": null,
+   "target": true
   },
   {
    "id": "o3",
@@ -2285,7 +2287,6 @@
    "kind": "Judge",
    "group": "climb",
    "threshold": 90,
-   "live": true,
    "target": true
   },
   {
@@ -2296,13 +2297,13 @@
    "kind": "Code",
    "group": "climb",
    "threshold": 95,
-   "live": true
+   "target": true
   }
  ],
  "next": {
-  "label": "v2",
+  "label": "v1.5",
   "when": "Nov 11",
-  "what": "The metric scope fix"
+  "what": "One fix each for O3, X2, O2 and T1"
  },
  "foot": "Mapper Dev Dataset: 30 rows (core, governance, metric scope, period, years, other). Scorers written with the ai-evals plugin, scored with npm run score in the Mapper repo. Trace codes as in the course deck."
 }
