@@ -102,6 +102,13 @@ table.mini{border-collapse:collapse;font-size:12.5px;min-width:520px;width:100%}
 .calls button[data-c="agree"][aria-pressed="true"]{background:var(--pass);border-color:var(--pass);color:var(--surface)}
 .calls button[data-c="disagree"][aria-pressed="true"]{background:var(--fail);border-color:var(--fail);color:var(--surface)}
 .calls .hint{font-size:13px;color:var(--muted)}
+.calls button[disabled]{opacity:.5;cursor:default}
+.lnote{display:flex;flex-direction:column;gap:4px;margin-top:10px;font-size:13px;color:var(--muted)}
+.lnote textarea{font:300 14px var(--text);color:var(--ink);background:var(--ground);border:1px solid var(--hair);padding:8px 10px;resize:vertical;width:100%;box-sizing:border-box}
+.lbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:10px;font-size:13px}
+.lfilter{display:inline-flex}
+.lfilter button{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border:1px solid var(--hair);background:var(--surface);color:var(--muted);cursor:pointer;margin-right:-1px}
+.lfilter button[aria-pressed="true"]{color:var(--ink);border-color:var(--ink);position:relative}
 .nomap{font-size:14px;color:var(--muted);margin-top:8px}
 .bridge{margin-top:18px;padding:14px 16px;background:var(--brass-soft);color:var(--ink);font-size:15px;max-width:76ch}
 .foot{margin-top:56px;padding-top:14px;border-top:1px solid var(--hair);font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -158,7 +165,8 @@ button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
 <section class="step"><div class="num">3</div><div>
   <h2 id="sessHead"></h2>
   <p id="sessNote"></p>
-  <div class="tally"><span class="t" id="tally"></span><button class="btn" id="reset">Clear my calls</button></div>
+  <div class="tally"><span class="t" id="tally"></span></div>
+  <div class="lbar"><span class="lfilter" id="lfilter"><button data-f="all">All</button><button data-f="open">Unlabeled</button><button data-f="dis">Disagreements</button></span><button class="btn" id="import" hidden></button><span class="muted" id="lstatus"></span></div>
   <div class="samples" id="samples"></div>
 </div></section>
 
@@ -211,13 +219,26 @@ $("keys") && ($("keys").onclick = e => { const b = e.target.closest(".key"); if 
   if (focus) { const first = c.querySelector(`.ln[data-i="${focus}"]`); first && first.scrollIntoView({block: "nearest", behavior: "smooth"}); }
 });
 
-// 3. sessions on the latest run, with the scorer's call
+// 3. sessions on the latest run, with the scorer's call and a person's label.
+// A label is the person's own verdict (PASS or FAIL), so it still means the same after the
+// scorer changes and is rescored. Agree or Disagree is that label compared with the current call.
+// Shared labels (one per session) live in the artifact's db when the page has it; otherwise
+// they stay in this browser.
 const KEY = PAGE.storageKey || ("calls-" + SC.id);
-let store = {}; try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
+const verdictOf = r => r.score === 1 ? "PASS" : "FAIL";
+const flip = v => v === "PASS" ? "FAIL" : "PASS";
 const ROWS = (PAGE.sessions || []).map(id => LAST.rows.find(r => r.id === id)).filter(Boolean);
+const byId = Object.fromEntries(ROWS.map(r => [r.id, r]));
+let local = {}; try { local = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+// older pages stored "agree" or "disagree"; turn those into labels against today's call
+for (const [id, v] of Object.entries(local)) if (typeof v === "string") { const r = byId[id]; if (r) local[id] = {human: v === "agree" ? verdictOf(r) : flip(verdictOf(r))}; else delete local[id]; }
+const saveLocal = () => { try { localStorage.setItem(KEY, JSON.stringify(local)); } catch (e) {} };
+let labels = local, DB = null, ME = null, USER = null, NAMES = {}, canWrite = true, filter = "all";
+const docId = id => SC.id + "." + id;
 $("sessHead").textContent = PAGE.sessionsHeading || `${ROWS.length} sessions on ${LAST.label}`;
 $("sessNote").textContent = PAGE.sessionsNote || ""; if (!PAGE.sessionsNote) $("sessNote").remove();
+const status = t => { $("lstatus").textContent = t; };
+status("Labels are saved in this browser.");
 function mini(c){
   const fl = c.flags || [], cols = new Set(fl.flatMap(f => f.cols || [])), cells = new Set(fl.flatMap(f => (f.cells || []).map(([r, k]) => r + ":" + k)));
   const cn = Object.assign({}, ...fl.map(f => f.colNotes || {}));
@@ -225,28 +246,74 @@ function mini(c){
   return `<div class="mtitle">${esc(c.title)}</div><div class="mt"><table class="mini"><tr><th>Company</th>${c.cols.map((h, i) => `<th class="${cols.has(i) ? "half" : ""}">${esc(h)}${cn[i] ? `<span class="cnt">${esc(cn[i])}</span>` : ""}</th>`).join("")}</tr>${
     c.rows.map((r, ri) => `<tr>${r.map((v, i) => `<td class="${i && cells.has(ri + ":" + (i-1)) ? "e" : ""}">${esc(v || "(blank)")}</td>`).join("")}</tr>`).join("")}</table></div>`;
 }
+const callOf = r => { const l = labels[r.id]; return l ? (l.human === verdictOf(r) ? "agree" : "disagree") : ""; };
 function render(){
   const open = new Set([...document.querySelectorAll("#samples details.s[open]")].map(d => d.dataset.id));
-  $("samples").innerHTML = ROWS.map(r => { const c = store[r.id] || "", pass = r.score === 1;
+  const act = document.activeElement, typing = act && act.dataset && act.dataset.note ? {id: act.dataset.note, v: act.value, a: act.selectionStart, b: act.selectionEnd} : null;
+  const shown = ROWS.filter(r => filter === "all" || (filter === "open" ? !labels[r.id] : callOf(r) === "disagree"));
+  $("samples").innerHTML = shown.map(r => { const c = callOf(r), l = labels[r.id], pass = r.score === 1;
     const said = (r.said || []).length ? `<details class="file"><summary>Session Input</summary><div class="said">${r.said.map(t => `<span class="u">${esc(t.user)}</span>${t.text ? `<span class="a">${esc(t.text)}</span>` : ""}`).join("")}</div></details>` : "";
-    const mine = c ? `<span class="mycall ${c}">${c === "agree" ? "Agreed" : "Disagreed"}</span>` : "";
+    const who = l && l.by ? ((NAMES[l.by] && NAMES[l.by].name) || (l.by === ME ? "you" : "")) : "";
+    const mine = c ? `<span class="mycall ${c}">${c === "agree" ? "Agreed" : "Disagreed"}${who ? " · " + esc(who) : ""}</span>` : "";
+    const dis = canWrite ? "" : " disabled";
     return `<details class="s ${c}" data-id="${esc(r.id)}"${open.has(r.id) ? " open" : ""}><summary class="shead"><div><span class="sid">${esc(r.id)}</span><span class="sin">${esc(r.input)}</span><span class="sg">${esc(r.group || "")}</span></div>
     <span class="right">${mine}<span class="verdict ${pass ? "p" : "f"}">${pass ? "Pass" : "Fail"}</span></span></summary>
     ${said}<details class="file"><summary>${esc(PAGE.reasonLabel || "Reasoning")}</summary><div class="why">${esc(r.reason)}</div></details>
     ${(r.cards || []).length ? r.cards.map(mini).join("") : `<div class="nomap">No output card.</div>`}
-    <div class="calls"><button data-c="agree" aria-pressed="${c === "agree"}">Agree</button><button data-c="disagree" aria-pressed="${c === "disagree"}">Disagree</button></div></details>`; }).join("");
-  // summary: the scorer's pass and fail, then your review, split by the scorer's call
+    <div class="calls"><button data-c="agree" aria-pressed="${c === "agree"}"${dis}>Agree</button><button data-c="disagree" aria-pressed="${c === "disagree"}"${dis}>Disagree</button>
+    ${l ? `<span class="hint">Your label: ${l.human === "PASS" ? "Pass" : "Fail"}</span>` : ""}</div>
+    ${l ? `<label class="lnote"><span>Why (optional)</span><textarea rows="2" data-note="${esc(r.id)}"${dis}>${esc(l.note || "")}</textarea></label>` : ""}</details>`; }).join("") ||
+    `<div class="nomap">${filter === "open" ? "Every session has a label." : "No disagreements yet."}</div>`;
+  // summary: the scorer's pass and fail, then the labels, split by the scorer's call
   const passes = ROWS.filter(r => r.score === 1), fails = ROWS.filter(r => r.score === 0);
-  const tallyOf = rs => { const ids = rs.filter(r => store[r.id]).map(r => r.id), a = ids.filter(i => store[i] === "agree").length; return {n: ids.length, a, d: ids.length - a}; };
+  const tallyOf = rs => { const done = rs.filter(r => labels[r.id]), a = done.filter(r => callOf(r) === "agree").length; return {n: done.length, a, d: done.length - a}; };
   const all = tallyOf(ROWS), tp = tallyOf(passes), tf = tallyOf(fails);
   const pct = t => t.n ? ` (${Math.round(100 * t.a / t.n)}%)` : "";
   $("tally").innerHTML = `<span><b>${passes.length}</b> pass · <b>${fails.length}</b> fail</span>` +
-    `<span>Reviewed <b>${all.n}</b> of ${ROWS.length} · agree <b>${all.a}</b>${pct(all)} · disagree <b>${all.d}</b></span>` +
+    `<span>Labeled <b>${all.n}</b> of ${ROWS.length} · agree <b>${all.a}</b>${pct(all)} · disagree <b>${all.d}</b></span>` +
     `<span>On fails: agree <b>${tf.a}</b>, disagree <b>${tf.d}</b></span><span>On passes: agree <b>${tp.a}</b>, disagree <b>${tp.d}</b></span>`;
+  if (typing) { const t = document.querySelector(`textarea[data-note="${CSS.escape(typing.id)}"]`); if (t) { t.value = typing.v; t.focus(); t.setSelectionRange(typing.a, typing.b); } }
+  document.querySelectorAll("#lfilter button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === filter));
+  const imp = $("import"), stray = Object.keys(local).filter(id => byId[id] && !labels[id]).length;
+  imp.hidden = !(DB && canWrite && stray); imp.textContent = `Add ${stray} label${stray === 1 ? "" : "s"} from this browser`;
 }
-$("samples").onclick = e => { const b = e.target.closest("button[data-c]"); if (!b) return; const id = b.closest(".s").dataset.id;
-  store[id] = store[id] === b.dataset.c ? undefined : b.dataset.c; if (!store[id]) delete store[id]; save(); render(); };
-$("reset").onclick = () => { store = {}; save(); render(); };
+async function writeLabel(id, label){
+  if (!DB) { if (label) local[id] = label; else delete local[id]; saveLocal(); labels = local; render(); return; }
+  const ref = DB.collection("labels").doc(docId(id));
+  try { if (label) await ref.set(label); else await ref.delete(); }
+  catch (e) { if (e && e.code === "invalid_argument") { canWrite = false; status("You can read these labels but not change them."); render(); }
+    else status(e && e.code === "quota_exceeded" ? "The label store is full." : "That label didn't save. Try again."); }
+}
+const labelFor = (id, human, note) => ({scorer: SC.id, session: id, human, judge: verdictOf(byId[id]), run: LAST.label, by: ME, at: new Date().toISOString(), ...(note ? {note} : {})});
+$("samples").onclick = e => { const b = e.target.closest("button[data-c]"); if (!b || b.disabled) return; const id = b.closest(".s").dataset.id, r = byId[id];
+  const human = b.dataset.c === "agree" ? verdictOf(r) : flip(verdictOf(r)), cur = labels[id];
+  const next = cur && cur.human === human ? null : labelFor(id, human, cur && cur.note);
+  if (DB) { const copy = {...labels}; if (next) copy[id] = next; else delete copy[id]; labels = copy; render(); }
+  writeLabel(id, next); };
+$("samples").addEventListener("change", e => { const t = e.target.closest("textarea[data-note]"); if (!t) return; const id = t.dataset.note, cur = labels[id]; if (!cur) return;
+  const note = t.value.trim(); if ((cur.note || "") === note) return; const next = {...cur, note, by: ME, at: new Date().toISOString()}; if (!note) delete next.note;
+  if (DB) labels = {...labels, [id]: next}; writeLabel(id, next); });
+$("lfilter").onclick = e => { const b = e.target.closest("button[data-f]"); if (b) { filter = b.dataset.f; render(); } };
+$("import").onclick = async () => { for (const id of Object.keys(local)) if (byId[id] && !labels[id]) await writeLabel(id, labelFor(id, local[id].human, local[id].note)); };
+// connect to the shared store, if this page has one
+(async () => {
+  if (!window.claude || !claude.use) return;
+  const [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+  if (!db) return;
+  DB = db; USER = user; ME = user ? await user.id() : null;
+  const w = user ? await user.can("data.write") : null; if (w === false) canWrite = false;
+  status("Loading shared labels…");
+  const timer = setTimeout(() => status("Shared labels can't be reached yet. What you see may be out of date."), 10000);
+  let seen = "";
+  DB.collection("labels").onSnapshot(snap => {
+    const next = {}; snap.docs.forEach(d => { const v = d.data(); if (v && v.scorer === SC.id && byId[v.session]) next[v.session] = v; });
+    labels = next;
+    if (!snap.metadata.fromCache) { clearTimeout(timer); status(canWrite ? "Labels are shared: everyone with access sees the same calls." : "You can read these labels but not change them."); }
+    const ids = [...new Set(Object.values(next).map(v => v.by).filter(Boolean))].sort().join(",");
+    render();
+    if (USER && ids && ids !== seen) { seen = ids; USER.profiles(ids.split(",")).then(ps => { NAMES = ps; render(); }); }
+  }, () => { clearTimeout(timer); status("Shared labels stopped updating. Reload to reconnect."); });
+})();
 $("footL").textContent = PAGE.footLeft || ""; $("footR").textContent = PAGE.footRight || "";
 render();
 </script>
