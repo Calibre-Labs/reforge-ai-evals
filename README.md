@@ -54,6 +54,7 @@ Write a v1 eval rubric from my PRD.
 ## Worked examples
 
 - **[Templates](templates/):** an AI PRD template, plus PRDs, v1 and v2 eval rubrics, simulated sessions and annotated traces for three agents: Corner (consumer shopping), Ledger (enterprise finance) and Mapper (market research, with 10 traces to annotate).
+- **[Eval pages](templates/eval-pages/):** templates for a results page and a scorer page (code check or LLM judge), with Mapper's Week 3 scorers as the worked example.
 - **[Market Map User Input Grid](docs/uig-market-map.md):** a complete worked UIG for the single-prompt market research agent from the spring 2026 cohort.
 
 ## FAQ

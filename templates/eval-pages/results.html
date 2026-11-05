@@ -1,0 +1,272 @@
+<title>__PAGE_TITLE__</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lexend:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a run-by-run scoreboard. Summary tiles, then the scorer-by-run grid that grows to the right, then what moved, then every session as a row of dots that opens into what the user saw. */
+:root{
+  --bg:#F5F6FA; --surface:#FFFFFF; --ink:#172A49; --body:#464E50; --muted:#67707A; --hair:#DFE3EA; --tint:#E8ECF2;
+  --brass:#D4AF37; --steel:#B2BEC3; --mid:#5A7BA3;
+  --pass:#1F7A5A; --pass-bg:#E3F1EA; --miss:#9B4805; --miss-bg:#F6E7DA; --fail:#B4432F;
+  --display:"Poppins",ui-sans-serif,system-ui,sans-serif; --text:"Lexend",ui-sans-serif,system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1C31; --surface:#172A49; --ink:#F5F6FA; --body:#C9D2DC; --muted:#9AA6B2; --hair:#26395A; --tint:#22375A;
+  --steel:#5D6E86; --mid:#9ABCDA; --pass:#6CCB9F; --pass-bg:#173B33; --miss:#E9A15F; --miss-bg:#3D2B1A; --fail:#F08A73; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1C31; --surface:#172A49; --ink:#F5F6FA; --body:#C9D2DC; --muted:#9AA6B2; --hair:#26395A; --tint:#22375A;
+  --steel:#5D6E86; --mid:#9ABCDA; --pass:#6CCB9F; --pass-bg:#173B33; --miss:#E9A15F; --miss-bg:#3D2B1A; --fail:#F08A73; color-scheme:dark}
+body{background:var(--bg);color:var(--body);font-family:var(--text);font-size:14px;line-height:1.5}
+.page{max-width:1120px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:36px}
+.eyebrow,.lab{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:600;color:var(--ink);font-size:clamp(26px,4vw,36px);line-height:1.15;margin:6px 0 8px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;color:var(--ink);font-size:20px;margin:0;text-wrap:balance}
+.stand{max-width:66ch;margin:0;font-weight:300;font-size:15px}
+.runs{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-family:var(--mono);font-size:11px;padding:4px 8px;border:1px solid var(--hair);background:var(--surface);color:var(--ink);border-radius:2px}
+.chip b{font-weight:500}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.tile{background:var(--surface);border-top:2px solid var(--ink);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.tile .big{font-family:var(--display);font-weight:600;font-size:30px;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1}
+.tile .big small{font-size:15px;color:var(--muted);font-weight:500}
+.tile p{margin:0;font-size:12.5px;color:var(--muted)}
+.sec{display:flex;flex-direction:column;gap:12px}
+.sechead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.grid{border-collapse:collapse;width:100%;min-width:720px;font-variant-numeric:tabular-nums}
+.grid th{font-family:var(--mono);font-size:10.5px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--ink)}
+.grid th .sub{display:block;text-transform:none;letter-spacing:0;font-size:10.5px}
+.grid td{padding:10px;border-bottom:1px solid var(--hair);vertical-align:middle}
+.grid tr.ghead td{padding-top:18px;border-bottom:none}
+.gtitle{font-family:var(--display);font-weight:600;color:var(--ink);font-size:13.5px}
+.gblurb{font-size:12px;color:var(--muted);margin-left:8px}
+.sname{display:flex;flex-direction:column;gap:2px;min-width:220px}
+.sname .t{color:var(--ink);font-weight:500}
+.sname .m{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.code{font-family:var(--mono);font-size:11px;color:var(--ink);background:var(--tint);padding:1px 5px;border-radius:2px;margin-right:6px}
+.cell{display:flex;align-items:center;gap:10px;min-width:140px}
+.cell .pct{font-family:var(--display);font-weight:600;font-size:18px;color:var(--ink);min-width:52px}
+.cell .n{font-size:11.5px;color:var(--muted)}
+.delta{font-family:var(--mono);font-size:11px}
+.up{color:var(--pass)} .down{color:var(--fail)} .flat{color:var(--muted)}
+.cell.pass{background:linear-gradient(90deg,var(--pass-bg),transparent 85%)}
+.cell.miss{background:linear-gradient(90deg,var(--miss-bg),transparent 85%)}
+.cell{padding:4px 8px;margin:-4px -8px}
+.badge{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:2px 6px;border-radius:2px}
+.badge.ok{color:var(--pass);background:var(--pass-bg)} .badge.no{color:var(--miss);background:var(--miss-bg)}
+.badge.live{color:var(--ink);border:1px dashed var(--steel)} .badge.wait{color:var(--muted);border:1px dashed var(--hair)}
+.thr{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.future{color:var(--muted);font-size:12px}
+.nextcol{background:repeating-linear-gradient(45deg,transparent 0 7px,var(--tint) 7px 8px)}
+.target{font-family:var(--mono);font-size:10.5px;color:var(--ink);border:1px dashed var(--brass);padding:2px 6px}
+.mvhead{font-size:12.5px;color:var(--muted)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,button.f{font-family:var(--text);font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--hair);padding:6px 10px;border-radius:2px}
+button.f[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.moved{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.mv{background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--hair)}
+.mv .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.mv .t{color:var(--ink);font-weight:500}
+.flips{display:flex;flex-wrap:wrap;gap:6px}
+.sid{font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:2px;border:1px solid var(--hair);background:transparent;color:var(--ink)}
+.sid.gain{border-color:var(--pass);color:var(--pass)} .sid.loss{border-color:var(--fail);color:var(--fail)}
+.none{font-size:12px;color:var(--muted)}
+table.dots{border-collapse:collapse;min-width:640px;width:100%}
+.dots th{font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--muted);padding:6px 4px;text-align:center;border-bottom:1px solid var(--ink)}
+.dots th.l{text-align:left}
+.dots td{padding:5px 4px;border-bottom:1px solid var(--hair);text-align:center}
+.dots td.l{text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
+.dots tr{cursor:pointer}
+.dots tr:hover td{background:var(--tint)}
+.dots tr.sel td{background:var(--tint)}
+.dots .id{font-family:var(--mono);font-size:11px;color:var(--ink);margin-right:8px}
+.dots .q{color:var(--body)}
+.dots .grp{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:8px}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--steel)}
+.dot.f{background:var(--fail);border-color:var(--fail)}
+.dot.na{border-style:dashed;border-color:var(--hair)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.drawer{background:var(--surface);padding:18px 20px;display:flex;flex-direction:column;gap:14px;border-top:2px solid var(--ink)}
+.drawer h3{font-family:var(--display);font-weight:600;color:var(--ink);font-size:17px;margin:0}
+.turn{display:flex;flex-direction:column;gap:4px}
+.turn .u{font-size:13px;color:var(--ink)} .turn .u::before{content:"User  ";font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.turn .a{font-size:13px;color:var(--body);max-width:72ch}
+.mapcard{display:flex;flex-direction:column;gap:6px}
+.mapcard .title{font-family:var(--display);font-weight:600;color:var(--ink);font-size:14px}
+table.mini{border-collapse:collapse;font-size:12px;min-width:480px}
+.mini th{font-family:var(--mono);font-size:10px;font-weight:400;text-transform:uppercase;color:var(--muted);text-align:left;padding:5px 8px;border-bottom:1px solid var(--ink)}
+.mini td{padding:5px 8px;border-bottom:1px solid var(--hair);color:var(--body)}
+.mini td:first-child{color:var(--ink);font-weight:500}
+.mini td.empty{background:var(--miss-bg);color:var(--miss);font-family:var(--mono);font-size:11px}
+.mini th.flag{color:var(--miss)}
+.reasons{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.rs{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;padding:8px 10px;background:var(--bg)}
+.rs .code{flex:none}
+.rs.f{outline:1px solid var(--fail)}
+.foot{font-size:12px;color:var(--muted);border-top:1px solid var(--hair);padding-top:12px}
+@media (max-width:560px){.tile .big{font-size:26px}}
+@media (prefers-reduced-motion:no-preference){.drawer{animation:in .18s ease-out}@keyframes in{from{transform:translateY(4px)}to{transform:none}}}
+[hidden]{display:none!important}
+</style>
+
+<main class="page">
+  <header>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="headline"></h1>
+    <p class="stand" id="standfirst"></p>
+    <div class="runs" id="runchips"></div>
+  </header>
+
+  <section class="tiles" id="tiles" aria-label="Latest run summary"></section>
+
+  <section class="sec" id="secA">
+    <div class="sechead"><h2 id="headA"></h2><span class="lab">Pass rate · change · threshold</span></div>
+    <div class="scroll"><table class="grid" id="gridA"></table></div>
+    <div class="moved" id="moved"></div>
+  </section>
+
+  <section class="sec" id="secB">
+    <div class="sechead"><h2 id="headB"></h2><span class="lab" id="labB"></span></div>
+    <div class="scroll"><table class="grid" id="gridB"></table></div>
+  </section>
+
+  <section class="sec">
+    <div class="sechead"><h2 id="headDots"></h2></div>
+    <div class="controls" id="groups" role="group" aria-label="Filter by group"></div>
+    <div class="legend"><span><i class="dot"></i>Pass</span><span><i class="dot f"></i>Fail</span><span><i class="dot na"></i>Not scored yet</span><span>Click a row to see what the user saw.</span></div>
+    <div class="scroll"><table class="dots" id="dots"></table></div>
+    <div class="drawer" id="drawer" hidden></div>
+  </section>
+
+  <div class="foot" id="foot"></div>
+</main>
+
+<script>
+/* Results page template. All content comes from PAGE (see the schema in the template README):
+   runs in order (the first is the "before" for the fixed group), scorers in two groups
+   ("fixed": codes already fixed, kept fixed; "climb": codes still to move), an optional next
+   version, and every row with its scores, cards and turns. */
+const PAGE = __PAGE_DATA__;
+const SCORERS = PAGE.scorers, NEXT = PAGE.next || null, runs = PAGE.runs;
+const FIRST = runs[0], LAST = runs[runs.length - 1];
+const LABEL = Object.fromEntries(runs.map(r => [r.key, r.label]));
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const stat = (run, id) => { const rs = run.rows.filter(r => r.scores[id]); if (!rs.length) return null; const p = rs.filter(r => r.scores[id].score === 1).length; return {p, n: rs.length, pct: Math.round(100 * p / rs.length)}; };
+const $ = id => document.getElementById(id);
+const kindName = k => k === 'Code' ? 'Code check' : k === 'Judge' ? 'LLM judge' : k;
+const fixed = SCORERS.filter(s => s.group === 'fixed'), climb = SCORERS.filter(s => s.group === 'climb');
+// The climb group shows every run after the first (the first run is the "before" for the fixes); one run shows itself.
+const climbRuns = runs.length > 1 ? runs.slice(1) : runs;
+
+$('eyebrow').textContent = PAGE.eyebrow || '';
+$('headline').textContent = PAGE.headline || PAGE.title;
+$('standfirst').textContent = PAGE.standfirst || '';
+$('runchips').innerHTML = runs.map(r => `<span class="chip"><b>${esc(r.label)}</b> · ${r.rows.length} sessions · scored ${esc((r.scored_at||'').slice(0,10))}</span>`).join('') +
+  (NEXT ? `<span class="chip" style="opacity:.6"><b>${esc(NEXT.label)}</b> · ${esc(NEXT.when)} · ${esc(NEXT.what)}</span>` : '');
+
+(function tiles(){
+  // Three numbers: the fixes (first run to latest), how many scorers ran, and the average pass rate of the other new evals.
+  const scored = SCORERS.filter(s => stat(LAST, s.id));
+  const fx = fixed.filter(s => stat(LAST, s.id)), held = fx.filter(s => stat(LAST, s.id).pct === 100);
+  const evals = climb.filter(s => stat(LAST, s.id));
+  const t = [];
+  if (fx.length) {
+    const moves = fx.map(s => { const a = stat(FIRST, s.id), b = stat(LAST, s.id); return `${s.rubric} ${a && FIRST !== LAST ? a.pct + '% → ' : ''}${b.pct}%`; }).join(', ');
+    t.push([`${held.length}<small> of ${fx.length}</small>`, `Fixes at 100% on ${LAST.label}`, `${moves}.`]);
+  }
+  t.push([`${scored.length}`, 'Scorers run', `${fx.length} keep a shipped fix fixed, ${evals.length} new evals on codes still open.`]);
+  if (evals.length) {
+    const avg = Math.round(evals.reduce((n, s) => n + stat(LAST, s.id).pct, 0) / evals.length);
+    t.push([`${avg}%`, `Average of the ${evals.length} new evals on ${LAST.label}`, evals.map(s => `${s.rubric} ${stat(LAST, s.id).pct}%`).join(', ') + '.']);
+  }
+  $('tiles').innerHTML = t.map(([big, lab, p]) => `<div class="tile"><span class="lab">${lab}</span><span class="big">${big}</span><p>${esc(p)}</p></div>`).join('');
+})();
+
+const cell = (s, st, prev) => {
+  if (!st) return `<td><span class="badge ${s.live?'live':'wait'}">${s.live?'Written live':'Not run'}</span></td>`;
+  const cls = s.threshold == null ? '' : st.pct >= s.threshold ? 'pass' : 'miss';
+  let dt = '';
+  if (prev) { const d = st.pct - prev.pct; dt = `<span class="delta ${d>0?'up':d<0?'down':'flat'}">${d>0?'▲ +':d<0?'▼ ':'± '}${d}</span>`; }
+  return `<td><div class="cell ${cls}"><span class="pct">${st.pct}%</span><span class="n">${st.p}/${st.n}</span>${dt}</div></td>`;
+};
+const thrCell = (s, st) => s.threshold == null ? `<td><span class="future">Not set</span></td>` :
+  `<td><span class="thr">${s.threshold}%</span> ${st ? `<span class="badge ${st.pct >= s.threshold ? 'ok':'no'}">${st.pct >= s.threshold ? 'Clears':'Misses'}</span>` : ''}</td>`;
+const nameCell = (s, extra) => `<td><div class="sname"><span class="t"><span class="code">${esc(s.code)}</span>${esc(s.name)}</span><span class="m">${esc(s.rubric)} · ${esc(kindName(s.kind))}${extra ? ' · ' + esc(extra) : ''}</span></div></td>`;
+const runHead = r => `<th>${esc(r.label)}${r.note ? `<span class="sub">${esc(r.note)}</span>` : ''}</th>`;
+
+(function grids(){
+  const G = PAGE.groups || {};
+  if (fixed.length) {
+    $('headA').textContent = (G.fixed && G.fixed.heading) || `The fixes, ${FIRST.label} to ${LAST.label}`;
+    let h = `<tr><th>Scorer</th>${runs.map(runHead).join('')}<th>Threshold</th></tr>`;
+    for (const s of fixed) h += `<tr>${nameCell(s, s.fix)}${runs.map((r, i) => cell(s, stat(r, s.id), i ? stat(runs[i-1], s.id) : null)).join('')}${thrCell(s, stat(LAST, s.id))}</tr>`;
+    $('gridA').innerHTML = h;
+  } else $('secA').hidden = true;
+  if (climb.length) {
+    $('headB').textContent = (G.climb && G.climb.heading) || (fixed.length ? `Everything else, on ${climbRuns.map(r => r.label).join(' and ')}` : 'Every scorer');
+    $('labB').textContent = NEXT ? 'Pass rate · next version · threshold' : 'Pass rate · threshold';
+    let h = `<tr><th>Scorer</th>${climbRuns.map(runHead).join('')}${NEXT ? `<th class="nextcol">${esc(NEXT.label)}<span class="sub">${esc(NEXT.when)} · ${esc(NEXT.what)}</span></th>` : ''}<th>Threshold</th></tr>`;
+    for (const s of climb) {
+      h += `<tr>${nameCell(s)}${climbRuns.map((r, i) => cell(s, stat(r, s.id), i ? stat(climbRuns[i-1], s.id) : null)).join('')}` +
+        (NEXT ? `<td class="nextcol">${s.target ? `<span class="target">What ${esc(NEXT.label)} fixes</span>` : '<span class="future">·</span>'}</td>` : '') + `${thrCell(s, stat(LAST, s.id))}</tr>`;
+    }
+    $('gridB').innerHTML = h;
+  } else $('secB').hidden = true;
+})();
+
+(function moved(){
+  if (!fixed.length || runs.length < 2) return;
+  const byId = Object.fromEntries(FIRST.rows.map(r => [r.id, r]));
+  $('moved').innerHTML = fixed.map(s => {
+    const gain = [], loss = [];
+    for (const r of LAST.rows) { const a = byId[r.id]; if (!a || !a.scores[s.id] || !r.scores[s.id]) continue; const x = a.scores[s.id].score, y = r.scores[s.id].score; if (x === 0 && y === 1) gain.push(r.id); if (x === 1 && y === 0) loss.push(r.id); }
+    const chips = [...gain.map(id => `<button class="sid gain" data-id="${id}" title="Failed on ${esc(FIRST.label)}, passes on ${esc(LAST.label)}">${id}</button>`), ...loss.map(id => `<button class="sid loss" data-id="${id}" title="Passed on ${esc(FIRST.label)}, fails on ${esc(LAST.label)}">${id}</button>`)].join('');
+    return `<div class="mv"><div class="top"><span class="t"><span class="code">${esc(s.code)}</span>${esc(s.name)}</span><span class="lab"><span class="up">+${gain.length}</span>  <span class="down">−${loss.length}</span></span></div><span class="mvhead">Sessions that changed from ${esc(FIRST.label)} to ${esc(LAST.label)}</span><div class="flips">${chips || '<span class="none">No session changed.</span>'}</div></div>`;
+  }).join('');
+})();
+$('moved').addEventListener('click', e => { const b = e.target.closest('.sid'); if (!b) return; open(b.dataset.id); $('drawer').scrollIntoView({behavior:'smooth', block:'start'}); });
+
+// every session on the latest run as a row of dots
+$('headDots').textContent = `Every session on ${LAST.label}`;
+const GROUP_NAMES = ['all', ...new Set(LAST.rows.map(r => r.group).filter(Boolean))];
+let groupFilter = 'all', selected = null;
+$('groups').innerHTML = GROUP_NAMES.map(g => `<button class="f" data-g="${esc(g)}" aria-pressed="${g==='all'}">${g === 'all' ? `All ${LAST.rows.length}` : esc(g)}</button>`).join('');
+$('groups').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; groupFilter = b.dataset.g; [...$('groups').children].forEach(x => x.setAttribute('aria-pressed', x === b)); renderDots(); });
+function renderDots(){
+  let h = `<tr><th class="l">Session</th>${SCORERS.map(s => `<th title="${esc(s.rubric)} ${esc(s.name)}">${esc(s.code)}</th>`).join('')}</tr>`;
+  for (const r of LAST.rows.filter(r => groupFilter === 'all' || r.group === groupFilter)) {
+    h += `<tr data-id="${esc(r.id)}" class="${r.id===selected?'sel':''}" tabindex="0"><td class="l"><span class="id">${esc(r.id)}</span><span class="q">${esc(r.input)}</span><span class="grp">${esc(r.group||'')}</span></td>` +
+      SCORERS.map(s => { const sc = r.scores[s.id]; return `<td><i class="dot ${!sc ? 'na' : sc.score === 0 ? 'f' : ''}" aria-label="${esc(s.code)} ${!sc ? 'not scored' : sc.score ? 'pass' : 'fail'}"></i></td>`; }).join('') + `</tr>`;
+  }
+  $('dots').innerHTML = h;
+}
+$('dots').addEventListener('click', e => { const tr = e.target.closest('tr[data-id]'); if (tr) open(tr.dataset.id); });
+$('dots').addEventListener('keydown', e => { if (e.key === 'Enter') { const tr = e.target.closest('tr[data-id]'); if (tr) open(tr.dataset.id); } });
+
+// A card's flags point at the columns and cells a failing scorer counted against it.
+function cardHtml(c, failing){
+  const fl = (c.flags || []).filter(f => failing.includes(f.scorer));
+  const cols = new Set(fl.flatMap(f => f.cols || [])), cells = new Set(fl.flatMap(f => (f.cells || []).map(([r, k]) => r + ':' + k)));
+  const note = fl.map(f => f.note).filter(Boolean)[0] || 'flagged';
+  if (c.cols && c.rows && c.rows.length) {
+    return `<div class="mapcard"><span class="title">${esc(c.title)}</span><div class="scroll"><table class="mini"><tr><th>Company</th>${c.cols.map((h,i) => `<th class="${cols.has(i) ? 'flag':''}">${esc(h)}${cols.has(i) ? ' · ' + esc(note) : ''}</th>`).join('')}</tr>` +
+      c.rows.map((r, ri) => `<tr>${r.map((v, i) => `<td class="${i && cells.has(ri + ':' + (i-1)) ? 'empty' : ''}">${esc(v || '(blank)')}</td>`).join('')}</tr>`).join('') + `</table></div></div>`;
+  }
+  return `<div class="mapcard"><span class="title">${esc(c.title || String(c.tool || '').replace('generate_',''))}</span>${c.body ? `<p class="turn a">${esc(c.body)}…</p>` : ''}</div>`;
+}
+function open(id){
+  selected = id; renderDots();
+  const r = LAST.rows.find(x => x.id === id); if (!r) return;
+  const failing = SCORERS.filter(s => r.scores[s.id] && r.scores[s.id].score === 0).map(s => s.id);
+  const turns = (r.said || []).map(t => `<div class="turn"><span class="u">${esc(t.user)}</span>${t.text ? `<span class="a">${esc(t.text)}</span>` : ''}</div>`).join('');
+  const reasons = SCORERS.map(s => { const sc = r.scores[s.id]; if (!sc) return ''; return `<div class="rs ${sc.score ? '' : 'f'}"><span class="code">${esc(s.code)}</span><span><b style="color:${sc.score ? 'var(--pass)' : 'var(--fail)'};font-weight:500">${sc.score ? 'Pass' : 'Fail'}</b> · ${esc(sc.reason)}</span></div>`; }).join('');
+  const d = $('drawer');
+  d.innerHTML = `<div class="sechead"><h3>${esc(r.id)} · “${esc(r.input)}”</h3><span class="lab">${esc(LAST.label)} · ${esc(r.group||'')}${r.expected ? ' · expected ' + esc(r.expected) : ''}</span></div>${turns}${(r.cards || []).map(c => cardHtml(c, failing)).join('')}<div class="reasons">${reasons}</div>`;
+  d.hidden = false;
+}
+renderDots();
+$('foot').textContent = PAGE.foot || '';
+</script>
