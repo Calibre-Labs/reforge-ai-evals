@@ -1,6 +1,6 @@
 {
   "name": "ai-evals",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Skills for evaluating an AI product: write the eval rubric, build test inputs, turn trace notes into codes, write judges and check them against your labels. You annotate traces and label for calibration. The skills do the rest.",
   "author": {
     "name": "Calibre Labs",
