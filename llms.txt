@@ -15,6 +15,7 @@ Install in any coding agent with `npx skills add https://github.com/Calibre-Labs
 - [Code-based evaluator skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-code/SKILL.md): when and how to write deterministic evaluators
 - [Judge alignment skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/llm-align/SKILL.md): measure LLM judge agreement with human labels, investigate disagreements, fix judge prompts
 - [Ticket-to-eval skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/ticket-to-eval/SKILL.md): convert support tickets and production traces into PII-stripped regression eval rows
+- [Eval coach skill](https://github.com/Calibre-Labs/reforge-ai-evals/blob/main/skills/eval-coach/SKILL.md): answers questions about AI evals from the course FAQs, course reader and live sessions, draws diagrams, and teaches every skill in short hands-on lessons on the Mapper agent
 
 ## Templates and worked examples
 

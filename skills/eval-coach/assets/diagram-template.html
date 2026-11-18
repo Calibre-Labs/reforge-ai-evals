@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lexend:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#172a49; --brass:#d4af37; --midnavy:#5a7ba3; --lightblue:#9abcda;
+    --ground:#f5f6fa; --surface:#ffffff; --body:#464e50; --muted:#67707a; --hair:#dfe3ea;
+    --pass:#3f7d5a; --fail:#b5473a;
+    --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--ground);color:var(--body);font-family:Lexend,"Helvetica Neue",Arial,sans-serif;font-weight:300;font-size:16px;line-height:1.55;}
+  .page{max-width:1040px;margin:0 auto;padding:48px 24px 56px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+  h1{font-family:Poppins,"Segoe UI",sans-serif;font-weight:600;font-size:34px;line-height:1.15;color:var(--navy);}
+  .figure{margin-top:28px;background:var(--surface);border:1px solid var(--hair);padding:24px;}
+  .figure svg{display:block;width:100%;height:auto;}
+  .figure svg text{font-family:Lexend,"Helvetica Neue",Arial,sans-serif;}
+  .caption{margin-top:18px;font-size:18px;color:var(--navy);max-width:760px;}
+  .caption::before{content:"";display:inline-block;width:8px;height:8px;background:var(--brass);margin-right:10px;vertical-align:2px;}
+  .foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--hair);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">{{EYEBROW}}</div>
+  <h1>{{TITLE}}</h1>
+
+  <div class="figure">
+    <!-- Replace this example (anatomy of an eval) with the diagram. Keep the viewBox ratio
+         wide (about 16:9) and the colors from :root. Label pass and fail in words, not just color. -->
+    <svg viewBox="0 0 960 420" role="img" aria-label="{{TITLE}}">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#5a7ba3"/>
+        </marker>
+      </defs>
+      <!-- Inputs -->
+      <rect x="20" y="40" width="230" height="110" fill="#ffffff" stroke="#172a49" stroke-width="1.5"/>
+      <text x="40" y="78" font-size="13" fill="#67707a" letter-spacing="1.5">THE WORK</text>
+      <text x="40" y="106" font-size="22" font-weight="500" fill="#172a49">Trace</text>
+      <text x="40" y="132" font-size="14" fill="#464e50">What the agent did</text>
+
+      <rect x="20" y="230" width="230" height="110" fill="#ffffff" stroke="#172a49" stroke-width="1.5"/>
+      <text x="40" y="268" font-size="13" fill="#67707a" letter-spacing="1.5">THE STANDARD</text>
+      <text x="40" y="296" font-size="22" font-weight="500" fill="#172a49">Rubric line</text>
+      <text x="40" y="322" font-size="14" fill="#464e50">What good looks like</text>
+
+      <!-- Scorer -->
+      <rect x="360" y="135" width="240" height="110" fill="#172a49"/>
+      <rect x="360" y="135" width="6" height="110" fill="#d4af37"/>
+      <text x="385" y="173" font-size="13" fill="#9abcda" letter-spacing="1.5">THE CHECK</text>
+      <text x="385" y="201" font-size="22" font-weight="500" fill="#ffffff">Scorer</text>
+      <text x="385" y="227" font-size="14" fill="#9abcda">Code, an LLM or a person</text>
+
+      <!-- Verdict -->
+      <rect x="700" y="100" width="110" height="64" fill="#ffffff" stroke="#3f7d5a" stroke-width="2"/>
+      <text x="755" y="139" font-size="20" font-weight="500" fill="#3f7d5a" text-anchor="middle">Pass</text>
+      <rect x="830" y="100" width="110" height="64" fill="#ffffff" stroke="#b5473a" stroke-width="2"/>
+      <text x="885" y="139" font-size="20" font-weight="500" fill="#b5473a" text-anchor="middle">Fail</text>
+      <text x="700" y="86" font-size="13" fill="#67707a" letter-spacing="1.5">ONE TRACE</text>
+
+      <rect x="700" y="230" width="240" height="90" fill="#ffffff" stroke="#172a49" stroke-width="1.5"/>
+      <text x="720" y="262" font-size="13" fill="#67707a" letter-spacing="1.5">MANY TRACES</text>
+      <text x="720" y="292" font-size="20" font-weight="500" fill="#172a49">A metric: % that pass</text>
+
+      <!-- Arrows -->
+      <path d="M250,95 C305,95 305,175 356,180" fill="none" stroke="#5a7ba3" stroke-width="2" marker-end="url(#arrow)"/>
+      <path d="M250,285 C305,285 305,205 356,200" fill="none" stroke="#5a7ba3" stroke-width="2" marker-end="url(#arrow)"/>
+      <path d="M600,175 C650,175 650,132 696,132" fill="none" stroke="#5a7ba3" stroke-width="2" marker-end="url(#arrow)"/>
+      <path d="M820,166 L820,226" fill="none" stroke="#5a7ba3" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+    </svg>
+  </div>
+
+  <p class="caption">{{CAPTION}}</p>
+  <div class="foot">{{SOURCE}} · ai-evals eval-coach</div>
+</div>
+</body>
+</html>

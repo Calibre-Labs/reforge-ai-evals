@@ -1,0 +1,7 @@
+interface:
+  display_name: "Eval coach"
+  short_description: "Ask about evals, or learn the plugin hands-on."
+  default_prompt: "Use $eval-coach to teach me the eval loop, one lesson at a time."
+
+policy:
+  allow_implicit_invocation: true

@@ -24,6 +24,7 @@ its workflow. Do not improvise your own version of a step.
 | Has a rubric line or trace code that needs judgment | `eval-llm-judge` |
 | Has an LLM judge and human labels, and wants to know if the judge can be trusted | `llm-align` |
 | Has a support ticket, complaint or bad trace to turn into test data | `ticket-to-eval` |
+| Has a question about how evals work, or wants to learn the method and the skills hands-on | `eval-coach` |
 
 ## The order, for someone starting from nothing
 
