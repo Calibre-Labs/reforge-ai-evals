@@ -1,6 +1,6 @@
 # Agent skills for AI evals
 
-Eight skills that guide an AI coding agent through the eval loop for any AI product. See the [main README](../README.md) for how they fit together.
+Ten skills that guide an AI coding agent through the eval loop for any AI product. See the [main README](../README.md) for how they fit together.
 
 | Skill | What it does |
 |-------|--------------|
@@ -13,6 +13,7 @@ Eight skills that guide an AI coding agent through the eval loop for any AI prod
 | [eval-llm-judge](eval-llm-judge/SKILL.md) | Writes LLM-as-a-judge prompts with one criterion each |
 | [llm-align](llm-align/SKILL.md) | Measures judges against human labels (TPR/TNR) and suggests prompt fixes |
 | [ticket-to-eval](ticket-to-eval/SKILL.md) | Turns support tickets and bad traces into PII-stripped regression rows |
+| [eval-coach](eval-coach/SKILL.md) | Answers eval questions from the course FAQs, reader and sessions, draws diagrams, and teaches each skill in hands-on lessons on Mapper |
 
 ## Install
 
@@ -27,4 +28,4 @@ Other options:
 - **Codex:** the repo includes `.codex-plugin/` and a per-skill `agents/openai.yaml` (not yet tested).
 - **Claude Code slash commands without the plugin:** `bash scripts/install-skills.sh`, or run Claude Code from the repo root, where `.claude/commands/` links to these skills.
 
-Each skill is a folder with a `SKILL.md`. `eval-rubric` also ships reference files, so copy the whole folder when installing by hand.
+Each skill is a folder with a `SKILL.md`. `eval-rubric` and `eval-coach` also ship reference files, so copy the whole folder when installing by hand.

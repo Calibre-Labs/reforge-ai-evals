@@ -23,5 +23,5 @@ done
 
 echo ""
 echo "Done. The skills are available as slash commands in any Claude Code session."
-echo "Note: skills that ship reference files (eval-rubric) work best through the plugin,"
+echo "Note: skills that ship reference files (eval-rubric, eval-coach) work best through the plugin,"
 echo "which keeps those files next to the skill."

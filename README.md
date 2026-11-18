@@ -10,6 +10,8 @@ Your coding agent can do most of the eval work if it has the right instructions.
 
 Start with **[eval-guide](skills/eval-guide/SKILL.md)**. It looks at where you are and loads the right skill.
 
+New to evals, or want to learn the method before using it on your own product? Ask **[eval-coach](skills/eval-coach/SKILL.md)** a question ("what's a trace code?", "when do I need an LLM judge instead of a code check?") or say "teach me evals". It answers from the course's FAQs, course reader and live sessions, draws the diagrams, and walks you through every skill on Mapper, the course agent.
+
 ![The AI evals loop: your coding agent runs six steps with skills, and two steps, reading traces and labeling a sample, stay with you](docs/workflow.png)
 
 | Step | Skill | What it does |
@@ -23,6 +25,7 @@ Start with **[eval-guide](skills/eval-guide/SKILL.md)**. It looks at where you a
 | 6. Label a sample | **You** | Mark outputs pass or fail |
 | 7. Calibrate judges | [llm-align](skills/llm-align/SKILL.md) | Measures each judge against your labels (TPR/TNR) and fixes its prompt |
 | 8. Grow the dataset | [ticket-to-eval](skills/ticket-to-eval/SKILL.md) | Turns support tickets and bad traces into regression eval rows |
+| Any time | [eval-coach](skills/eval-coach/SKILL.md) | Answers questions from the course material and teaches each skill in short lessons on Mapper |
 
 Coming next: `eval-run` (run the agent and scorers over a dataset), `eval-trace` (tool calls and multi-step traces) and `eval-monitor` (score production and report drift).
 
@@ -49,6 +52,12 @@ Then ask your agent something like:
 
 ```
 Write a v1 eval rubric from my PRD.
+```
+
+or, to learn first:
+
+```
+Teach me evals.
 ```
 
 ## Worked examples
